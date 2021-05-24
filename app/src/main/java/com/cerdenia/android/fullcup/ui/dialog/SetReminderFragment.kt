@@ -22,9 +22,14 @@ class SetReminderFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val reminder = arguments?.getSerializable(ARG_REMINDER)
+        val reminder = arguments?.getSerializable(ARG_REMINDER) as Reminder
+
+        binding.weekdaysButton.setOnClickListener { reminder.days = "weekdays" }
+        binding.weekendsButton.setOnClickListener { reminder.days = "weekends" }
+        binding.everydayButton.setOnClickListener { reminder.days = "everyday" }
 
         binding.confirmButton.setOnClickListener {
+            reminder.time = "8:00 am" // for testing only
             parentFragmentManager.setFragmentResult(KEY_CONFIRM, Bundle().apply {
                 putSerializable(ARG_REMINDER, reminder)
             })

@@ -22,8 +22,6 @@ class SetRemindersViewModel : ViewModel() {
             time = reminder.time
         }
 
-        if (_remindersLive.value !== reminders) {
-            _remindersLive.value = reminders
-        }
+        _remindersLive.value = reminders
     }
 }

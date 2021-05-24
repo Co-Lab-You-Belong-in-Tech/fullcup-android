@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cerdenia.android.fullcup.data.model.Reminder
@@ -16,7 +15,6 @@ import com.cerdenia.android.fullcup.ui.dialog.SetReminderFragment
 import com.cerdenia.android.fullcup.ui.viewmodel.SetRemindersViewModel
 
 class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
-
     private var _binding: FragmentSetRemindersBinding? = null
     private val binding get() = _binding!!
 
@@ -47,8 +45,9 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     override fun onStart() {
         super.onStart()
         viewModel.remindersLive.observe(viewLifecycleOwner, { reminders ->
-            Log.i(TAG, "remindersLive observer fired")
+            Log.i(TAG, "remindersLive observer fired: $reminders")
             adapter.submitList(reminders)
+            adapter.notifyDataSetChanged()
         })
 
         parentFragmentManager.setFragmentResultListener(
