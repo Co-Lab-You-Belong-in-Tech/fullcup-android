@@ -24,10 +24,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:backgroundTint="?attr/colorPrimary"
+            app:backgroundTint="#E6E6E6"
             app:contentInsetEnd="0dp"
             app:contentInsetStart="0dp"
-            app:fabCradleMargin="10dp"
+            app:fabCradleMargin="0dp"
             app:fabCradleRoundedCornerRadius="10dp"
             app:fabCradleVerticalOffset="10dp">
 
@@ -44,7 +44,7 @@
                     app:backgroundTint="@android:color/transparent"
                     app:elevation="0dp"
                     app:itemIconTint="@android:color/black"
-                    app:itemRippleColor="?attr/colorPrimaryVariant"
+                    app:itemRippleColor="#E6E6E6"
                     app:itemTextColor="@android:color/black"
                     app:labelVisibilityMode="unlabeled"
                     app:menu="@menu/bottom_nav_menu" />
@@ -57,7 +57,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/app_name"
-            android:elevation="0dp"
             android:src="@drawable/ic_add_reminder"
             app:backgroundTint="?attr/colorPrimary"
             app:elevation="0dp"
