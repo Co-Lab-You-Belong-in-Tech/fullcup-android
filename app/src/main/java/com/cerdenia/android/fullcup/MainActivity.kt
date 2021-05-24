@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         if (currentFragment == null) {
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_container, SetRemindersFragment.newInstance())
+                .add(R.id.fragment_container, HomeFragment.newInstance())
                 .commit()
         }
     }

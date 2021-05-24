@@ -13,8 +13,7 @@ class CalendarFragment: Fragment() {
     private lateinit var viewModel: CalendarViewModel
 
     private var _binding: FragmentCalendarBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
