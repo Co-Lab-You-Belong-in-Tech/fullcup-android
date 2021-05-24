@@ -1,8 +1,10 @@
-package com.cerdenia.android.fullcup
+package com.cerdenia.android.fullcup.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.databinding.ActivityMainBinding
+import com.cerdenia.android.fullcup.ui.fragment.HomeFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

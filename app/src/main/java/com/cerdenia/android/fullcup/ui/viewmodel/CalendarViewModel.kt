@@ -1,10 +1,7 @@
-package com.cerdenia.android.fullcup
+package com.cerdenia.android.fullcup.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cerdenia.android.fullcup.data.CalendarFetcher
-import com.cerdenia.android.fullcup.data.Event
 
 class CalendarViewModel: ViewModel() {
 

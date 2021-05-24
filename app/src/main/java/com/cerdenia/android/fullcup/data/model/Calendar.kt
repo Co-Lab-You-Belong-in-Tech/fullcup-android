@@ -1,4 +1,4 @@
-package com.cerdenia.android.fullcup.data
+package com.cerdenia.android.fullcup.data.model
 
 import com.google.gson.annotations.SerializedName
 

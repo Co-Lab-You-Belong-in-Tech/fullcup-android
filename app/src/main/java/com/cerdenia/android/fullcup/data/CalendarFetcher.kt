@@ -6,6 +6,8 @@ import com.cerdenia.android.fullcup.data.api.BusyTimesResponse
 import com.cerdenia.android.fullcup.data.api.CalendarListResponse
 import com.cerdenia.android.fullcup.data.api.EventsResponse
 import com.cerdenia.android.fullcup.data.api.WebService
+import com.cerdenia.android.fullcup.data.model.Calendar
+import com.cerdenia.android.fullcup.data.model.Event
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

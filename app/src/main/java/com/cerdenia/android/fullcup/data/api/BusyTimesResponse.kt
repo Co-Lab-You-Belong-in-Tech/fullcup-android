@@ -1,6 +1,6 @@
 package com.cerdenia.android.fullcup.data.api
 
-import com.cerdenia.android.fullcup.data.BusyTime
+import com.cerdenia.android.fullcup.data.model.BusyTime
 import com.google.gson.annotations.SerializedName
 
 class BusyTimesResponse {

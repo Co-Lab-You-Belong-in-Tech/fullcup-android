@@ -1,4 +1,4 @@
-package com.cerdenia.android.fullcup
+package com.cerdenia.android.fullcup.ui.fragment
 
 import android.graphics.Color
 import android.os.Bundle
@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import app.futured.donut.DonutSection
 import com.cerdenia.android.fullcup.databinding.FragmentHomeBinding
-import java.util.*
 
 class HomeFragment : Fragment() {
 
