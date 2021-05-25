@@ -21,22 +21,26 @@
         android:id="@+id/toggle_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
         android:gravity="center"
         app:singleSelection="true">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
+            style="?attr/materialButtonOutlinedStyle"
             android:id="@+id/weekdays_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Weekdays" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
+            style="?attr/materialButtonOutlinedStyle"
             android:id="@+id/weekends_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Weekends" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
+            style="?attr/materialButtonOutlinedStyle"
             android:id="@+id/everyday_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,11 +56,13 @@
     <Spinner
         android:id="@+id/time_spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"/>
 
     <Button
         android:id="@+id/confirm_button"
-        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Confirm"/>
 

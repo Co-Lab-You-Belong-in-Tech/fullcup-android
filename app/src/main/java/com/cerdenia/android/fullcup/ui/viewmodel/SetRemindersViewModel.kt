@@ -25,4 +25,14 @@ class SetRemindersViewModel : ViewModel() {
 
         _remindersLive.value = reminders
     }
+
+    fun getFreeTimes(): Array<String> {
+        // Dummy data for now
+        val times = mutableListOf<String>()
+        for (num in 0..23) {
+            times.add("${num}:00")
+            times.add("${num}:30")
+        }
+        return times.toTypedArray()
+    }
 }

@@ -69,7 +69,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     }
 
     override fun onItemSelected(reminder: Reminder) {
-        SetReminderFragment.newInstance(reminder)
+        SetReminderFragment.newInstance(reminder, viewModel.getFreeTimes())
             .show(parentFragmentManager, SetReminderFragment.TAG)
     }
 
