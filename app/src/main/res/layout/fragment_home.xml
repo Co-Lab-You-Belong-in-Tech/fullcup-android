@@ -28,7 +28,7 @@
         android:id="@+id/date_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="19th May, 2021"
+        tools:text="19th May, 2021"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <TextView
@@ -38,20 +38,41 @@
         android:text="Today's agenda"
         tools:ignore="RtlSymmetry" />
 
-    <app.futured.donut.DonutProgressView
-        android:id="@+id/donut_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:donut_bgLineColor="@color/grey"
-        app:donut_gapAngle="270"
-        app:donut_gapWidth="0"
-        app:donut_strokeWidth="16dp" />
-
-    <CalendarView
-        android:id="@+id/calendar_view"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_marginVertical="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxDate="05/30/2021"
-        android:minDate="05/24/2021" />
+        android:layout_height="wrap_content">
+
+        <app.futured.donut.DonutProgressView
+            android:id="@+id/donut_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:donut_bgLineColor="@color/grey"
+            app:donut_gapAngle="270"
+            app:donut_gapWidth="0"
+            app:donut_strokeWidth="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/donut_view"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

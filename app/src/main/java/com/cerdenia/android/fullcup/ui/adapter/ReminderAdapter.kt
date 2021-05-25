@@ -32,7 +32,9 @@ class ReminderAdapter(
             R.layout.list_item_reminder_unset
         }
 
-        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
+        val view = LayoutInflater
+            .from(parent.context)
+            .inflate(layout, parent, false)
         return ReminderHolder(view)
     }
 

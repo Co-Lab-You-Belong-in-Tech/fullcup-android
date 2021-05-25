@@ -1,19 +1,28 @@
 package com.cerdenia.android.fullcup.ui.fragment
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import app.futured.donut.DonutSection
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cerdenia.android.fullcup.databinding.FragmentHomeBinding
+import com.cerdenia.android.fullcup.ui.adapter.CategoryAdapter
+import com.cerdenia.android.fullcup.ui.viewmodel.HomeViewModel
+import java.text.DateFormat
+import java.util.*
 
 class HomeFragment : Fragment() {
-
     private var _binding: FragmentHomeBinding? = null
-    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
+
+    private lateinit var viewModel: HomeViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,26 +33,23 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.adapter = CategoryAdapter(viewModel.coloredCategories)
+    }
+
     override fun onStart() {
         super.onStart()
         setupDonut()
+        binding.dateTextView.text = DateFormat
+            .getDateInstance(DateFormat.MEDIUM)
+            .format(Date())
     }
 
     private fun setupDonut() {
-        val section1 = DonutSection(
-            name = "section_1",
-            color = Color.parseColor("#FB1D32"),
-            amount = 1f
-        )
-
-        val section2 = DonutSection(
-            name = "section_2",
-            color = Color.parseColor("#FFB98E"),
-            amount = 1f
-        )
-
-        binding.donutView.cap = 5f
-        binding.donutView.submitData(listOf(section1, section2))
+        binding.donutView.cap = viewModel.donutCap
+        binding.donutView.submitData(emptyList())
     }
 
     override fun onDestroyView() {
