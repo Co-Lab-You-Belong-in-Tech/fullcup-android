@@ -3,15 +3,12 @@ package com.cerdenia.android.fullcup.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.data.model.Reminder
 
 class SetRemindersViewModel : ViewModel() {
-    // Dummy data only for now
-    private val reminders = listOf(
-        "Health & Fitness",
-        "Productivity",
-        "Loved ones"
-    ).map { Reminder(category = it) }
+    private val categories = FullCupPreferences.categories?.toList()?.sorted() ?: emptyList()
+    private val reminders = categories.map { Reminder(category = it) }
 
     private val _remindersLive = MutableLiveData(reminders)
     val remindersLive: LiveData<List<Reminder>> get() = _remindersLive

@@ -1,5 +1,7 @@
 package com.cerdenia.android.fullcup.ui.activity
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.cerdenia.android.fullcup.R
@@ -20,6 +22,12 @@ class MainActivity : AppCompatActivity() {
                 .beginTransaction()
                 .add(R.id.fragment_container, HomeFragment.newInstance())
                 .commit()
+        }
+    }
+
+    companion object {
+        fun newIntent(packageContext: Context): Intent {
+            return Intent(packageContext, MainActivity::class.java)
         }
     }
 }
