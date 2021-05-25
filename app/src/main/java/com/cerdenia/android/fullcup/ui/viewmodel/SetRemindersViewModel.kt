@@ -9,7 +9,8 @@ class SetRemindersViewModel : ViewModel() {
     // Dummy data only for now
     private val reminders = listOf(
         "Health & Fitness",
-        "Productivity"
+        "Productivity",
+        "Loved ones"
     ).map { Reminder(category = it) }
 
     private val _remindersLive = MutableLiveData(reminders)
