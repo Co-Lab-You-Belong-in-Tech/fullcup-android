@@ -61,4 +61,7 @@ dependencies {
     // Donut Chart
     implementation 'app.futured.donut:library:2.1.0'
     implementation 'app.futured.donut:library-compose:2.1.0'
+
+    // Google Sign-in
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
 }

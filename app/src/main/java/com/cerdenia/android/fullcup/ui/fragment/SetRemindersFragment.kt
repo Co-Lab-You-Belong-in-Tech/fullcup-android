@@ -66,6 +66,11 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
             .show(parentFragmentManager, SetReminderFragment.TAG)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
         private const val TAG = "SetRemindersFragment"
 
