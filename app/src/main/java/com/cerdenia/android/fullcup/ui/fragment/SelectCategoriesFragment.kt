@@ -2,18 +2,19 @@ package com.cerdenia.android.fullcup.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.cerdenia.android.fullcup.data.local.FullCupPreferences
+import androidx.lifecycle.ViewModelProvider
 import com.cerdenia.android.fullcup.databinding.FragmentSelectCategoriesBinding
+import com.cerdenia.android.fullcup.ui.viewmodel.SelectCategoriesViewModel
 
 class SelectCategoriesFragment : Fragment() {
     private var _binding: FragmentSelectCategoriesBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var viewModel: SelectCategoriesViewModel
     private var callbacks: Callbacks? = null
 
     interface Callbacks {
@@ -23,6 +24,11 @@ class SelectCategoriesFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as Callbacks?
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(SelectCategoriesViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -46,6 +52,8 @@ class SelectCategoriesFragment : Fragment() {
         )
 
         checkBoxes.forEach { checkBox ->
+            // Set initial state based on stored categories.
+            checkBox.isChecked = viewModel.categories.contains(checkBox.text)
             checkBox.setOnClickListener {
                 // Disable Next button if no checkboxes are selected
                 binding.nextButton.isEnabled = checkBoxes.any { it.isChecked }
@@ -55,12 +63,15 @@ class SelectCategoriesFragment : Fragment() {
         binding.nextButton.apply {
             isEnabled = checkBoxes.any { it.isChecked }
             setOnClickListener {
-                // Save selected items to SharedPreferences.
-                val selections: List<String> = checkBoxes
+                // Pass selected and deselected items to ViewModel.
+                val selections = checkBoxes
                     .filter { it.isChecked }
                     .map { it.text.toString() }
-                Log.i(TAG, "Saving selections: $selections")
-                FullCupPreferences.categories = selections.toSet()
+                val deselections = checkBoxes
+                    .filter { !it.isChecked }
+                    .map { it.text.toString() }
+                viewModel.submitCategories(selections, deselections)
+                // Make callback to hosting activity.
                 callbacks?.onCategoriesSelected()
             }
         }

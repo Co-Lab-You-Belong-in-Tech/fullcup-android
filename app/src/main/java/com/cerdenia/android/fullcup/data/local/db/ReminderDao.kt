@@ -6,15 +6,24 @@ import com.cerdenia.android.fullcup.data.model.Reminder
 
 @Dao
 interface ReminderDao {
-    @Insert
-    fun addReminder(reminder: Reminder)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun addReminder(vararg reminder: Reminder)
 
     @Query("SELECT * FROM reminder")
     fun getReminders(): LiveData<List<Reminder>>
 
     @Update
-    fun updateReminder(reminder: Reminder)
+    fun updateReminder(vararg reminder: Reminder)
 
     @Delete
-    fun deleteReminder(reminder: Reminder)
+    fun deleteReminder(vararg reminder: Reminder)
+
+    @Query("DELETE FROM reminder WHERE category IN (:category)")
+    fun deleteReminderByCategory(vararg category: String)
+
+    @Transaction
+    fun updateReminderSet(toCreate: Array<Reminder>, toDelete: Array<String>) {
+        addReminder(*toCreate)
+        deleteReminderByCategory(*toDelete)
+    }
 }

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.cerdenia.android.fullcup.databinding.FragmentHomeBinding
 import com.cerdenia.android.fullcup.ui.adapter.CategoryAdapter
 import com.cerdenia.android.fullcup.ui.viewmodel.HomeViewModel

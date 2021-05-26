@@ -1,7 +1,6 @@
 package com.cerdenia.android.fullcup.ui.viewmodel
 
 import android.graphics.Color
-import android.provider.CalendarContract
 import androidx.lifecycle.ViewModel
 import app.futured.donut.DonutSection
 import com.cerdenia.android.fullcup.data.local.FullCupPreferences
