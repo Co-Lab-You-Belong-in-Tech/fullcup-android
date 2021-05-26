@@ -36,6 +36,5 @@ class OnboardingActivity : AppCompatActivity(),
 
     override fun onRemindersConfirmed() {
         MainActivity.newIntent(this).run (::startActivity)
-        finish()
     }
 }

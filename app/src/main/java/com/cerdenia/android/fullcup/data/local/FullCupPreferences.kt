@@ -2,6 +2,7 @@ package com.cerdenia.android.fullcup.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.cerdenia.android.fullcup.data.model.Reminder
 
 object FullCupPreferences {
     private const val NAME = "full_cup_preferences"

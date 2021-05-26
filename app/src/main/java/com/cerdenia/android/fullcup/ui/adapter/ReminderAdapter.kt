@@ -19,7 +19,7 @@ class ReminderAdapter(
 
     override fun getItemViewType(position: Int): Int {
         val reminder = getItem(position)
-        return if (reminder.isSet()) TYPE_SET else TYPE_UNSET
+        return if (reminder.isSet) TYPE_SET else TYPE_UNSET
     }
     
     override fun onCreateViewHolder(

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cerdenia.android.fullcup.databinding.FragmentHomeBinding
 import com.cerdenia.android.fullcup.ui.adapter.CategoryAdapter
@@ -35,7 +36,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
         binding.recyclerView.adapter = CategoryAdapter(viewModel.coloredCategories)
     }
 

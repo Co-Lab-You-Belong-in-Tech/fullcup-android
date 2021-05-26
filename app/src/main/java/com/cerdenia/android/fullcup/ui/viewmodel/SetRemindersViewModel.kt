@@ -3,10 +3,13 @@ package com.cerdenia.android.fullcup.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cerdenia.android.fullcup.data.FullCupRepository
 import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.data.model.Reminder
 
 class SetRemindersViewModel : ViewModel() {
+    private val repo = FullCupRepository.getInstance()
+
     private val categories = FullCupPreferences.categories?.toList()?.sorted() ?: emptyList()
     private val reminders = categories.map { Reminder(category = it) }
 

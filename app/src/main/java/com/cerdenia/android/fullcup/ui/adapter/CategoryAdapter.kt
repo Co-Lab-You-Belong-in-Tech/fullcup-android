@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.data.model.ColoredCategory
 import com.google.android.material.imageview.ShapeableImageView
-import java.lang.IllegalArgumentException
 
 class CategoryAdapter(var categories: List<Any>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>()
@@ -17,7 +16,7 @@ class CategoryAdapter(var categories: List<Any>) :
         return when (categories[position]) {
             is ColoredCategory -> TYPE_COLORED
             is String -> TYPE_CHECKBOX
-            else -> throw IllegalArgumentException()
+            else -> throw Exception("Unexpected item type")
         }
     }
 
