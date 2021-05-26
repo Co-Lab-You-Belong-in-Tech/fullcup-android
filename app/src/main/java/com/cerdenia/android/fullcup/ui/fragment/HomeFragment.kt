@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.cerdenia.android.fullcup.databinding.FragmentHomeBinding
 import com.cerdenia.android.fullcup.ui.adapter.CategoryAdapter
 import com.cerdenia.android.fullcup.ui.viewmodel.HomeViewModel
+import com.cerdenia.android.fullcup.util.ext.addRipple
 import java.text.DateFormat
 import java.util.*
 
@@ -30,26 +31,24 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
+        binding.recyclerView.adapter = CategoryAdapter(viewModel.coloredCategories)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
-        binding.recyclerView.adapter = CategoryAdapter(viewModel.coloredCategories)
-    }
+        // Setup donut chart.
+        binding.donutView.cap = viewModel.donutCap
+        binding.donutView.submitData(emptyList())
 
-    override fun onStart() {
-        super.onStart()
-        setupDonut()
         binding.dateTextView.text = DateFormat
             .getDateInstance(DateFormat.MEDIUM)
             .format(Date())
-    }
 
-    private fun setupDonut() {
-        binding.donutView.cap = viewModel.donutCap
-        binding.donutView.submitData(emptyList())
+        binding.logButton.setOnClickListener {
+            // TODO
+        }
     }
 
     override fun onDestroyView() {

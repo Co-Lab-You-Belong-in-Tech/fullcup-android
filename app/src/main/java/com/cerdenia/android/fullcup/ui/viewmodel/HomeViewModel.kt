@@ -7,18 +7,21 @@ import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.data.model.ColoredCategory
 
 class HomeViewModel : ViewModel() {
+    // Temporary colors
+    private val colors = listOf(Color.RED, Color.YELLOW, Color.BLUE,
+        Color.GREEN, Color.CYAN, Color.MAGENTA)
+
     private val categories = FullCupPreferences.categories?.toList()?.sorted() ?: emptyList()
     val donutCap = categories.size.toFloat()
-    val donutSections = categories.map { category ->
+    val donutSections = categories.mapIndexed { i, category ->
         DonutSection(
             name = category,
             amount = 1f,
-            color = Color.parseColor("#FFB98E")
+            color = colors[i]
         )
     }
 
-    val coloredCategories = categories.map { category ->
-        val colors = listOf<Int>(Color.RED, Color.BLUE, Color.GREEN, Color.CYAN) // temporary
-        ColoredCategory(category, colors.shuffled().first())
+    val coloredCategories = categories.mapIndexed { i, category ->
+        ColoredCategory(category, colors[i])
     }
 }
