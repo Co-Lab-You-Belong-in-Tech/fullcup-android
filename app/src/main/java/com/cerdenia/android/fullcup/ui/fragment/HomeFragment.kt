@@ -1,6 +1,7 @@
 package com.cerdenia.android.fullcup.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cerdenia.android.fullcup.databinding.FragmentHomeBinding
 import com.cerdenia.android.fullcup.ui.adapter.CategoryAdapter
+import com.cerdenia.android.fullcup.ui.dialog.LogActivityFragment
 import com.cerdenia.android.fullcup.ui.viewmodel.HomeViewModel
-import com.cerdenia.android.fullcup.util.ext.addRipple
 import java.text.DateFormat
 import java.util.*
 
@@ -47,8 +48,22 @@ class HomeFragment : Fragment() {
             .format(Date())
 
         binding.logButton.setOnClickListener {
-            // TODO
+            LogActivityFragment
+                .newInstance(viewModel.categories)
+                .show(parentFragmentManager, LogActivityFragment.TAG)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        parentFragmentManager.setFragmentResultListener(
+            LogActivityFragment.LOG_ACTIVITY,
+            viewLifecycleOwner,
+            { _, result ->
+                val itemsMarkedDone = result.getStringArray(LogActivityFragment.CATEGORIES)
+                Log.i(TAG, "Got items marked done: ${itemsMarkedDone?.toList()}")
+            }
+        )
     }
 
     override fun onDestroyView() {
@@ -57,6 +72,8 @@ class HomeFragment : Fragment() {
     }
 
     companion object {
+        private const val TAG = "HomeFragment"
+
         fun newInstance(): HomeFragment = HomeFragment()
     }
 }

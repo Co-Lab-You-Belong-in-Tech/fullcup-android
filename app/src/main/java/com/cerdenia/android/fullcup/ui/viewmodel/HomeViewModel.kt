@@ -11,7 +11,7 @@ class HomeViewModel : ViewModel() {
     private val colors = listOf(Color.RED, Color.YELLOW, Color.BLUE,
         Color.GREEN, Color.CYAN, Color.MAGENTA)
 
-    private val categories = FullCupPreferences.categories?.toList()?.sorted() ?: emptyList()
+    val categories get() = FullCupPreferences.categories?.toList()?.sorted() ?: emptyList()
     val donutCap = categories.size.toFloat()
     val donutSections = categories.mapIndexed { i, category ->
         DonutSection(

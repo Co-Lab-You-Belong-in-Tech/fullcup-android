@@ -11,6 +11,7 @@ import com.cerdenia.android.fullcup.data.model.Reminder
 @TypeConverters(FullCupTypeConverters::class)
 abstract class FullCupDatabase : RoomDatabase() {
     abstract fun reminderDao(): ReminderDao
+    abstract fun logDao(): LogDao
 
     companion object {
         private const val NAME = "fullcup_database"
