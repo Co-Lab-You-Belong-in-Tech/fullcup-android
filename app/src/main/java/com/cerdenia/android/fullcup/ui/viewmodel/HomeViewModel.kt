@@ -15,13 +15,12 @@ class HomeViewModel : ViewModel() {
     private val repo = FullCupRepository.getInstance()
     private val dateLive = MutableLiveData<String>()
 
-    val categories get() = FullCupPreferences.categories
-
     // Temporary colors
     private val colors = listOf(Color.RED, Color.YELLOW, Color.BLUE,
         Color.GREEN, Color.CYAN, Color.MAGENTA)
 
-    val coloredCategories = categories.mapIndexed { i, category ->
+    val categories get() = FullCupPreferences.categories
+    val coloredCategories get() = categories.mapIndexed { i, category ->
         ColoredCategory(category, colors[i])
     }
 
@@ -60,10 +59,12 @@ class HomeViewModel : ViewModel() {
             val activitiesMarkedDone = source?.activities
                 ?.filter { it.isDone }
                 ?: emptyList()
-            donutDataLive.value = activitiesMarkedDone.mapIndexed { i, activity ->
-                DonutSection(name = activity.category,
+            donutDataLive.value = activitiesMarkedDone.map { activity ->
+                val i = coloredCategories.indexOfFirst { it.category == activity.category}
+                DonutSection(
+                    name = activity.category,
                     amount = 1f,
-                    color = colors[i]
+                    color = coloredCategories[i].color
                 )
             }
         }

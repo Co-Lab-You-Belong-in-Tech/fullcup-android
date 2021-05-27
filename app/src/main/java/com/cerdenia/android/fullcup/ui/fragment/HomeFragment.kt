@@ -23,8 +23,6 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: HomeViewModel
-    private var _dailyLog: DailyLog? = null
-    private val dailyLog get() = _dailyLog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
