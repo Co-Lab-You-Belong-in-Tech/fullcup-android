@@ -9,7 +9,7 @@ interface ReminderDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addReminder(vararg reminder: Reminder)
 
-    @Query("SELECT * FROM reminder")
+    @Query("SELECT * FROM reminder ORDER BY category ASC")
     fun getReminders(): LiveData<List<Reminder>>
 
     @Update

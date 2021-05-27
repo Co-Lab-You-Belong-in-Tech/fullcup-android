@@ -7,11 +7,11 @@ import com.cerdenia.android.fullcup.data.model.Reminder
 
 class SelectCategoriesViewModel : ViewModel() {
     private val repo = FullCupRepository.getInstance()
-    val categories: Set<String> get() = FullCupPreferences.categories ?: emptySet()
+    val categories get() = FullCupPreferences.categories
 
     fun submitCategories(selected: List<String>, deselected: List<String>) {
         // Save selected categories to SharedPreferences.
-        FullCupPreferences.categories = selected.toSet()
+        FullCupPreferences.categories = selected
         // Create new Reminder objects for newly selected categories.
         val newReminders = selected.map { Reminder(category = it )}
         repo.updateReminderSet(newReminders, deselected)

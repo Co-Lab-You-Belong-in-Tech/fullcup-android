@@ -3,6 +3,7 @@ package com.cerdenia.android.fullcup.data
 import android.content.Context
 import androidx.lifecycle.LiveData
 import com.cerdenia.android.fullcup.data.local.db.FullCupDatabase
+import com.cerdenia.android.fullcup.data.model.ActivityLog
 import com.cerdenia.android.fullcup.data.model.DailyLog
 import com.cerdenia.android.fullcup.data.model.Reminder
 import java.util.concurrent.Executors
@@ -43,6 +44,10 @@ class FullCupRepository private constructor(
 
     fun addOrUpdateDailyLog(log: DailyLog) {
         executor.execute { logDao.addOrUpdateDailyLog(log) }
+    }
+
+    fun deleteActivityLog(vararg log: ActivityLog) {
+        executor.execute { logDao.deleteActivityLog(*log) }
     }
     // [END] Daily Log methods
 

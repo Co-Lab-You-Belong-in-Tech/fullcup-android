@@ -61,7 +61,6 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     override fun onStart() {
         super.onStart()
         viewModel.remindersLive.observe(viewLifecycleOwner, { reminders ->
-            Log.i(TAG, "remindersLive observer fired: $reminders")
             adapter.submitList(reminders)
             adapter.notifyDataSetChanged()
             // Enable Set Reminders button if all reminders are ready.

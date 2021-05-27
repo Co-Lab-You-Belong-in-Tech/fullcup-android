@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import app.futured.donut.DonutSection
 import com.cerdenia.android.fullcup.data.model.ActivityLog
 import com.cerdenia.android.fullcup.data.model.DailyLog
 import com.cerdenia.android.fullcup.data.model.SummaryLog
@@ -45,8 +44,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Setup donut chart.
-        binding.donutView.cap = viewModel.donutCap
+        binding.donutView.cap = viewModel.categories.size.toFloat()
         //Get log data for the day.
         viewModel.getDailyLog()
 
@@ -55,31 +53,8 @@ class HomeFragment : Fragment() {
             .format(Date())
 
         binding.logButton.setOnClickListener {
-            val log = if (dailyLog == null) {
-                createNewLog(viewModel.categories)
-            } else {
-                dailyLog!!
-            }
-
-            val categories = viewModel.categories
-            val categoriesLogged = log.activities.map { it.category }
-            if (categories !== categoriesLogged) {
-                // First, get rid of logs for categories that the user has deselected.
-                val itemsToDelete = mutableListOf<String>()
-                log.activities.forEach { activity ->
-                   if (!categories.contains(activity.category)) {
-                       itemsToDelete.add(activity.category)
-                   }
-                }
-                log.activities.removeAll { itemsToDelete.contains(it.category) }
-                // Then create new logs for categories that have newly selected.
-                categories.forEach { category ->
-                    if (!categoriesLogged.contains(category)) {
-                        log.activities.add(ActivityLog(category = category))
-                    }
-                }
-            }
-
+            val log = viewModel.dailyLogLive.value
+                ?: createNewLog(viewModel.categories)
             LogActivityFragment
                 .newInstance(log)
                 .show(parentFragmentManager, LogActivityFragment.TAG)
@@ -97,20 +72,8 @@ class HomeFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.dailyLogLive.observe(viewLifecycleOwner, { dailyLog ->
-            Log.d(TAG, "Got log for the day: $dailyLog")
-            dailyLog?.let { log ->
-                _dailyLog = log
-                // Update donut chart.
-                val activitiesMarkedDone = log.activities.filter { it.isDone }
-                val donutData = activitiesMarkedDone.mapIndexed { i, activity ->
-                    DonutSection(name = activity.category,
-                        amount = 1f,
-                        color = viewModel.colors[i]
-                    )
-                }
-                binding.donutView.submitData(donutData)
-            }
+        viewModel.donutDataLive.observe(viewLifecycleOwner, { donutData ->
+            binding.donutView.submitData(donutData)
         })
 
         parentFragmentManager.setFragmentResultListener(

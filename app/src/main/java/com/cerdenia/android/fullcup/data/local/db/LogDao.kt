@@ -24,6 +24,9 @@ interface LogDao {
     @Update
     fun updateSummaryLog(log: SummaryLog)
 
+    @Delete
+    fun deleteActivityLog(vararg log: ActivityLog)
+
     @Transaction
     fun addOrUpdateDailyLog(log: DailyLog) {
         addActivityLog(*log.activities.toTypedArray())

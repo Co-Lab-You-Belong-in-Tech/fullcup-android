@@ -22,9 +22,12 @@ object FullCupPreferences {
         editor.apply()
     }
 
-    var categories: Set<String>?
+    var categories: List<String>
         get() = preferences.getStringSet(KEY_CATEGORIES, emptySet())
+            ?.toList()
+            ?.sorted()
+            ?: emptyList()
         set(value) = preferences.edit { editor ->
-            editor.putStringSet(KEY_CATEGORIES, value)
+            editor.putStringSet(KEY_CATEGORIES, value.toSet())
         }
 }
