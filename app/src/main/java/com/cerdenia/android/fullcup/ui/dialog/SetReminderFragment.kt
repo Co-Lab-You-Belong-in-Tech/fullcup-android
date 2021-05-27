@@ -1,7 +1,7 @@
 package com.cerdenia.android.fullcup.ui.dialog
 
-import android.R
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.cerdenia.android.fullcup.data.model.Reminder
 import com.cerdenia.android.fullcup.databinding.FragmentSetReminderBinding
+import com.cerdenia.android.fullcup.util.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class SetReminderFragment : BottomSheetDialogFragment() {
@@ -23,20 +24,42 @@ class SetReminderFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    private fun getKey(map: Map<Int, String>, value: String): Int {
+        map.forEach { pair ->
+            if (pair.value == value) return pair.key
+        }
+        return 0
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val reminder = arguments?.getSerializable(ARG_REMINDER) as Reminder
-        val times = arguments?.getStringArray(ARG_TIMES) ?: emptyArray()
+        val reminder = arguments?.getSerializable(REMINDER) as Reminder
+        val times = arguments?.getStringArray(AVAILABLE_TIMES) ?: emptyArray()
+        Log.d(TAG, "Got reminder: $reminder, and times: $times")
 
-        binding.weekdaysButton.setOnClickListener { reminder.days = "weekdays" }
-        binding.weekendsButton.setOnClickListener { reminder.days = "weekends" }
-        binding.everydayButton.setOnClickListener { reminder.days = "everyday" }
+        val buttonMap = mapOf(
+            binding.weekdaysButton.id to WEEKDAYS,
+            binding.weekendsButton.id to WEEKENDS,
+            binding.everydayButton.id to EVERYDAY
+        )
+
+        binding.toggleGroup.apply {
+            reminder.days?.let { check(getKey(buttonMap, it)) }
+            addOnButtonCheckedListener { _, checkedId, isChecked ->
+                reminder.days = buttonMap[checkedId]
+            }
+        }
 
         binding.timeSpinner.apply {
-            setSelection(0) // change later
-            adapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, times).apply {
-                setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+            val formattedTimes = times.map { Utils.to12HourFormat(it) }
+            adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                formattedTimes
+            ).apply {
+                setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             }
+
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     reminder.time = times[p2]
@@ -46,11 +69,14 @@ class SetReminderFragment : BottomSheetDialogFragment() {
                    // Do nothing
                 }
             }
+
+            val i = times.indexOf(reminder.time)
+            setSelection(i) // Initial state.
         }
 
         binding.confirmButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(KEY_CONFIRM, Bundle().apply {
-                putSerializable(ARG_REMINDER, reminder)
+                putSerializable(REMINDER, reminder)
             })
             dismiss()
         }
@@ -59,14 +85,17 @@ class SetReminderFragment : BottomSheetDialogFragment() {
     companion object {
         const val TAG = "SetReminderFragment"
         const val KEY_CONFIRM = "KEY_CONFIRM"
-        const val ARG_REMINDER = "ARG_REMINDER"
-        const val ARG_TIMES = "ARG_TIMES"
+        const val REMINDER = "REMINDER"
+        const val AVAILABLE_TIMES = "AVAILABLE_TIMES"
+        const val EVERYDAY = "everyday"
+        const val WEEKDAYS = "weekdays"
+        const val WEEKENDS = "weekends"
 
         fun newInstance(reminder: Reminder, times: Array<String>): SetReminderFragment {
             return SetReminderFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ARG_REMINDER, reminder)
-                    putStringArray(ARG_TIMES, times)
+                    putSerializable(REMINDER, reminder)
+                    putStringArray(AVAILABLE_TIMES, times)
                 }
             }
         }

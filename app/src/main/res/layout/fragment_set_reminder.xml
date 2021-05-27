@@ -33,8 +33,8 @@
             android:text="Weekdays" />
 
         <com.google.android.material.button.MaterialButton
-            style="?attr/materialButtonOutlinedStyle"
             android:id="@+id/weekends_button"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Weekends" />

@@ -72,7 +72,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
             SetReminderFragment.KEY_CONFIRM,
             viewLifecycleOwner,
             { _, result ->
-                val reminder = result.getSerializable(SetReminderFragment.ARG_REMINDER) as Reminder
+                val reminder = result.getSerializable(SetReminderFragment.REMINDER) as Reminder
                 Log.i(TAG, "Got reminder: $reminder")
                 viewModel.updateReminder(reminder)
             }

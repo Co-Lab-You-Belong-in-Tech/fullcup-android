@@ -1,12 +1,23 @@
 package com.cerdenia.android.fullcup.util
 
-import android.app.Activity
-import android.content.res.Configuration
-import android.graphics.Color
-import android.os.Build
-import android.view.View
-import android.view.WindowManager
+import java.lang.IllegalArgumentException
 
 object Utils {
+    // Accepts time in HH:mm minute format.
+    fun to12HourFormat(stringTime: String): String {
+        if (!stringTime.contains(":") || stringTime.length != 5) {
+            throw IllegalArgumentException("Invalid string time: $stringTime")
+        }
 
+        val hour = stringTime.substringBefore(":").toInt()
+        val minutes = stringTime.substringAfter(":")
+
+        return when (hour) {
+            0 -> "12:$minutes AM"
+            in 1..11 -> "$hour:$minutes AM"
+            12 -> "12:$minutes PM"
+            in 13..23 -> "${hour - 12}:$minutes PM"
+            else -> "ERROR PARSING TIME"
+        }
+    }
 }

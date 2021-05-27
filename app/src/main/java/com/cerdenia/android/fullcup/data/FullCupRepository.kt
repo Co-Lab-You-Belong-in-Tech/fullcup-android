@@ -17,18 +17,10 @@ class FullCupRepository private constructor(
     private val executor = Executors.newSingleThreadExecutor()
 
     // [START] Reminder methods
-    fun addReminder(reminder: Reminder) {
-        executor.execute { reminderDao.addReminder(reminder) }
-    }
-
     fun getReminders(): LiveData<List<Reminder>> = reminderDao.getReminders()
 
     fun updateReminder(reminder: Reminder) {
         executor.execute { reminderDao.updateReminder(reminder) }
-    }
-
-    fun deleteReminder(reminder: Reminder) {
-        executor.execute { reminderDao.deleteReminder(reminder) }
     }
 
     fun updateReminderSet(toCreate: List<Reminder>, categoriesToDelete: List<String>) {

@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.data.model.Reminder
+import com.cerdenia.android.fullcup.util.Utils
+import java.text.DateFormat
 
 class ReminderAdapter(
     private val listener: Listener
@@ -52,7 +54,9 @@ class ReminderAdapter(
         fun bind(reminder: Reminder) {
             this.reminder = reminder
             categoryTextView.text = reminder.category
-            whenTextView?.text = "At ${reminder.time} on ${reminder.days}"
+
+            val time = reminder.time?.let { Utils.to12HourFormat(it) }
+            whenTextView?.text = "At $time on ${reminder.days}"
         }
 
         override fun onClick(v: View?) {

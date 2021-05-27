@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.data.model.ColoredCategory
+import com.cerdenia.android.fullcup.data.model.SelectableCategory
 import com.google.android.material.imageview.ShapeableImageView
 
 class CategoryAdapter(
@@ -24,8 +25,7 @@ class CategoryAdapter(
     override fun getItemViewType(position: Int): Int {
         return when (categories[position]) {
             is ColoredCategory -> TYPE_COLORED
-            is String -> TYPE_CHECKBOX
-            is Pair<*, *> -> TYPE_CHECKBOX
+            is SelectableCategory -> TYPE_CHECKBOX
             else -> throw Exception("Unexpected item type")
         }
     }
@@ -52,15 +52,7 @@ class CategoryAdapter(
         val category = categories[position]
         when (holder) {
             is ColoredCategoryHolder -> holder.bind(category as ColoredCategory)
-            is CategoryCheckboxHolder -> {
-                when (category) {
-                    is String -> holder.bind(category)
-                    is Pair<*, *> ->holder.bind(
-                        category.first.toString(),
-                        category.second as Boolean
-                    )
-                }
-            }
+            is CategoryCheckboxHolder -> holder.bind(category as SelectableCategory)
             else -> throw Exception("Unexpected item type")
         }
     }
@@ -79,7 +71,8 @@ class CategoryAdapter(
         }
     }
 
-    private inner class CategoryCheckboxHolder(view: View) : RecyclerView.ViewHolder(view),
+    private inner class CategoryCheckboxHolder(view: View) :
+        RecyclerView.ViewHolder(view),
         View.OnClickListener
     {
         private lateinit var category: String
@@ -87,10 +80,10 @@ class CategoryAdapter(
 
         init { categoryCheckBox?.setOnClickListener(this) }
 
-        fun bind(category: String, isSelected: Boolean = false) {
-            this.category = category
+        fun bind(selectableCategory: SelectableCategory) {
+            category = selectableCategory.category
             categoryCheckBox?.text = category
-            categoryCheckBox?.isChecked = isSelected
+            categoryCheckBox?.isChecked = selectableCategory.isSelected
         }
 
         override fun onClick(p0: View?) {

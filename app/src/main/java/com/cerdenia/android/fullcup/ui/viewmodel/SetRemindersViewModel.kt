@@ -16,8 +16,9 @@ class SetRemindersViewModel : ViewModel() {
         // Dummy data for now
         val times = mutableListOf<String>()
         for (num in 0..23) {
-            times.add("${num}:00")
-            times.add("${num}:30")
+            val hour = if (num < 10) "0$num" else num.toString()
+            times.add("${hour}:00")
+            times.add("${hour}:30")
         }
         return times.toTypedArray()
     }

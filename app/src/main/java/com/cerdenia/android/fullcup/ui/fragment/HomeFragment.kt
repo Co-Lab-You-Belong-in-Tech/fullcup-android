@@ -43,8 +43,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.donutView.cap = viewModel.categories.size.toFloat()
-        //Get log data for the day.
-        viewModel.getDailyLog()
+        viewModel.getDailyLog() // Get log data for the day.
 
         binding.dateTextView.text = DateFormat
             .getDateInstance(DateFormat.MEDIUM)

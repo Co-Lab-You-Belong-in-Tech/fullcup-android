@@ -24,6 +24,7 @@ class HomeViewModel : ViewModel() {
         ColoredCategory(category, colors[i])
     }
 
+    // Does not get exposed directly to view.
     private val dbDailyLogLive: LiveData<DailyLog?> = Transformations
         .switchMap(dateLive) { date -> repo.getLogByDate(date) }
 
@@ -31,9 +32,9 @@ class HomeViewModel : ViewModel() {
     val donutDataLive = MediatorLiveData<List<DonutSection>>()
 
     init {
-        // Verify data before exposing to view. We want stored
-        // user-selected categories to match existing logs stored in DB.
         dailyLogLive.addSource(dbDailyLogLive) { source ->
+            // Verify data before exposing to view. We want stored
+            // user-selected categories to match existing logs stored in DB.
             lateinit var activitiesToDelete: List<ActivityLog>
             var loggedCategories = source?.activities?.map { it.category } ?: emptyList()
             if (loggedCategories !== categories) {
