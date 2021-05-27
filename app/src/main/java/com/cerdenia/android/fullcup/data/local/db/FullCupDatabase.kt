@@ -5,9 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.cerdenia.android.fullcup.data.model.ActivityLog
+import com.cerdenia.android.fullcup.data.model.SummaryLog
 import com.cerdenia.android.fullcup.data.model.Reminder
 
-@Database(entities = [Reminder::class], version = 1, exportSchema = false)
+@Database(
+    entities = [Reminder::class, ActivityLog::class, SummaryLog::class],
+    version = 1
+)
 @TypeConverters(FullCupTypeConverters::class)
 abstract class FullCupDatabase : RoomDatabase() {
     abstract fun reminderDao(): ReminderDao

@@ -25,6 +25,7 @@ class CategoryAdapter(
         return when (categories[position]) {
             is ColoredCategory -> TYPE_COLORED
             is String -> TYPE_CHECKBOX
+            is Pair<*, *> -> TYPE_CHECKBOX
             else -> throw Exception("Unexpected item type")
         }
     }
@@ -51,7 +52,15 @@ class CategoryAdapter(
         val category = categories[position]
         when (holder) {
             is ColoredCategoryHolder -> holder.bind(category as ColoredCategory)
-            is CategoryCheckboxHolder -> holder.bind(category as String)
+            is CategoryCheckboxHolder -> {
+                when (category) {
+                    is String -> holder.bind(category)
+                    is Pair<*, *> ->holder.bind(
+                        category.first.toString(),
+                        category.second as Boolean
+                    )
+                }
+            }
             else -> throw Exception("Unexpected item type")
         }
     }
@@ -78,9 +87,10 @@ class CategoryAdapter(
 
         init { categoryCheckBox?.setOnClickListener(this) }
 
-        fun bind(category: String) {
+        fun bind(category: String, isSelected: Boolean = false) {
             this.category = category
             categoryCheckBox?.text = category
+            categoryCheckBox?.isChecked = isSelected
         }
 
         override fun onClick(p0: View?) {

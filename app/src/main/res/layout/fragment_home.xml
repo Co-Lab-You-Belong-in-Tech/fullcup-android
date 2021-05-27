@@ -69,6 +69,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/log_button"
+            style="@style/Buttonized"
             android:padding="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

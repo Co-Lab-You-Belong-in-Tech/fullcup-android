@@ -3,6 +3,7 @@ package com.cerdenia.android.fullcup.data.local.db
 import androidx.room.TypeConverter
 import java.util.*
 
+
 class FullCupTypeConverters {
     @TypeConverter
     fun fromDate(date: Date?): Long? = date?.time
