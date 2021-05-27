@@ -2,7 +2,6 @@ package com.cerdenia.android.fullcup.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.cerdenia.android.fullcup.data.model.Reminder
 
 object FullCupPreferences {
     private const val NAME = "full_cup_preferences"
@@ -10,7 +9,8 @@ object FullCupPreferences {
     private lateinit var preferences: SharedPreferences
 
     // SharedPreferences variables
-    private const val KEY_CATEGORIES = "key_categories"
+    private const val CATEGORIES = "categories"
+    private const val USER_NAME = "user_name"
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)
@@ -23,11 +23,17 @@ object FullCupPreferences {
     }
 
     var categories: List<String>
-        get() = preferences.getStringSet(KEY_CATEGORIES, emptySet())
+        get() = preferences.getStringSet(CATEGORIES, emptySet())
             ?.toList()
             ?.sorted()
             ?: emptyList()
         set(value) = preferences.edit { editor ->
-            editor.putStringSet(KEY_CATEGORIES, value.toSet())
+            editor.putStringSet(CATEGORIES, value.toSet())
+        }
+
+    var userName: String?
+        get() = preferences.getString(USER_NAME, null)
+        set(value) = preferences.edit { editor ->
+            editor.putString(USER_NAME, value)
         }
 }

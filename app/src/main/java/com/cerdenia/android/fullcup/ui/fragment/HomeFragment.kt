@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.cerdenia.android.fullcup.R
+import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.data.model.ActivityLog
 import com.cerdenia.android.fullcup.data.model.DailyLog
 import com.cerdenia.android.fullcup.data.model.SummaryLog
@@ -44,6 +46,11 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.donutView.cap = viewModel.categories.size.toFloat()
         viewModel.getDailyLog() // Get log data for the day.
+
+        binding.greetingTextView.text = getString(
+            R.string.good_morning,
+            FullCupPreferences.userName
+        )
 
         binding.dateTextView.text = DateFormat
             .getDateInstance(DateFormat.MEDIUM)

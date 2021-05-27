@@ -16,4 +16,9 @@ class SelectCategoriesViewModel : ViewModel() {
         val newReminders = selected.map { Reminder(category = it )}
         repo.updateReminderSet(newReminders, deselected)
     }
+
+    fun submitUserName(userName: String) {
+        // Save user name to SharedPreferences.
+        FullCupPreferences.userName = userName
+    }
 }

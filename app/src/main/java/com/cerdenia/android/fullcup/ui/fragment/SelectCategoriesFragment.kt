@@ -71,7 +71,9 @@ class SelectCategoriesFragment : Fragment() {
                     .filter { !it.isChecked }
                     .map { it.text.toString() }
                 viewModel.submitCategories(selections, deselections)
-                // Make callback to hosting activity.
+                // Save user name.
+                val userName = binding.nameEditText.text.toString()
+                viewModel.submitUserName(userName)
                 callbacks?.onCategoriesSelected()
             }
         }
