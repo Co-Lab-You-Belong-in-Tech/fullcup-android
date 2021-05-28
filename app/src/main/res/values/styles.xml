@@ -25,4 +25,8 @@
     <style name="AppHeadline5" parent="AppHeadline3">
         <item name="android:textSize">24sp</item>
     </style>
+
+    <style name="AppSubtitle" parent="AppHeadline3">
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

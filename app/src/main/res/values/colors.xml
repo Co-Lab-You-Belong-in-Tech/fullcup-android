@@ -11,4 +11,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- Activity Donut Colors -->
+    <color name="activity_color_1">#F9C06E</color>
+    <color name="activity_color_2">#E1937B</color>
+    <color name="activity_color_3">#E17EA3</color>
+    <color name="activity_color_4">#739B00</color>
+    <color name="activity_color_5">#766CE0</color>
+    <color name="activity_color_6">#E6B5EA95</color>
 </resources>

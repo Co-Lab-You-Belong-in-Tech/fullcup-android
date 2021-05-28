@@ -13,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 private const val TAG = "CalendarFetcher"
 
+@Deprecated("Will delete this soon")
 class CalendarFetcher {
 
     private val retrofit = Retrofit.Builder()

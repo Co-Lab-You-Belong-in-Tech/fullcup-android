@@ -16,6 +16,10 @@ class FullCupRepository private constructor(
     private val logDao = database.logDao()
     private val executor = Executors.newSingleThreadExecutor()
 
+    // [START] API methods
+    // TODO
+    // [END] API methods
+
     // [START] Reminder methods
     fun getReminders(): LiveData<List<Reminder>> = reminderDao.getReminders()
 

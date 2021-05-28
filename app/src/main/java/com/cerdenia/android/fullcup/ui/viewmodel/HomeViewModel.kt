@@ -17,12 +17,11 @@ class HomeViewModel : ViewModel() {
     private val repo = FullCupRepository.getInstance()
     private val dateLive = MutableLiveData<String>()
 
-    // Temporary colors
-    private val colors = listOf(Color.RED, Color.YELLOW, Color.BLUE,
-        Color.GREEN, Color.CYAN, Color.MAGENTA)
+    private val colors = listOf("#F9C06E", "#E1937B", "#E17EA3", "#739B00", "#766CE0", "#E6B5EA95")
+        .shuffled().map { colorString -> Color.parseColor(colorString) }
 
     val categories get() = FullCupPreferences.categories
-    val coloredCategories get() = categories.mapIndexed { i, category ->
+    val coloredCategories = categories.mapIndexed { i, category ->
         ColoredCategory(category, colors[i])
     }
 
