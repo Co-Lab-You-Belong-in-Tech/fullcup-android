@@ -2,10 +2,7 @@ package com.cerdenia.android.fullcup.data
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.cerdenia.android.fullcup.data.api.BusyTimesResponse
-import com.cerdenia.android.fullcup.data.api.CalendarListResponse
-import com.cerdenia.android.fullcup.data.api.EventsResponse
-import com.cerdenia.android.fullcup.data.api.WebService
+import com.cerdenia.android.fullcup.data.api.*
 import com.cerdenia.android.fullcup.data.model.Calendar
 import com.cerdenia.android.fullcup.data.model.Event
 import retrofit2.Call
@@ -15,12 +12,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 private const val TAG = "CalendarFetcher"
-private const val BASE_URL = "http://192.168.1.15:4000/api/"
 
 class CalendarFetcher {
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl("/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val webService: WebService = retrofit.create(WebService::class.java)

@@ -1,7 +1,7 @@
 package com.cerdenia.android.fullcup.data
 
-import android.content.Context
 import androidx.lifecycle.LiveData
+import com.cerdenia.android.fullcup.data.api.WebService
 import com.cerdenia.android.fullcup.data.local.db.FullCupDatabase
 import com.cerdenia.android.fullcup.data.model.ActivityLog
 import com.cerdenia.android.fullcup.data.model.DailyLog
@@ -9,11 +9,11 @@ import com.cerdenia.android.fullcup.data.model.Reminder
 import java.util.concurrent.Executors
 
 class FullCupRepository private constructor(
-    context: Context,
-    db: FullCupDatabase
+    database: FullCupDatabase,
+    webService: WebService
 ) {
-    private val reminderDao = db.reminderDao()
-    private val logDao = db.logDao()
+    private val reminderDao = database.reminderDao()
+    private val logDao = database.logDao()
     private val executor = Executors.newSingleThreadExecutor()
 
     // [START] Reminder methods
@@ -46,14 +46,12 @@ class FullCupRepository private constructor(
     companion object {
         private var INSTANCE: FullCupRepository? = null
 
-        fun init(context: Context, db: FullCupDatabase) {
-            if (INSTANCE == null) {
-                INSTANCE = FullCupRepository(context, db)
-            }
+        fun init(database: FullCupDatabase, webService: WebService) {
+            if (INSTANCE == null) INSTANCE = FullCupRepository(database, webService)
         }
 
         fun getInstance(): FullCupRepository {
-            return INSTANCE ?: throw IllegalStateException("Repository must be initialized")
+            return INSTANCE ?: throw IllegalStateException("Repo must be initialized")
         }
     }
 }

@@ -24,13 +24,6 @@ class SetReminderFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
-    private fun getKey(map: Map<Int, String>, value: String): Int {
-        map.forEach { pair ->
-            if (pair.value == value) return pair.key
-        }
-        return 0
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val reminder = arguments?.getSerializable(REMINDER) as Reminder
@@ -80,6 +73,11 @@ class SetReminderFragment : BottomSheetDialogFragment() {
             })
             dismiss()
         }
+    }
+
+    private fun getKey(map: Map<Int, String>, value: String): Int {
+        map.forEach { pair -> if (pair.value == value) return pair.key }
+        return 0
     }
 
     companion object {

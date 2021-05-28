@@ -1,5 +1,6 @@
 package com.cerdenia.android.fullcup.ui.viewmodel
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.lifecycle.*
 import app.futured.donut.DonutSection
@@ -8,6 +9,7 @@ import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.data.model.ActivityLog
 import com.cerdenia.android.fullcup.data.model.ColoredCategory
 import com.cerdenia.android.fullcup.data.model.DailyLog
+import com.cerdenia.android.fullcup.util.DATE_PATTERN
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -75,8 +77,9 @@ class HomeViewModel : ViewModel() {
         repo.addOrUpdateDailyLog(log)
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun getDailyLog() {
-        val date = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val date = SimpleDateFormat(DATE_PATTERN).format(Date())
         dateLive.value = date
     }
 }
