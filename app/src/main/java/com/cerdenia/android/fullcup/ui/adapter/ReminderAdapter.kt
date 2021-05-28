@@ -7,10 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.ui.text.toUpperCase
 import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.data.model.Reminder
 import com.cerdenia.android.fullcup.util.Utils
-import java.text.DateFormat
 
 class ReminderAdapter(
     private val listener: Listener
@@ -46,7 +46,9 @@ class ReminderAdapter(
 
     inner class ReminderHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private val categoryTextView: TextView = view.findViewById(R.id.category_text_view)
-        private val whenTextView: TextView? = view.findViewById(R.id.when_text_view)
+        // Following TextViews are nullable since the layout may or may not have them.
+        private val timeTextView: TextView? = view.findViewById(R.id.time_text_view)
+        private val daysTextView: TextView? = view.findViewById(R.id.days_text_view)
         private lateinit var reminder: Reminder
 
         init { itemView.setOnClickListener(this) }
@@ -54,9 +56,11 @@ class ReminderAdapter(
         fun bind(reminder: Reminder) {
             this.reminder = reminder
             categoryTextView.text = reminder.category
-
-            val time = reminder.time?.let { Utils.to12HourFormat(it) }
-            whenTextView?.text = "At $time on ${reminder.days}"
+            timeTextView?.text = reminder.time?.let { Utils.to12HourFormat(it) }
+            // TODO:
+            // Get reminder.days from resources instead of
+            // directly from object to make it translatable.
+            daysTextView?.text = reminder.days?.uppercase()
         }
 
         override fun onClick(v: View?) {

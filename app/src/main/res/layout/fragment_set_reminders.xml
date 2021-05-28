@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:animateLayoutChanges="true"
     android:fillViewport="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -16,10 +15,11 @@
 
         <TextView
             android:id="@+id/textView"
+            style="@style/AppHeadline5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Remind me to make time for"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:layout_marginTop="24dp"
+            android:text="@string/remind_me_to_make_time_for"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +28,8 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tasks below are displayed on the basis of your chosen preferences. You can change these anytime in task settings."
+            android:text="@string/tasks_below_are_displayed"
+            style="@style/TextAppearance.AppCompat.Caption"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -37,8 +38,13 @@
             android:id="@+id/recycler_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
             android:nestedScrollingEnabled="true"
             android:overScrollMode="never"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="40dp"
+            android:cacheColorHint="@android:color/transparent"
             app:layout_constraintBottom_toTopOf="@+id/set_reminders_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:text="Set Reminders"
+            android:text="@string/set_reminders"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

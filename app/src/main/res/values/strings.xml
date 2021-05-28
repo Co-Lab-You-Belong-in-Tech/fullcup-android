@@ -13,7 +13,15 @@
     <string name="hello">Hello!</string>
     <string name="my_name_is">My name is</string>
     <string name="and_i_want_to_make_time_for">and I want to make time for</string>
-    <string name="select_all_that_apply">Select all that apply.</string>
+    <string name="select_all_that_apply">Select all that apply</string>
     <string name="next">Next</string>
     <string name="good_morning">Good morning, %s.</string>
+    <string name="take_a_moment">Take a moment to slow down today. You\'ll save energy by not rushing through your day.</string>
+    <string name="today_s_agenda">Today\'s agenda</string>
+    <string name="log_activity">Log activity</string>
+    <string name="quick_add_activity_for_the_day">Quick add activity for the day</string>
+    <string name="remind_me_to_make_time_for">Remind me to make time for</string>
+    <string name="tasks_below_are_displayed">Tasks below are displayed on the basis of your chosen preferences. You can change these anytime in task settings.</string>
+    <string name="set_reminders">Set Reminders</string>
+    <string name="on">on</string>
 </resources>

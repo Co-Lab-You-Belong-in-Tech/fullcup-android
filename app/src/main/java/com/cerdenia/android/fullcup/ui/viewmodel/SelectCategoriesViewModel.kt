@@ -8,6 +8,7 @@ import com.cerdenia.android.fullcup.data.model.Reminder
 class SelectCategoriesViewModel : ViewModel() {
     private val repo = FullCupRepository.getInstance()
     val categories get() = FullCupPreferences.categories
+    val userName get() = FullCupPreferences.userName
 
     fun submitCategories(selected: List<String>, deselected: List<String>) {
         // Save selected categories to SharedPreferences.

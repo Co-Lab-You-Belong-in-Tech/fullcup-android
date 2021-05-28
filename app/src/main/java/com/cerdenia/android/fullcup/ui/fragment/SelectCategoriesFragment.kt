@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.cerdenia.android.fullcup.databinding.FragmentSelectCategoriesBinding
 import com.cerdenia.android.fullcup.ui.viewmodel.SelectCategoriesViewModel
+import com.cerdenia.android.fullcup.util.ext.toEditable
 
 class SelectCategoriesFragment : Fragment() {
     private var _binding: FragmentSelectCategoriesBinding? = null
@@ -42,6 +43,8 @@ class SelectCategoriesFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        binding.nameEditText.text = viewModel.userName.toEditable()
+
         val checkBoxes = listOf(
             binding.healthAndFitnessCheckbox,
             binding.lovedOnesCheckbox,

@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingEnd="96dp"
-        android:text="Take a moment to slow down today. You'll save energy by not rushing through your day."
+        android:text="@string/take_a_moment"
         tools:ignore="RtlSymmetry" />
 
     <TextView
@@ -36,7 +36,7 @@
         android:id="@+id/todays_agenda_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Today's agenda"
+        android:text="@string/today_s_agenda"
         tools:ignore="RtlSymmetry" />
 
     <app.futured.donut.DonutProgressView
@@ -78,7 +78,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Log activity"
+                android:text="@string/log_activity"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -87,7 +87,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Quick add activity for the day"
+                android:text="@string/quick_add_activity_for_the_day"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
