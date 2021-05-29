@@ -9,7 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.cerdenia.android.fullcup.data.model.Reminder
 import com.cerdenia.android.fullcup.databinding.FragmentSetReminderBinding
-import com.cerdenia.android.fullcup.util.Utils
+import com.cerdenia.android.fullcup.util.DateTimeUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class SetReminderFragment : BottomSheetDialogFragment() {
@@ -44,7 +44,7 @@ class SetReminderFragment : BottomSheetDialogFragment() {
         }
 
         binding.timeSpinner.apply {
-            val formattedTimes = times.map { Utils.to12HourFormat(it) }
+            val formattedTimes = times.map { DateTimeUtils.to12HourFormat(it) }
             adapter = ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_spinner_item,

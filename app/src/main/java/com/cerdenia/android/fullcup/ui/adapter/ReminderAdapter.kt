@@ -7,10 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.ui.text.toUpperCase
 import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.data.model.Reminder
-import com.cerdenia.android.fullcup.util.Utils
+import com.cerdenia.android.fullcup.util.DateTimeUtils
 
 class ReminderAdapter(
     private val listener: Listener
@@ -56,7 +55,7 @@ class ReminderAdapter(
         fun bind(reminder: Reminder) {
             this.reminder = reminder
             categoryTextView.text = reminder.category
-            timeTextView?.text = reminder.time?.let { Utils.to12HourFormat(it) }
+            timeTextView?.text = reminder.time?.let { DateTimeUtils.to12HourFormat(it) }
             // TODO:
             // Get reminder.days from resources instead of
             // directly from object to make it translatable.

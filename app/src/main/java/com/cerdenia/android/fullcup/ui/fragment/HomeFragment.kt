@@ -38,13 +38,11 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
-        binding.recyclerView.adapter = CategoryAdapter(viewModel.coloredCategories)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.donutView.cap = viewModel.categories.size.toFloat()
         viewModel.getDailyLog() // Get log data for the day.
 
         binding.greetingTextView.text = getString(
@@ -76,8 +74,14 @@ class HomeFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        viewModel.remindersLive.observe(viewLifecycleOwner, {
+            viewModel.onRemindersFetched()
+        })
+
         viewModel.donutDataLive.observe(viewLifecycleOwner, { donutData ->
+            binding.donutView.cap = viewModel.categories.size.toFloat()
             binding.donutView.submitData(donutData)
+            binding.recyclerView.adapter = CategoryAdapter(viewModel.coloredCategories)
         })
 
         parentFragmentManager.setFragmentResultListener(
