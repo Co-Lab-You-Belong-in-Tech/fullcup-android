@@ -43,15 +43,14 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSetRemindersBinding.inflate(inflater, container, false)
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        adapter = ReminderAdapter(resources, this)
+        binding.recyclerView.adapter = adapter
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ReminderAdapter(this)
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-
         binding.setRemindersButton.setOnClickListener {
             viewModel.confirmReminders()
             callbacks?.onRemindersConfirmed()
@@ -61,7 +60,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     override fun onStart() {
         super.onStart()
         viewModel.remindersLive.observe(viewLifecycleOwner, { reminders ->
-            adapter.submitList(reminders)
+            adapter.submitList(reminders.sortedBy { !it.isSet })
             adapter.notifyDataSetChanged()
             // Enable Set Reminders button if all reminders are ready.
             val isReady = !reminders.any { !it.isSet }

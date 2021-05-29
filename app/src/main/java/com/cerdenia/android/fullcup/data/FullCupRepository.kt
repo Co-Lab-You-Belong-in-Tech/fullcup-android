@@ -40,6 +40,10 @@ class FullCupRepository private constructor(
     // [START] Daily Log methods
     fun getLogByDate(date: String) = logDao.getLogsByDate(date)
 
+    fun addActivityLog(vararg log: ActivityLog) {
+        executor.execute { logDao.addActivityLog(*log) }
+    }
+
     fun addOrUpdateDailyLog(log: DailyLog) {
         executor.execute { logDao.addOrUpdateDailyLog(log) }
     }

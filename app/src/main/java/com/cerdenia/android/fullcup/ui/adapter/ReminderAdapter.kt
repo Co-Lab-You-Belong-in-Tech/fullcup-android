@@ -1,5 +1,6 @@
 package com.cerdenia.android.fullcup.ui.adapter
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,11 +8,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.cerdenia.android.fullcup.DAILY
 import com.cerdenia.android.fullcup.R
+import com.cerdenia.android.fullcup.WEEKDAY
+import com.cerdenia.android.fullcup.WEEKEND
 import com.cerdenia.android.fullcup.data.model.Reminder
 import com.cerdenia.android.fullcup.util.DateTimeUtils
 
 class ReminderAdapter(
+    private val resources: Resources,
     private val listener: Listener
 ): ListAdapter<Reminder, ReminderAdapter.ReminderHolder>(DiffCallback()) {
     interface Listener {
@@ -56,10 +61,14 @@ class ReminderAdapter(
             this.reminder = reminder
             categoryTextView.text = reminder.category
             timeTextView?.text = reminder.time?.let { DateTimeUtils.to12HourFormat(it) }
-            // TODO:
-            // Get reminder.days from resources instead of
+            // Get reminder days from resources instead of
             // directly from object to make it translatable.
-            daysTextView?.text = reminder.days?.uppercase()
+            daysTextView?.text = when (reminder.days) {
+                WEEKDAY -> resources.getString(R.string.weekdays).uppercase()
+                WEEKEND -> resources.getString(R.string.weekends).uppercase()
+                DAILY -> resources.getString(R.string.everyday).uppercase()
+                else -> null
+            }
         }
 
         override fun onClick(v: View?) {

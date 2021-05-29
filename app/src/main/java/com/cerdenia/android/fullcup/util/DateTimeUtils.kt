@@ -1,7 +1,7 @@
 package com.cerdenia.android.fullcup.util
 
-import com.cerdenia.android.fullcup.ui.dialog.SetReminderFragment
-import java.lang.IllegalArgumentException
+import com.cerdenia.android.fullcup.WEEKDAY
+import com.cerdenia.android.fullcup.WEEKEND
 
 object DateTimeUtils {
     // Accepts time in HH:mm minute format.
@@ -27,8 +27,8 @@ object DateTimeUtils {
         val weekdays = arrayOf("Mon", "Tue", "Wed", "Thu", "Fri")
         val weekends = arrayOf("Sat", "Sun")
         return when {
-            weekdays.contains(dayString) -> SetReminderFragment.WEEKDAYS
-            weekends.contains(dayString) -> SetReminderFragment.WEEKENDS
+            weekdays.contains(dayString) -> WEEKDAY
+            weekends.contains(dayString) -> WEEKEND
             else -> "ERROR"
         }
     }

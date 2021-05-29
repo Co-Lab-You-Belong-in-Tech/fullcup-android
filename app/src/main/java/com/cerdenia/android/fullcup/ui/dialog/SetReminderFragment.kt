@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import com.cerdenia.android.fullcup.DAILY
+import com.cerdenia.android.fullcup.WEEKDAY
+import com.cerdenia.android.fullcup.WEEKEND
 import com.cerdenia.android.fullcup.data.model.Reminder
 import com.cerdenia.android.fullcup.databinding.FragmentSetReminderBinding
 import com.cerdenia.android.fullcup.util.DateTimeUtils
@@ -31,14 +34,14 @@ class SetReminderFragment : BottomSheetDialogFragment() {
         Log.d(TAG, "Got reminder: $reminder, and times: $times")
 
         val buttonMap = mapOf(
-            binding.weekdaysButton.id to WEEKDAYS,
-            binding.weekendsButton.id to WEEKENDS,
-            binding.everydayButton.id to EVERYDAY
+            binding.weekdaysButton.id to WEEKDAY,
+            binding.weekendsButton.id to WEEKEND,
+            binding.everydayButton.id to DAILY
         )
 
         binding.toggleGroup.apply {
             reminder.days?.let { check(getKey(buttonMap, it)) }
-            addOnButtonCheckedListener { _, checkedId, isChecked ->
+            addOnButtonCheckedListener { _, checkedId, _ ->
                 reminder.days = buttonMap[checkedId]
             }
         }
@@ -85,9 +88,6 @@ class SetReminderFragment : BottomSheetDialogFragment() {
         const val KEY_CONFIRM = "KEY_CONFIRM"
         const val REMINDER = "REMINDER"
         const val AVAILABLE_TIMES = "AVAILABLE_TIMES"
-        const val EVERYDAY = "everyday"
-        const val WEEKDAYS = "weekdays"
-        const val WEEKENDS = "weekends"
 
         fun newInstance(reminder: Reminder, times: Array<String>): SetReminderFragment {
             return SetReminderFragment().apply {

@@ -10,12 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:text="Set reminder"/>
+        android:text="@string/set_reminder"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Remind me on"/>
+        android:text="@string/remind_me_on"/>
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/toggle_group"
@@ -30,28 +30,28 @@
             android:id="@+id/weekdays_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Weekdays" />
+            android:text="@string/weekdays" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/weekends_button"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Weekends" />
+            android:text="@string/weekends" />
 
         <com.google.android.material.button.MaterialButton
             style="?attr/materialButtonOutlinedStyle"
             android:id="@+id/everyday_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Everyday" />
+            android:text="@string/everyday" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="at"/>
+        android:text="@string/at"/>
 
     <Spinner
         android:id="@+id/time_spinner"
@@ -64,6 +64,6 @@
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Confirm"/>
+        android:text="@string/confirm"/>
 
 </LinearLayout>

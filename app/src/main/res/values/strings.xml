@@ -24,4 +24,11 @@
     <string name="tasks_below_are_displayed">Tasks below are displayed on the basis of your chosen preferences. You can change these anytime in task settings.</string>
     <string name="set_reminders">Set Reminders</string>
     <string name="on">on</string>
+    <string name="weekdays">weekdays</string>
+    <string name="weekends">weekends</string>
+    <string name="everyday">everyday</string>
+    <string name="at">at</string>
+    <string name="confirm">Confirm</string>
+    <string name="set_reminder">Set reminder</string>
+    <string name="remind_me_on">Remind me on</string>
 </resources>
