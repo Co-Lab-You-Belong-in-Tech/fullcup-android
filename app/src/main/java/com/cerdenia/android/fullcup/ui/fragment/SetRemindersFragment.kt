@@ -53,7 +53,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
 
         binding.setRemindersButton.setOnClickListener {
-            // TODO: Save reminders to Google Calendar then change screens
+            viewModel.confirmReminders()
             callbacks?.onRemindersConfirmed()
         }
     }

@@ -10,14 +10,16 @@ import java.util.concurrent.Executors
 
 class FullCupRepository private constructor(
     database: FullCupDatabase,
-    webService: WebService
+    private val webService: WebService
 ) {
     private val reminderDao = database.reminderDao()
     private val logDao = database.logDao()
     private val executor = Executors.newSingleThreadExecutor()
 
     // [START] API methods
-    // TODO
+    fun addRemindersToCalendar(reminders: List<Reminder>) {
+        // TODO: API request to add events to user's calendar
+    }
     // [END] API methods
 
     // [START] Reminder methods

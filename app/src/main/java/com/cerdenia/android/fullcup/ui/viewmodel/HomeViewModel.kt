@@ -17,6 +17,8 @@ class HomeViewModel : ViewModel() {
     private val repo = FullCupRepository.getInstance()
     private val dateLive = MutableLiveData<String>()
 
+    // time for loved ones
+
     private val colors = listOf("#F9C06E", "#E1937B", "#E17EA3", "#739B00", "#766CE0", "#E6B5EA95")
         .shuffled().map { colorString -> Color.parseColor(colorString) }
 
@@ -63,11 +65,7 @@ class HomeViewModel : ViewModel() {
                 ?: emptyList()
             donutDataLive.value = activitiesMarkedDone.map { activity ->
                 val i = coloredCategories.indexOfFirst { it.category == activity.category}
-                DonutSection(
-                    name = activity.category,
-                    amount = 1f,
-                    color = coloredCategories[i].color
-                )
+                DonutSection(activity.category, coloredCategories[i].color, 1f)
             }
         }
     }

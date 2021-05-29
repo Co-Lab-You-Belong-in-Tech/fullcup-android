@@ -7,7 +7,6 @@ object FullCupPreferences {
     private const val NAME = "full_cup_preferences"
     private const val MODE = Context.MODE_PRIVATE
     private lateinit var preferences: SharedPreferences
-
     // SharedPreferences variables
     private const val CATEGORIES = "categories"
     private const val USER_NAME = "user_name"
@@ -32,7 +31,7 @@ object FullCupPreferences {
         }
 
     var userName: String?
-        get() = preferences.getString(USER_NAME, null)
+        get() = preferences.getString(USER_NAME, "Peyton") ?: "Peyton"
         set(value) = preferences.edit { editor ->
             editor.putString(USER_NAME, value)
         }
