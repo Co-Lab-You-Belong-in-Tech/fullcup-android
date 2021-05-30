@@ -28,6 +28,12 @@ interface LogDao {
     fun deleteActivityLog(vararg log: ActivityLog)
 
     @Transaction
+    fun addAndDeleteActivityLogs(toAdd: List<ActivityLog>, toDelete: List<ActivityLog>) {
+        deleteActivityLog(*toDelete.toTypedArray())
+        addActivityLog(*toAdd.toTypedArray())
+    }
+
+    @Transaction
     fun addOrUpdateDailyLog(log: DailyLog) {
         addActivityLog(*log.activities.toTypedArray())
         addSummaryLog(log.summary)

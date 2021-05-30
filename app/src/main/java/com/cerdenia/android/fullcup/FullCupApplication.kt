@@ -15,7 +15,7 @@ class FullCupApplication : Application() {
         FullCupPreferences.init(this)
         val database = FullCupDatabase.build(this)
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.15:4000/api/")
+            .baseUrl(API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val webService = retrofit.create(WebService::class.java)

@@ -24,7 +24,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     private var callbacks: Callbacks? = null
 
     interface Callbacks {
-        fun onRemindersConfirmed()
+        fun onRemindersConfirmed(reminders: List<Reminder>)
     }
 
     override fun onAttach(context: Context) {
@@ -53,7 +53,9 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
         super.onViewCreated(view, savedInstanceState)
         binding.setRemindersButton.setOnClickListener {
             viewModel.confirmReminders()
-            callbacks?.onRemindersConfirmed()
+            viewModel.remindersLive.value?.let { reminders ->
+                //callbacks?.onRemindersConfirmed(reminders)
+            }
         }
     }
 

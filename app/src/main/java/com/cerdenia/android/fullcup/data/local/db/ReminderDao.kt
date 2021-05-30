@@ -2,6 +2,7 @@ package com.cerdenia.android.fullcup.data.local.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.cerdenia.android.fullcup.data.model.EventIdWithSummary
 import com.cerdenia.android.fullcup.data.model.Reminder
 
 @Dao
@@ -20,6 +21,14 @@ interface ReminderDao {
 
     @Query("DELETE FROM reminder WHERE category IN (:category)")
     fun deleteReminderByCategory(vararg category: String)
+
+    @Query("UPDATE reminder SET googleId = :id WHERE category = :category")
+    fun addIdToReminder(id: String, category: String)
+
+    @Transaction
+    fun addIdsToReminders(currentEvents: List<EventIdWithSummary>) {
+        currentEvents.forEach { addIdToReminder(it.id, it.summary) }
+    }
 
     @Transaction
     fun updateReminderSet(toCreate: Array<Reminder>, toDelete: Array<String>) {

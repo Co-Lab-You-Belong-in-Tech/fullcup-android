@@ -15,7 +15,6 @@
     <string name="and_i_want_to_make_time_for">and I want to make time for</string>
     <string name="select_all_that_apply">Select all that apply</string>
     <string name="next">Next</string>
-    <string name="good_morning">Good morning, %s.</string>
     <string name="take_a_moment">Take a moment to slow down today. You\'ll save energy by not rushing through your day.</string>
     <string name="today_s_agenda">Today\'s agenda</string>
     <string name="log_activity">Log activity</string>
@@ -31,4 +30,9 @@
     <string name="confirm">Confirm</string>
     <string name="set_reminder">Set reminder</string>
     <string name="remind_me_on">Remind me on</string>
+    <string name="greeting_with_name">%1$s, %2$s.</string>
+    <string name="good_morning">Good morning</string>
+    <string name="good_afternoon">Good afternoon</string>
+    <string name="good_evening">Good evening</string>
+    <string name="good_day">Good day</string>
 </resources>

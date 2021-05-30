@@ -2,17 +2,15 @@ package com.cerdenia.android.fullcup.ui.viewmodel
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.util.Log
 import androidx.lifecycle.*
 import app.futured.donut.DonutSection
 import com.cerdenia.android.fullcup.DAILY
+import com.cerdenia.android.fullcup.DATE_PATTERN
 import com.cerdenia.android.fullcup.DAY_NAME_PATTERN
 import com.cerdenia.android.fullcup.data.FullCupRepository
 import com.cerdenia.android.fullcup.data.model.ActivityLog
 import com.cerdenia.android.fullcup.data.model.ColoredCategory
 import com.cerdenia.android.fullcup.data.model.DailyLog
-import com.cerdenia.android.fullcup.ui.dialog.SetReminderFragment
-import com.cerdenia.android.fullcup.DATE_PATTERN
 import com.cerdenia.android.fullcup.util.DateTimeUtils
 import java.text.SimpleDateFormat
 import java.util.*
@@ -72,8 +70,7 @@ class HomeViewModel : ViewModel() {
             }
 
             dailyLogLive.value = source
-            repo.addActivityLog(*activitiesToAdd.toTypedArray())
-            repo.deleteActivityLog(*activitiesToDelete.toTypedArray())
+            repo.addAndDeleteActivityLogs(activitiesToAdd, activitiesToDelete)
         }
 
         donutDataLive.addSource(dailyLogLive) { source ->

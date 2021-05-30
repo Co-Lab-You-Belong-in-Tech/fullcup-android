@@ -14,7 +14,7 @@ class SetRemindersViewModel : ViewModel() {
 
     fun confirmReminders() {
         remindersLive.value?.let { reminders ->
-            repo.addRemindersToCalendar(reminders)
+            repo.syncEventsWithCalendar(reminders)
         }
     }
 

@@ -10,6 +10,7 @@ object FullCupPreferences {
     // SharedPreferences variables
     private const val CATEGORIES = "categories"
     private const val USER_NAME = "user_name"
+    private const val GOOGLE_EVENT_IDS = "google_event_ids"
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)
@@ -34,5 +35,13 @@ object FullCupPreferences {
         get() = preferences.getString(USER_NAME, "Peyton") ?: "Peyton"
         set(value) = preferences.edit { editor ->
             editor.putString(USER_NAME, value)
+        }
+
+    var googleEventIds: List<String>
+        get() = preferences.getStringSet(GOOGLE_EVENT_IDS, emptySet())
+            ?.toList()
+            ?: emptyList()
+        set(value) = preferences.edit { editor ->
+            editor.putStringSet(GOOGLE_EVENT_IDS, value.toSet())
         }
 }

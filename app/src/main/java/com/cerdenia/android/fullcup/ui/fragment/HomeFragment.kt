@@ -1,5 +1,6 @@
 package com.cerdenia.android.fullcup.ui.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cerdenia.android.fullcup.R
+import com.cerdenia.android.fullcup.TIME_PATTERN
 import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.data.model.ActivityLog
 import com.cerdenia.android.fullcup.data.model.DailyLog
@@ -17,7 +19,9 @@ import com.cerdenia.android.fullcup.databinding.FragmentHomeBinding
 import com.cerdenia.android.fullcup.ui.adapter.CategoryAdapter
 import com.cerdenia.android.fullcup.ui.dialog.LogActivityFragment
 import com.cerdenia.android.fullcup.ui.viewmodel.HomeViewModel
+import com.cerdenia.android.fullcup.util.DateTimeUtils
 import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 class HomeFragment : Fragment() {
@@ -41,12 +45,15 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getDailyLog() // Get log data for the day.
 
+        val time = SimpleDateFormat(TIME_PATTERN).format((Date()))
         binding.greetingTextView.text = getString(
-            R.string.good_morning,
+            R.string.greeting_with_name,
+            DateTimeUtils.getGreeting(resources, time),
             FullCupPreferences.userName
         )
 
