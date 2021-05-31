@@ -45,7 +45,8 @@ class ReminderAdapter(
     }
 
     override fun onBindViewHolder(holder: ReminderHolder, position: Int) {
-        getItem(position).run { holder.bind(this) }
+        val reminder = getItem(position)
+        holder.bind(reminder)
     }
 
     inner class ReminderHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
@@ -59,11 +60,11 @@ class ReminderAdapter(
 
         fun bind(reminder: Reminder) {
             this.reminder = reminder
-            categoryTextView.text = reminder.category
+            categoryTextView.text = reminder.name
             timeTextView?.text = reminder.time?.let { DateTimeUtils.to12HourFormat(it) }
             // Get reminder days from resources instead of
             // directly from object to make it translatable.
-            daysTextView?.text = when (reminder.days) {
+            daysTextView?.text = when (reminder.recurrence) {
                 WEEKDAY -> resources.getString(R.string.weekdays).uppercase()
                 WEEKEND -> resources.getString(R.string.weekends).uppercase()
                 DAILY -> resources.getString(R.string.everyday).uppercase()
@@ -78,7 +79,7 @@ class ReminderAdapter(
 
     private class DiffCallback : DiffUtil.ItemCallback<Reminder>() {
         override fun areItemsTheSame(oldItem: Reminder, newItem: Reminder): Boolean {
-            return oldItem.category == newItem.category
+            return oldItem.name == newItem.name
         }
 
         override fun areContentsTheSame(oldItem: Reminder, newItem: Reminder): Boolean {

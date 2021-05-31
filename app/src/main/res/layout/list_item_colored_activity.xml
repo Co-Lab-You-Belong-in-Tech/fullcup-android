@@ -20,7 +20,7 @@
         app:shapeAppearanceOverlay="@style/circleImageView" />
 
     <TextView
-        android:id="@+id/category_text_view"
+        android:id="@+id/text_view"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

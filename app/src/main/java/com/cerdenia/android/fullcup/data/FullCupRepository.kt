@@ -2,8 +2,8 @@ package com.cerdenia.android.fullcup.data
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.cerdenia.android.fullcup.data.api.SyncEventsResponse
-import com.cerdenia.android.fullcup.data.api.SyncEventsBody
+import com.cerdenia.android.fullcup.data.api.SyncRemindersResponse
+import com.cerdenia.android.fullcup.data.api.SyncRemindersBody
 import com.cerdenia.android.fullcup.data.api.WebService
 import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.data.local.db.FullCupDatabase
@@ -24,33 +24,32 @@ class FullCupRepository private constructor(
     private val executor = Executors.newSingleThreadExecutor()
 
     // [START] API methods
-    fun syncEventsWithCalendar(reminders: List<Reminder>) {
-        val events = reminders.map { it.toCalendarEvent() }
-        val idsForDeletion = FullCupPreferences.googleEventIds
+    fun syncRemindersWithCalendar(reminders: List<Reminder>) {
+        reminders.forEach { reminder -> reminder.setStartDateTime() }
+        val idsForDeletion = FullCupPreferences.serverIds
             .filter { id ->
-                val currentEventIds = events.map { it.googleId }
+                val currentEventIds = reminders.map { it.serverId }
                 !currentEventIds.contains(id)
             }
-        val body = SyncEventsBody(events, idsForDeletion)
+
+        val body = SyncRemindersBody(reminders, idsForDeletion)
         val request = webService.syncEvents(body)
 
-        request.enqueue(object : Callback<SyncEventsResponse> {
+        request.enqueue(object : Callback<SyncRemindersResponse> {
             override fun onResponse(
-                call: Call<SyncEventsResponse>,
-                response: Response<SyncEventsResponse>
+                call: Call<SyncRemindersResponse>,
+                response: Response<SyncRemindersResponse>
             ) {
                 Log.d(TAG, "Successfully called API!")
                 // Response body will contain a list of newly created event IDs
                 // on the user's calendar, each paired with a summary of the event.
                 val currentEvents = response.body()?.currentEvents ?: emptyList()
-                FullCupPreferences.googleEventIds = currentEvents.map { it.id }
-
-                executor.execute {
-                    reminderDao.addIdsToReminders(currentEvents)
-                }
+                // Save set of event IDs from server.
+                FullCupPreferences.serverIds = currentEvents.map { it.id }
+                executor.execute { reminderDao.addIdsToReminders(currentEvents) }
             }
 
-            override fun onFailure(call: Call<SyncEventsResponse>, t: Throwable) {
+            override fun onFailure(call: Call<SyncRemindersResponse>, t: Throwable) {
                 Log.d(TAG, "Something went wrong", t)
             }
         })

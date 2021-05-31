@@ -8,18 +8,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.cerdenia.android.fullcup.databinding.FragmentSelectCategoriesBinding
-import com.cerdenia.android.fullcup.ui.viewmodel.SelectCategoriesViewModel
+import com.cerdenia.android.fullcup.ui.viewmodel.SelectActivitiesViewModel
 import com.cerdenia.android.fullcup.util.ext.toEditable
 
-class SelectCategoriesFragment : Fragment() {
+class SelectActivitiesFragment : Fragment() {
     private var _binding: FragmentSelectCategoriesBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: SelectCategoriesViewModel
+    private lateinit var viewModel: SelectActivitiesViewModel
     private var callbacks: Callbacks? = null
 
     interface Callbacks {
-        fun onCategoriesSelected()
+        fun onActivitiesSelected()
     }
 
     override fun onAttach(context: Context) {
@@ -29,7 +29,8 @@ class SelectCategoriesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SelectCategoriesViewModel::class.java)
+        viewModel = ViewModelProvider(this)
+            .get(SelectActivitiesViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -37,7 +38,8 @@ class SelectCategoriesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSelectCategoriesBinding.inflate(inflater, container, false)
+        _binding = FragmentSelectCategoriesBinding
+            .inflate(inflater, container, false)
         return binding.root
     }
 
@@ -55,10 +57,10 @@ class SelectCategoriesFragment : Fragment() {
         )
 
         checkBoxes.forEach { checkBox ->
-            // Set initial state based on stored categories.
-            checkBox.isChecked = viewModel.categories.contains(checkBox.text)
+            // Set initial state based on stored activity names.
+            checkBox.isChecked = viewModel.activities.contains(checkBox.text)
             checkBox.setOnClickListener {
-                // Disable Next button if no checkboxes are selected
+                // Disable Next button if no checkboxes are selected.
                 binding.nextButton.isEnabled = checkBoxes.any { it.isChecked }
             }
         }
@@ -66,18 +68,19 @@ class SelectCategoriesFragment : Fragment() {
         binding.nextButton.apply {
             isEnabled = checkBoxes.any { it.isChecked }
             setOnClickListener {
-                // Pass selected and deselected items to ViewModel.
                 val selections = checkBoxes
                     .filter { it.isChecked }
                     .map { it.text.toString() }
                 val deselections = checkBoxes
                     .filter { !it.isChecked }
                     .map { it.text.toString() }
-                viewModel.submitCategories(selections, deselections)
+
+                viewModel.submitActivities(selections, deselections)
+
                 // Save user name.
                 val userName = binding.nameEditText.text.toString()
                 viewModel.submitUserName(userName)
-                callbacks?.onCategoriesSelected()
+                callbacks?.onActivitiesSelected()
             }
         }
     }
@@ -93,8 +96,8 @@ class SelectCategoriesFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "SelectCategoriesFrag"
+        private const val TAG = "SelectActivitiesFragment"
 
-        fun newInstance(): SelectCategoriesFragment = SelectCategoriesFragment()
+        fun newInstance(): SelectActivitiesFragment = SelectActivitiesFragment()
     }
 }

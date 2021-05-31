@@ -2,7 +2,7 @@ package com.cerdenia.android.fullcup.data.local.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.cerdenia.android.fullcup.data.model.EventIdWithSummary
+import com.cerdenia.android.fullcup.data.model.EventIdPair
 import com.cerdenia.android.fullcup.data.model.Reminder
 
 @Dao
@@ -10,29 +10,26 @@ interface ReminderDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addReminder(vararg reminder: Reminder)
 
-    @Query("SELECT * FROM reminder ORDER BY category ASC")
+    @Query("SELECT * FROM reminder ORDER BY name ASC")
     fun getReminders(): LiveData<List<Reminder>>
 
     @Update
     fun updateReminder(vararg reminder: Reminder)
 
-    @Delete
-    fun deleteReminder(vararg reminder: Reminder)
+    @Query("DELETE FROM reminder WHERE name IN (:name)")
+    fun deleteReminderByName(vararg name: String)
 
-    @Query("DELETE FROM reminder WHERE category IN (:category)")
-    fun deleteReminderByCategory(vararg category: String)
-
-    @Query("UPDATE reminder SET googleId = :id WHERE category = :category")
-    fun addIdToReminder(id: String, category: String)
+    @Query("UPDATE reminder SET serverId = :id WHERE name = :name")
+    fun addIdToReminder(id: String, name: String)
 
     @Transaction
-    fun addIdsToReminders(currentEvents: List<EventIdWithSummary>) {
-        currentEvents.forEach { addIdToReminder(it.id, it.summary) }
+    fun addIdsToReminders(events: List<EventIdPair>) {
+        events.forEach { event -> addIdToReminder(event.id, event.name) }
     }
 
     @Transaction
     fun updateReminderSet(toCreate: Array<Reminder>, toDelete: Array<String>) {
         addReminder(*toCreate)
-        deleteReminderByCategory(*toDelete)
+        deleteReminderByName(*toDelete)
     }
 }

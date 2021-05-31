@@ -24,7 +24,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     private var callbacks: Callbacks? = null
 
     interface Callbacks {
-        fun onRemindersConfirmed(reminders: List<Reminder>)
+        fun onRemindersConfirmed()
     }
 
     override fun onAttach(context: Context) {
@@ -34,7 +34,8 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SetRemindersViewModel::class.java)
+        viewModel = ViewModelProvider(this)
+            .get(SetRemindersViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -42,10 +43,11 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSetRemindersBinding.inflate(inflater, container, false)
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        _binding = FragmentSetRemindersBinding
+            .inflate(inflater, container, false)
         adapter = ReminderAdapter(resources, this)
         binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
         return binding.root
     }
 
@@ -53,17 +55,15 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
         super.onViewCreated(view, savedInstanceState)
         binding.setRemindersButton.setOnClickListener {
             viewModel.confirmReminders()
-            viewModel.remindersLive.value?.let { reminders ->
-                //callbacks?.onRemindersConfirmed(reminders)
-            }
+            callbacks?.onRemindersConfirmed()
         }
     }
 
     override fun onStart() {
         super.onStart()
         viewModel.remindersLive.observe(viewLifecycleOwner, { reminders ->
-            adapter.submitList(reminders.sortedBy { !it.isSet })
-            adapter.notifyDataSetChanged()
+            adapter.submitList(reminders.sortedBy { it.isSet })
+            // adapter.notifyDataSetChanged() ?
             // Enable Set Reminders button if all reminders are ready.
             val isReady = !reminders.any { !it.isSet }
             binding.setRemindersButton.isEnabled = isReady
@@ -82,7 +82,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
 
     override fun onItemSelected(reminder: Reminder) {
         SetReminderFragment
-            .newInstance(reminder, viewModel.getFreeTimes())
+            .newInstance(reminder, viewModel.getAvailableTimes())
             .show(parentFragmentManager, SetReminderFragment.TAG)
     }
 

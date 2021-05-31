@@ -31,7 +31,6 @@ class SetReminderFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val reminder = arguments?.getSerializable(REMINDER) as Reminder
         val times = arguments?.getStringArray(AVAILABLE_TIMES) ?: emptyArray()
-        Log.d(TAG, "Got reminder: $reminder, and times: $times")
 
         val buttonMap = mapOf(
             binding.weekdaysButton.id to WEEKDAY,
@@ -40,9 +39,9 @@ class SetReminderFragment : BottomSheetDialogFragment() {
         )
 
         binding.toggleGroup.apply {
-            reminder.days?.let { check(getKey(buttonMap, it)) }
+            reminder.recurrence?.let { check(buttonMap.getKey(it)) }
             addOnButtonCheckedListener { _, checkedId, _ ->
-                reminder.days = buttonMap[checkedId]
+                reminder.recurrence = buttonMap[checkedId]
             }
         }
 
@@ -78,8 +77,8 @@ class SetReminderFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun getKey(map: Map<Int, String>, value: String): Int {
-        map.forEach { pair -> if (pair.value == value) return pair.key }
+    private fun Map<Int, String>.getKey(value: String): Int {
+        this.forEach { pair -> if (pair.value == value) return pair.key }
         return 0
     }
 

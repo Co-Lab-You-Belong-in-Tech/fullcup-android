@@ -11,7 +11,7 @@ import java.util.*
 @Entity
 data class ActivityLog(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
-    val category: String,
+    val name: String,
     @SuppressLint("SimpleDateFormat")
     val date: String = SimpleDateFormat(DATE_PATTERN).format(Date()),
     var isDone: Boolean = false,

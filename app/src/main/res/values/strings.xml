@@ -35,4 +35,9 @@
     <string name="good_afternoon">Good afternoon</string>
     <string name="good_evening">Good evening</string>
     <string name="good_day">Good day</string>
+    <string name="log_today_s_activity">Log today\'s activity</string>
+    <string name="select_activity_you_want_to_mark_as_done">Select activity you want to mark as done.</string>
+    <string name="what_did_you_do_for_yourself_today">What did you do for yourself today?</string>
+    <string name="write_about_your_wins_here">Write about your wins here</string>
+    <string name="mark_as_done">Mark as done</string>
 </resources>

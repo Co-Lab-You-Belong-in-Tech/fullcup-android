@@ -1,31 +1,24 @@
 package com.cerdenia.android.fullcup.ui.activity
 
-import android.content.ContentUris
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.CalendarContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.cerdenia.android.fullcup.R
-import com.cerdenia.android.fullcup.data.model.Reminder
 import com.cerdenia.android.fullcup.databinding.ActivityOnboardingBinding
-import com.cerdenia.android.fullcup.ui.fragment.SelectCategoriesFragment
+import com.cerdenia.android.fullcup.ui.fragment.SelectActivitiesFragment
 import com.cerdenia.android.fullcup.ui.fragment.SetRemindersFragment
-import java.util.*
 
 class OnboardingActivity : AppCompatActivity(),
-    SelectCategoriesFragment.Callbacks,
+    SelectActivitiesFragment.Callbacks,
     SetRemindersFragment.Callbacks {
     private lateinit var binding: ActivityOnboardingBinding
-
-    var countdown = 0
 
     private val launchCalendar = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
         // On calendar launch, launch MainActivity. TODO: finish this activity.
         MainActivity.newIntent(this).run(::startActivity)
+        finish()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,15 +27,15 @@ class OnboardingActivity : AppCompatActivity(),
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
-            // fragment container is empty
+            // Fragment container is empty.
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_container, SelectCategoriesFragment.newInstance())
+                .add(R.id.fragment_container, SelectActivitiesFragment.newInstance())
                 .commit()
         }
     }
 
-    override fun onCategoriesSelected() {
+    override fun onActivitiesSelected() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, SetRemindersFragment.newInstance())
@@ -50,7 +43,10 @@ class OnboardingActivity : AppCompatActivity(),
             .commit()
     }
 
-    override fun onRemindersConfirmed(reminders: List<Reminder>) {
+    override fun onRemindersConfirmed() {
+        MainActivity.newIntent(this).run(::startActivity)
+
+        /*
         val builder: Uri.Builder = CalendarContract.CONTENT_URI
             .buildUpon()
             .appendPath("time")
@@ -58,6 +54,7 @@ class OnboardingActivity : AppCompatActivity(),
         val intent = Intent(Intent.ACTION_VIEW)
             .setData(builder.build())
         launchCalendar.launch(intent)
+         */
 
         /*
         reminders.forEach { reminder ->

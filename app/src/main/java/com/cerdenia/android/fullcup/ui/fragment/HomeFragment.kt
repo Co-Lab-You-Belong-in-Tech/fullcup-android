@@ -16,7 +16,7 @@ import com.cerdenia.android.fullcup.data.model.ActivityLog
 import com.cerdenia.android.fullcup.data.model.DailyLog
 import com.cerdenia.android.fullcup.data.model.SummaryLog
 import com.cerdenia.android.fullcup.databinding.FragmentHomeBinding
-import com.cerdenia.android.fullcup.ui.adapter.CategoryAdapter
+import com.cerdenia.android.fullcup.ui.adapter.ActivityAdapter
 import com.cerdenia.android.fullcup.ui.dialog.LogActivityFragment
 import com.cerdenia.android.fullcup.ui.viewmodel.HomeViewModel
 import com.cerdenia.android.fullcup.util.DateTimeUtils
@@ -48,8 +48,7 @@ class HomeFragment : Fragment() {
     @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getDailyLog() // Get log data for the day.
-
+        // Set greeting to change depending on time of day.
         val time = SimpleDateFormat(TIME_PATTERN).format((Date()))
         binding.greetingTextView.text = getString(
             R.string.greeting_with_name,
@@ -62,19 +61,19 @@ class HomeFragment : Fragment() {
             .format(Date())
 
         binding.logButton.setOnClickListener {
-            val log = viewModel.dailyLogLive.value
-                ?: createNewLog(viewModel.categories)
+            val activities = viewModel.getActivitiesOfDay()
+            val log = viewModel.dailyLogLive.value ?: createNewLog(activities)
             LogActivityFragment
                 .newInstance(log)
                 .show(parentFragmentManager, LogActivityFragment.TAG)
         }
     }
 
-    private fun createNewLog(categories: List<String>): DailyLog {
+    private fun createNewLog(activities: List<String>): DailyLog {
         return DailyLog(
             summary = SummaryLog(),
-            activities = categories.map { category ->
-                ActivityLog(category = category)
+            activities = activities.map { activity ->
+                ActivityLog(name = activity)
             } as MutableList<ActivityLog>
         )
     }
@@ -86,9 +85,14 @@ class HomeFragment : Fragment() {
         })
 
         viewModel.donutDataLive.observe(viewLifecycleOwner, { donutData ->
-            binding.donutView.cap = viewModel.categories.size.toFloat()
+            Log.d(TAG, "Got donut data: $donutData")
+            // Fill donut.
+            val cap = viewModel.getActivitiesOfDay().size.toFloat()
+            binding.donutView.cap = cap
             binding.donutView.submitData(donutData)
-            binding.recyclerView.adapter = CategoryAdapter(viewModel.coloredCategories)
+            // Fill color-coded list of day's activities.
+            val activities = viewModel.coloredActivities
+            binding.recyclerView.adapter = ActivityAdapter(activities)
         })
 
         parentFragmentManager.setFragmentResultListener(
@@ -96,7 +100,6 @@ class HomeFragment : Fragment() {
             viewLifecycleOwner,
             { _, result ->
                 val log = result.getSerializable(LogActivityFragment.DAILY_LOG) as DailyLog?
-                Log.i(TAG, "Got result: $log")
                 log?.let { viewModel.saveDailyLog(it) }
             }
         )

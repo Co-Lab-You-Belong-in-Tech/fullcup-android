@@ -7,20 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cerdenia.android.fullcup.data.model.DailyLog
-import com.cerdenia.android.fullcup.data.model.SelectableCategory
+import com.cerdenia.android.fullcup.data.model.SelectableActivity
 import com.cerdenia.android.fullcup.databinding.FragmentLogActivityBinding
-import com.cerdenia.android.fullcup.ui.adapter.CategoryAdapter
+import com.cerdenia.android.fullcup.ui.adapter.ActivityAdapter
 import com.cerdenia.android.fullcup.util.ext.toEditable
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class LogActivityFragment : BottomSheetDialogFragment(), CategoryAdapter.Listener {
+class LogActivityFragment : BottomSheetDialogFragment(), ActivityAdapter.Listener {
     private lateinit var binding: FragmentLogActivityBinding
-    private var log: DailyLog? = null
+    private var dailyLog: DailyLog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        log = arguments?.getSerializable(DAILY_LOG) as DailyLog?
-        Log.d(TAG, "Got log: $log")
+        dailyLog = arguments?.getSerializable(DAILY_LOG) as DailyLog?
     }
 
     override fun onCreateView(
@@ -28,40 +27,38 @@ class LogActivityFragment : BottomSheetDialogFragment(), CategoryAdapter.Listene
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentLogActivityBinding.inflate(inflater, container, false)
+        binding = FragmentLogActivityBinding
+            .inflate(inflater, container, false)
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        updateUI()
         return binding.root
-    }
-
-    fun updateUI() {
-        // Populate category list.
-        val selectableCategories = log?.activities
-            ?.map { SelectableCategory(it.category, it.isDone) }
-            ?: emptyList()
-        binding.recyclerView.adapter = CategoryAdapter(selectableCategories, this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.editText.text = log?.summary?.content.toEditable()
+        // Populate category list.
+        val selectableActivities = dailyLog?.activities
+            ?.map { activity -> SelectableActivity(activity.name, activity.isDone) }
+            ?: emptyList()
+        binding.recyclerView.adapter = ActivityAdapter(selectableActivities, this)
+
+        binding.editText.text = dailyLog?.summary?.content.toEditable()
 
         binding.doneButton.setOnClickListener {
             // Save user-inputted text to DailyLog object.
-            log?.summary?.content = binding.editText.text.toString()
+            dailyLog?.summary?.content = binding.editText.text.toString()
             parentFragmentManager.setFragmentResult(LOG_ACTIVITY, Bundle().apply {
-                putSerializable(DAILY_LOG, log)
+                putSerializable(DAILY_LOG, dailyLog)
             })
             dismiss()
         }
     }
 
-    override fun onCheckboxItemClicked(category: String, isChecked: Boolean) {
+    override fun onCheckboxItemClicked(activity: String, isChecked: Boolean) {
         // Find item in DailyLog object and update isDone value.
-        log?.let { log ->
-            val i = log.activities.indexOfFirst { it.category == category }
-            log.activities[i].isDone = isChecked
-            Log.i(TAG, "Item changed: ${log.activities[i]}")
+        dailyLog?.let { dailyLog ->
+            val i = dailyLog.activities.indexOfFirst { it.name == activity }
+            dailyLog.activities[i].isDone = isChecked
+            Log.i(TAG, "Item changed: ${dailyLog.activities[i]}")
         }
     }
 
@@ -70,10 +67,10 @@ class LogActivityFragment : BottomSheetDialogFragment(), CategoryAdapter.Listene
         const val DAILY_LOG = "DAILY_LOG"
         const val LOG_ACTIVITY = "LOG_ACTIVITY"
 
-        fun newInstance(log: DailyLog): LogActivityFragment {
+        fun newInstance(dailyLog: DailyLog): LogActivityFragment {
             return LogActivityFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(DAILY_LOG, log)
+                    putSerializable(DAILY_LOG, dailyLog)
                 }
             }
         }

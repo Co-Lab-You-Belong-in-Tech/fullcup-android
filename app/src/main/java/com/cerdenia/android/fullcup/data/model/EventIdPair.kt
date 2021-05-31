@@ -1,6 +1,6 @@
 package com.cerdenia.android.fullcup.data.model
 
-data class EventIdWithSummary(
+data class EventIdPair(
     val id: String,
-    val summary: String
+    val name: String
 )

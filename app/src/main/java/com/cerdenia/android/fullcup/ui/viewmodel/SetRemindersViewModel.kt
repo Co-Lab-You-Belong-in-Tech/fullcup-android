@@ -14,11 +14,11 @@ class SetRemindersViewModel : ViewModel() {
 
     fun confirmReminders() {
         remindersLive.value?.let { reminders ->
-            repo.syncEventsWithCalendar(reminders)
+            repo.syncRemindersWithCalendar(reminders)
         }
     }
 
-    fun getFreeTimes(): Array<String> {
+    fun getAvailableTimes(): Array<String> {
         // Dummy data for now
         val times = mutableListOf<String>()
         for (num in 0..23) {

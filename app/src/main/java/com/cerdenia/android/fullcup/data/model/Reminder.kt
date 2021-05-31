@@ -3,33 +3,29 @@ package com.cerdenia.android.fullcup.data.model
 import android.annotation.SuppressLint
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.cerdenia.android.fullcup.DAILY
 import com.cerdenia.android.fullcup.DATE_PATTERN
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
 
+// Represents an event that can be synced with the backend server.
 @Entity
 data class Reminder(
-    @PrimaryKey val category: String,
+    @PrimaryKey val name: String,
     var time: String? = null,
-    var days: String? = null,
+    var recurrence: String? = null,
     var durationInMins: Int = 60,
-    val googleId: String? = null,
-    val dateAdded: Date = Date(),
-    var startDateTime: String? = null
+    var startDateTime: String? = null,
+    var timeZone: String = TimeZone.getDefault().id,
+    var serverId: String? = null,
 ) : Serializable {
-    val isSet: Boolean get() = time !== null && days !== null
+    val isSet: Boolean get() = time !== null && recurrence !== null
 
+    // Should be called before passing data to server.
     @SuppressLint("SimpleDateFormat")
-    fun toCalendarEvent(): CalendarEvent {
+    fun setStartDateTime() {
         val date = SimpleDateFormat(DATE_PATTERN).format(Date())
-        return CalendarEvent(
-            googleId = googleId,
-            summary = category,
-            start = "$date ${time}:00",
-            durationInMins = durationInMins,
-            recurrence = days ?: DAILY
-        )
+        startDateTime = "$date ${time}:00"
+        timeZone = TimeZone.getDefault().id
     }
 }
