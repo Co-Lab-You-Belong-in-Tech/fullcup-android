@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.cerdenia.android.fullcup.databinding.FragmentSelectCategoriesBinding
+import com.cerdenia.android.fullcup.databinding.FragmentSelectActivitiesBinding
 import com.cerdenia.android.fullcup.ui.viewmodel.SelectActivitiesViewModel
 import com.cerdenia.android.fullcup.util.ext.toEditable
 
 class SelectActivitiesFragment : Fragment() {
-    private var _binding: FragmentSelectCategoriesBinding? = null
+    private var _binding: FragmentSelectActivitiesBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: SelectActivitiesViewModel
@@ -38,7 +38,7 @@ class SelectActivitiesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSelectCategoriesBinding
+        _binding = FragmentSelectActivitiesBinding
             .inflate(inflater, container, false)
         return binding.root
     }

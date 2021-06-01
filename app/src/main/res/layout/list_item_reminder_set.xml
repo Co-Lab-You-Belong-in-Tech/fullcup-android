@@ -1,51 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Buttonized"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/reminder_card_height"
+    tools:viewBindingIgnore="true"
+    android:animateLayoutChanges="true"
     android:layout_marginVertical="8dp"
     android:background="@drawable/border_colored"
-    android:animateLayoutChanges="true"
-    android:paddingHorizontal="24dp"
-    tools:layout_editor_absoluteY="8dp"
-    tools:viewBindingIgnore="true">
-
-    <TextView
-        android:id="@+id/category_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_marginBottom="8dp"
-        app:drawableEndCompat="@drawable/ic_edit"
-        tools:text="Category" />
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
+        style="@style/Buttonized"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/time_text_view"
-            tools:text="8:00 AM"
-            android:background="@color/grey"
-            android:padding="4dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:text="@string/on"/>
-        <TextView
-            android:id="@+id/days_text_view"
-            tools:text="WEEKENDS"
-            android:background="@color/grey"
-            android:padding="4dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+        android:layout_height="@dimen/reminder_card_height"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/category_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:drawableEndCompat="@drawable/ic_edit"
+            tools:text="Category" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/time_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/grey"
+                android:padding="4dp"
+                tools:text="8:00 AM" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:text="@string/on" />
+
+            <TextView
+                android:id="@+id/days_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/grey"
+                android:padding="4dp"
+                tools:text="WEEKENDS" />
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

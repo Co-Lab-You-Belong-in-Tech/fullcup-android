@@ -63,6 +63,7 @@ class HomeFragment : Fragment() {
         binding.logButton.setOnClickListener {
             val activities = viewModel.getActivitiesOfDay()
             val log = viewModel.dailyLogLive.value ?: createNewLog(activities)
+            Log.d(TAG, "Data size to be passed to dialog: ${log.activities.size}")
             LogActivityFragment
                 .newInstance(log)
                 .show(parentFragmentManager, LogActivityFragment.TAG)

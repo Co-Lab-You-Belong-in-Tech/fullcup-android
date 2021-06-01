@@ -14,6 +14,7 @@ import com.cerdenia.android.fullcup.databinding.FragmentSetRemindersBinding
 import com.cerdenia.android.fullcup.ui.adapter.ReminderAdapter
 import com.cerdenia.android.fullcup.ui.dialog.SetReminderFragment
 import com.cerdenia.android.fullcup.ui.viewmodel.SetRemindersViewModel
+import com.cerdenia.android.fullcup.util.ext.updateList
 
 class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     private var _binding: FragmentSetRemindersBinding? = null
@@ -62,8 +63,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     override fun onStart() {
         super.onStart()
         viewModel.remindersLive.observe(viewLifecycleOwner, { reminders ->
-            adapter.submitList(reminders.sortedBy { it.isSet })
-            // adapter.notifyDataSetChanged() ?
+            adapter.updateList(reminders.sortedBy { it.isSet })
             // Enable Set Reminders button if all reminders are ready.
             val isReady = !reminders.any { !it.isSet }
             binding.setRemindersButton.isEnabled = isReady

@@ -44,7 +44,8 @@ class FullCupRepository private constructor(
                 // Response body will contain a list of newly created event IDs
                 // on the user's calendar, each paired with a summary of the event.
                 val currentEvents = response.body()?.currentEvents ?: emptyList()
-                // Save set of event IDs from server.
+                // Save set of event IDs from server and map to existing reminders in DB.
+                // If an entry in DB includes a server ID, we know it has been synced.
                 FullCupPreferences.serverIds = currentEvents.map { it.id }
                 executor.execute { reminderDao.addIdsToReminders(currentEvents) }
             }

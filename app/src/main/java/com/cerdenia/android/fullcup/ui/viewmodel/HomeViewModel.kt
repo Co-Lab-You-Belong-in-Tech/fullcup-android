@@ -65,23 +65,17 @@ class HomeViewModel : ViewModel() {
             val activitiesToAdd = mutableListOf<ActivityLog>()
 
             val activities = getActivitiesOfDay()
-            var loggedActivities = source?.activities
-                ?.map { activity -> activity.name }
-                ?: emptyList()
+            var loggedActivities = source?.activities.names()
 
             if (activities !== loggedActivities) {
                 // First, delete logs for categories that a user has deselected.
-                activitiesToDelete = source?.activities
-                    ?.filter { activity -> !activities.contains(activity.name) }
-                    ?: emptyList()
+                activitiesToDelete = source?.activities.notIn(activities)
                 source?.activities?.removeAll(activitiesToDelete)
 
                 // Recalculate logged activities since source has changed.
-                loggedActivities = source?.activities
-                    ?.map { activity -> activity.name }
-                    ?: emptyList()
+                loggedActivities = source?.activities.names()
 
-                // Then, create new logs for categories that have been newly selected.
+                // Then, create new logs for activities that have been newly selected.
                 activities.forEach { activity ->
                     if (!loggedActivities.contains(activity)) {
                         val activityLog = ActivityLog(name = activity)
@@ -91,19 +85,33 @@ class HomeViewModel : ViewModel() {
             }
 
             dailyLogLive.value = source
-            repo.addAndDeleteActivityLogs(activitiesToAdd, activitiesToDelete)
+            if (activitiesToAdd.size + activitiesToDelete.size > 0) {
+                repo.addAndDeleteActivityLogs(activitiesToAdd, activitiesToDelete)
+            }
         }
 
         // Feed validated activity log data to donut.
         donutDataLive.addSource(dailyLogLive) { source ->
-            val activitiesMarkedDone = source?.activities
-                ?.filter { activity -> activity.isDone }
-                ?: emptyList()
+            val activitiesMarkedDone = source?.activities.filterDone()
             donutDataLive.value = activitiesMarkedDone.map { activity ->
                 val i = coloredActivities.indexOfFirst { it.activity == activity.name }
                 DonutSection(activity.name, coloredActivities[i].color, 1f)
             }
         }
+    }
+
+    private fun List<ActivityLog>?.filterDone(): List<ActivityLog> {
+        return this?.filter { activity -> activity.isDone } ?: emptyList()
+    }
+
+    private fun List<ActivityLog>?.names(): List<String> {
+        return this?.map { activity -> activity.name} ?: emptyList()
+    }
+
+    private fun List<ActivityLog>?.notIn(activities: List<String>): List<ActivityLog> {
+        return this
+            ?.filter { activity -> !activities.contains(activity.name) }
+            ?: emptyList()
     }
 
     fun saveDailyLog(log: DailyLog) {

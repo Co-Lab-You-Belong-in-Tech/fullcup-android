@@ -83,7 +83,7 @@ class ReminderAdapter(
         }
 
         override fun areContentsTheSame(oldItem: Reminder, newItem: Reminder): Boolean {
-            return oldItem == newItem
+            return (oldItem.time == newItem.time && oldItem.recurrence == newItem.recurrence)
         }
     }
 
