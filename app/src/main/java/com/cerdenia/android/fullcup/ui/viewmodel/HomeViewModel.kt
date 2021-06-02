@@ -16,6 +16,9 @@ import com.cerdenia.android.fullcup.data.model.ColoredActivity
 import com.cerdenia.android.fullcup.data.model.DailyLog
 import com.cerdenia.android.fullcup.data.model.SummaryLog
 import com.cerdenia.android.fullcup.util.DateTimeUtils
+import com.cerdenia.android.fullcup.util.ext.filterDone
+import com.cerdenia.android.fullcup.util.ext.names
+import com.cerdenia.android.fullcup.util.ext.notIn
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -61,6 +64,16 @@ class HomeViewModel : ViewModel() {
     init {
         val dailyLog = createNewDailyLog()
         repo.initDailyLog(dailyLog, date)
+    }
+
+    private fun createNewDailyLog(): DailyLog {
+        val activities = getActivitiesOfDay()
+        return DailyLog(
+            summary = SummaryLog(),
+            activities = activities.map { activity ->
+                ActivityLog(name = activity)
+            } as MutableList<ActivityLog>
+        )
     }
 
     fun onRemindersFetched() {
@@ -112,31 +125,6 @@ class HomeViewModel : ViewModel() {
                 DonutSection(activity.name, coloredActivities[i].color, 1f)
             }
         }
-    }
-
-    private fun createNewDailyLog(): DailyLog {
-        Log.d(TAG, "Creating a new daily log")
-        val activities = getActivitiesOfDay()
-        return DailyLog(
-            summary = SummaryLog(),
-            activities = activities.map { activity ->
-                ActivityLog(name = activity)
-            } as MutableList<ActivityLog>
-        )
-    }
-
-    private fun List<ActivityLog>?.filterDone(): List<ActivityLog> {
-        return this?.filter { activity -> activity.isDone } ?: emptyList()
-    }
-
-    private fun List<ActivityLog>?.names(): List<String> {
-        return this?.map { activity -> activity.name} ?: emptyList()
-    }
-
-    private fun List<ActivityLog>?.notIn(activities: Set<String>): List<ActivityLog> {
-        return this
-            ?.filter { activity -> !activities.contains(activity.name) }
-            ?: emptyList()
     }
 
     fun saveDailyLog(log: DailyLog) {

@@ -60,7 +60,7 @@ class HomeFragment : Fragment() {
 
         binding.logButton.setOnClickListener {
             viewModel.dailyLogLive.value?.let { log ->
-                Log.d(TAG, "Data size to be passed to dialog: ${log.activities.size}")
+                Log.d(TAG, "Current log data size: ${log.activities.size}")
                 LogActivityFragment
                     .newInstance(log)
                     .show(parentFragmentManager, LogActivityFragment.TAG)
