@@ -40,6 +40,7 @@
                 tools:text="8:00 AM" />
 
             <TextView
+                android:id="@+id/on_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"

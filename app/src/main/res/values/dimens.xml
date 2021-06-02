@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="reminder_card_height">88dp</dimen>
+    <dimen name="reminder_card_height">80dp</dimen>
     <dimen name="border_stroke_width">2dip</dimen>
     <dimen name="static_top_margin">24dp</dimen>
+    <dimen name="radius_regular">8dp</dimen>
 </resources>

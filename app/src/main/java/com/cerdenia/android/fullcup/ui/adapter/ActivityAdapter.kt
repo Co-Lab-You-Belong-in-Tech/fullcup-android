@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.data.model.ColoredActivity
 import com.cerdenia.android.fullcup.data.model.SelectableActivity
+import com.cerdenia.android.fullcup.util.ext.qualified
 import com.google.android.material.imageview.ShapeableImageView
 
 class ActivityAdapter(
@@ -66,7 +67,7 @@ class ActivityAdapter(
         val colorView: ShapeableImageView? = view.findViewById(R.id.color_view)
 
         fun bind(coloredActivity: ColoredActivity) {
-            textView?.text = coloredActivity.activity
+            textView?.text = coloredActivity.activity.qualified()
             colorView?.setBackgroundColor(coloredActivity.color)
         }
     }
@@ -82,7 +83,7 @@ class ActivityAdapter(
 
         fun bind(selectableActivity: SelectableActivity) {
             activity = selectableActivity.activity
-            checkBox?.text = activity
+            checkBox?.text = activity.qualified()
             checkBox?.isChecked = selectableActivity.isSelected
         }
 

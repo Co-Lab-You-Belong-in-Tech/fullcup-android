@@ -14,6 +14,8 @@ import com.cerdenia.android.fullcup.WEEKDAY
 import com.cerdenia.android.fullcup.WEEKEND
 import com.cerdenia.android.fullcup.data.model.Reminder
 import com.cerdenia.android.fullcup.util.DateTimeUtils
+import com.cerdenia.android.fullcup.util.ext.hide
+import com.cerdenia.android.fullcup.util.ext.show
 
 class ReminderAdapter(
     private val resources: Resources,
@@ -54,6 +56,7 @@ class ReminderAdapter(
         // Following TextViews are nullable since the layout may or may not have them.
         private val timeTextView: TextView? = view.findViewById(R.id.time_text_view)
         private val daysTextView: TextView? = view.findViewById(R.id.days_text_view)
+        private val onTextView: TextView? = view.findViewById(R.id.on_text_view)
         private lateinit var reminder: Reminder
 
         init { itemView.setOnClickListener(this) }
@@ -62,6 +65,7 @@ class ReminderAdapter(
             this.reminder = reminder
             categoryTextView.text = reminder.name
             timeTextView?.text = reminder.time?.let { DateTimeUtils.to12HourFormat(it) }
+            if (reminder.recurrence == DAILY) onTextView?.hide() else onTextView?.show()
             // Get reminder days from resources instead of
             // directly from object to make it translatable.
             daysTextView?.text = when (reminder.recurrence) {
