@@ -15,5 +15,6 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/midnight_blue_700</item>
         <item name="android:letterSpacing">0.03</item>
+        <item name="buttonStyle">@style/FullCupButton</item>
     </style>
 </resources>

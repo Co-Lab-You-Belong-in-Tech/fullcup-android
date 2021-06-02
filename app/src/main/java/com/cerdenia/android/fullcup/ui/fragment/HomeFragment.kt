@@ -12,9 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.TIME_PATTERN
 import com.cerdenia.android.fullcup.data.local.FullCupPreferences
-import com.cerdenia.android.fullcup.data.model.ActivityLog
 import com.cerdenia.android.fullcup.data.model.DailyLog
-import com.cerdenia.android.fullcup.data.model.SummaryLog
 import com.cerdenia.android.fullcup.databinding.FragmentHomeBinding
 import com.cerdenia.android.fullcup.ui.adapter.ActivityAdapter
 import com.cerdenia.android.fullcup.ui.dialog.LogActivityFragment
@@ -61,32 +59,30 @@ class HomeFragment : Fragment() {
             .format(Date())
 
         binding.logButton.setOnClickListener {
-            val activities = viewModel.getActivitiesOfDay()
-            val log = viewModel.dailyLogLive.value ?: createNewLog(activities)
-            Log.d(TAG, "Data size to be passed to dialog: ${log.activities.size}")
-            LogActivityFragment
-                .newInstance(log)
-                .show(parentFragmentManager, LogActivityFragment.TAG)
+            viewModel.dailyLogLive.value?.let { log ->
+                Log.d(TAG, "Data size to be passed to dialog: ${log.activities.size}")
+                LogActivityFragment
+                    .newInstance(log)
+                    .show(parentFragmentManager, LogActivityFragment.TAG)
+            }
         }
-    }
-
-    private fun createNewLog(activities: List<String>): DailyLog {
-        return DailyLog(
-            summary = SummaryLog(),
-            activities = activities.map { activity ->
-                ActivityLog(name = activity)
-            } as MutableList<ActivityLog>
-        )
     }
 
     override fun onStart() {
         super.onStart()
         viewModel.remindersLive.observe(viewLifecycleOwner, {
+            Log.d(TAG, "Reminder observer fired")
             viewModel.onRemindersFetched()
+            viewModel.remindersLive.removeObservers(viewLifecycleOwner)
+        })
+
+        viewModel.dailyLogLive.observe(viewLifecycleOwner, { log ->
+            //if (log == null) viewModel.initDailyLog()
+            viewModel.dailyLogLive.removeObservers(viewLifecycleOwner)
         })
 
         viewModel.donutDataLive.observe(viewLifecycleOwner, { donutData ->
-            Log.d(TAG, "Got donut data: $donutData")
+            Log.d(TAG, "Donut data observer fired: $donutData")
             // Fill donut.
             val cap = viewModel.getActivitiesOfDay().size.toFloat()
             binding.donutView.cap = cap

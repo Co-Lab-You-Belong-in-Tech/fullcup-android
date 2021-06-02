@@ -1,7 +1,9 @@
 package com.cerdenia.android.fullcup.data
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.cerdenia.android.fullcup.DATE_PATTERN
 import com.cerdenia.android.fullcup.data.api.SyncRemindersResponse
 import com.cerdenia.android.fullcup.data.api.SyncRemindersBody
 import com.cerdenia.android.fullcup.data.api.WebService
@@ -13,6 +15,8 @@ import com.cerdenia.android.fullcup.data.model.Reminder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.Executors
 
 class FullCupRepository private constructor(
@@ -73,14 +77,21 @@ class FullCupRepository private constructor(
     // [END] Reminder methods
 
     // [START] Daily Log methods
-    fun getLogByDate(date: String) = logDao.getLogsByDate(date)
-
-    fun addAndDeleteActivityLogs(toAdd: List<ActivityLog>, toDelete: List<ActivityLog>) {
-        executor.execute { logDao.addAndDeleteActivityLogs(toAdd, toDelete) }
-    }
+    fun getLogsByDate(date: String) = logDao.getLogsByDate(date)
 
     fun addOrUpdateDailyLog(log: DailyLog) {
         executor.execute { logDao.addOrUpdateDailyLog(log) }
+    }
+
+    fun initDailyLog(dailyLog: DailyLog, stringDate: String) {
+        executor.execute {
+            val existingLog = logDao.getLogsByDateSync(stringDate)
+            if (existingLog == null) logDao.addOrUpdateDailyLog(dailyLog)
+        }
+    }
+
+    fun addAndDeleteActivityLogs(toAdd: List<ActivityLog>, toDelete: List<ActivityLog>) {
+        executor.execute { logDao.addAndDeleteActivityLogs(toAdd, toDelete) }
     }
     // [END] Daily Log methods
 

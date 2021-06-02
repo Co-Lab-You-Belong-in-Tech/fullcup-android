@@ -15,15 +15,28 @@
         <item name="android:clickable">false</item>
     </style>
 
-    <style name="AppButtonPrimary" parent="Widget.MaterialComponents.Button">
-        <item name="fontFamily">@font/karla_regular</item>
+    <style name="FullCupButton" parent="Widget.MaterialComponents.Button">
         <item name="android:minWidth">156dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="fontFamily">@font/karla_bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="cornerRadius">10dp</item>
+    </style>
+
+    <style name="FullCupEditText" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:background">@drawable/border_grey</item>
     </style>
 
     <style name="AppHeadline3" parent="TextAppearance.AppCompat.Headline">
         <item name="android:textColor">@color/midnight_blue_700</item>
         <item name="fontFamily">@font/gentium_basic_regular</item>
         <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="AppHeadline4" parent="AppHeadline3">
+        <item name="android:textSize">34sp</item>
+        <item name="android:spacing">0.25sp</item>
     </style>
 
     <style name="AppHeadline5" parent="AppHeadline3">

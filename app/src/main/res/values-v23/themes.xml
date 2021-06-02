@@ -15,8 +15,9 @@
         <!-- Customize your theme here. -->
         <item name="android:colorBackground">@color/ivory</item>
         <item name="fontFamily">@font/karla_regular</item>
+        <item name="android:spacing">0.44sp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/midnight_blue_700</item>
-        <item name="android:letterSpacing">0.03</item>
+        <item name="materialButtonStyle">@style/FullCupButton</item>
     </style>
 </resources>

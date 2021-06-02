@@ -18,6 +18,10 @@ interface LogDao {
     @Query("SELECT * FROM summaryLog WHERE date = :date")
     fun getLogsByDate(date: String): LiveData<DailyLog?>
 
+    @Transaction
+    @Query("SELECT * FROM summaryLog WHERE date = :date")
+    fun getLogsByDateSync(date: String): DailyLog?
+
     @Delete
     fun deleteActivityLog(vararg log: ActivityLog)
 
