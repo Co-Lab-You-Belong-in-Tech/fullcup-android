@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            style="@style/AppHeadline4"
+            style="@style/H4Headline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
@@ -27,15 +27,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="@string/my_name_is"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:text="@string/my_name_is" />
 
         <EditText
             style="@style/FullCupEditText"
             android:id="@+id/name_edit_text"
-            android:padding="10dp"
             android:inputType="textCapSentences"
-            android:layout_width="248dp"
+            android:layout_width="242dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp" />
 
@@ -49,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            style="@style/TextAppearance.AppCompat.Caption"
+            style="@style/Caption"
             android:text="@string/select_all_that_apply" />
 
         <CheckBox

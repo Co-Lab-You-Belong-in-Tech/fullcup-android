@@ -1,7 +1,6 @@
 package com.cerdenia.android.fullcup.ui.dialog
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,17 +12,22 @@ import com.cerdenia.android.fullcup.WEEKEND
 import com.cerdenia.android.fullcup.data.model.Reminder
 import com.cerdenia.android.fullcup.databinding.FragmentSetReminderBinding
 import com.cerdenia.android.fullcup.util.DateTimeUtils
+import com.cerdenia.android.fullcup.util.ext.getKey
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class SetReminderFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentSetReminderBinding
+
+    private val itemLayout = android.R.layout.simple_spinner_item
+    private val dropdownLayout = android.R.layout.simple_spinner_dropdown_item
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSetReminderBinding.inflate(inflater, container, false)
+        binding = FragmentSetReminderBinding
+            .inflate(inflater, container, false)
         return binding.root
     }
 
@@ -31,6 +35,7 @@ class SetReminderFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val reminder = arguments?.getSerializable(REMINDER) as Reminder
         val times = arguments?.getStringArray(AVAILABLE_TIMES) ?: emptyArray()
+        val durationsInMins = listOf(10, 20, 30, 40, 50, 60)
 
         val buttonMap = mapOf(
             binding.weekdaysButton.id to WEEKDAY,
@@ -39,7 +44,8 @@ class SetReminderFragment : BottomSheetDialogFragment() {
         )
 
         binding.toggleGroup.apply {
-            reminder.recurrence?.let { check(buttonMap.getKey(it)) }
+            val selection = buttonMap.getKey(reminder.recurrence)
+            check(selection ?: 0)
             addOnButtonCheckedListener { _, checkedId, _ ->
                 reminder.recurrence = buttonMap[checkedId]
             }
@@ -47,13 +53,8 @@ class SetReminderFragment : BottomSheetDialogFragment() {
 
         binding.timeSpinner.apply {
             val formattedTimes = times.map { DateTimeUtils.to12HourFormat(it) }
-            adapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_item,
-                formattedTimes
-            ).apply {
-                setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            }
+            adapter = ArrayAdapter(requireContext(), itemLayout, formattedTimes)
+                .apply { setDropDownViewResource(dropdownLayout) }
 
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -69,17 +70,31 @@ class SetReminderFragment : BottomSheetDialogFragment() {
             setSelection(i) // Initial state.
         }
 
+        binding.durationSpinner.apply {
+            val textDurations = durationsInMins.map { "$it minutes" }
+            adapter = ArrayAdapter(requireContext(), itemLayout, textDurations)
+                .apply { setDropDownViewResource(dropdownLayout) }
+
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    reminder.durationInMins = durationsInMins[p2]
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    // Do nothing
+                }
+            }
+
+            val i = durationsInMins.indexOf(reminder.durationInMins)
+            setSelection(i) // Initial state.
+        }
+
         binding.confirmButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(KEY_CONFIRM, Bundle().apply {
                 putSerializable(REMINDER, reminder)
             })
             dismiss()
         }
-    }
-
-    private fun Map<Int, String>.getKey(value: String): Int {
-        this.forEach { pair -> if (pair.value == value) return pair.key }
-        return 0
     }
 
     companion object {

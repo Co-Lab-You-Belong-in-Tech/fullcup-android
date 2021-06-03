@@ -6,7 +6,7 @@
     tools:viewBindingIgnore="true"
     android:animateLayoutChanges="true"
     android:background="@drawable/border_grey"
-    android:layout_marginVertical="8dp"
+    android:layout_marginBottom="18dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -14,7 +14,7 @@
         style="@style/Buttonized"
         android:layout_width="match_parent"
         android:layout_height="@dimen/reminder_card_height"
-        android:paddingHorizontal="24dp">
+        android:paddingHorizontal="14dp">
 
         <TextView
             android:id="@+id/category_text_view"

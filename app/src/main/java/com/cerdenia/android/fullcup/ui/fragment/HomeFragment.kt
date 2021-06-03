@@ -15,6 +15,7 @@ import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.data.model.DailyLog
 import com.cerdenia.android.fullcup.databinding.FragmentHomeBinding
 import com.cerdenia.android.fullcup.ui.adapter.ActivityAdapter
+import com.cerdenia.android.fullcup.ui.dialog.CongratulationsFragment
 import com.cerdenia.android.fullcup.ui.dialog.LogActivityFragment
 import com.cerdenia.android.fullcup.ui.viewmodel.HomeViewModel
 import com.cerdenia.android.fullcup.util.DateTimeUtils
@@ -76,11 +77,6 @@ class HomeFragment : Fragment() {
             viewModel.remindersLive.removeObservers(viewLifecycleOwner)
         })
 
-        viewModel.dailyLogLive.observe(viewLifecycleOwner, { log ->
-            //if (log == null) viewModel.initDailyLog()
-            viewModel.dailyLogLive.removeObservers(viewLifecycleOwner)
-        })
-
         viewModel.donutDataLive.observe(viewLifecycleOwner, { donutData ->
             Log.d(TAG, "Donut data observer fired: $donutData")
             // Fill donut.
@@ -97,7 +93,14 @@ class HomeFragment : Fragment() {
             viewLifecycleOwner,
             { _, result ->
                 val log = result.getSerializable(LogActivityFragment.DAILY_LOG) as DailyLog?
-                log?.let { viewModel.saveDailyLog(it) }
+                log?.let { dailyLog ->
+                    viewModel.saveDailyLog(dailyLog)
+                    if (dailyLog.activities.all { it.isDone }) {
+                        CongratulationsFragment
+                            .newInstance()
+                            .show(parentFragmentManager, CongratulationsFragment.TAG)
+                    }
+                }
             }
         )
     }
