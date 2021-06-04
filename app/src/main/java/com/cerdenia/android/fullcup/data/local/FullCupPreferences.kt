@@ -32,7 +32,7 @@ object FullCupPreferences {
     var userName: String
         get() = preferences.getString(USER_NAME, "Peyton") ?: "Peyton"
         set(value) = preferences.edit { editor ->
-            editor.putString(USER_NAME, value)
+            editor.putString(USER_NAME, value.trim())
         }
 
     var serverIds: List<String>

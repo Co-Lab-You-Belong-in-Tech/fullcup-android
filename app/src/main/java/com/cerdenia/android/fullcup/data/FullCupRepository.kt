@@ -1,11 +1,9 @@
 package com.cerdenia.android.fullcup.data
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.cerdenia.android.fullcup.DATE_PATTERN
-import com.cerdenia.android.fullcup.data.api.SyncRemindersResponse
 import com.cerdenia.android.fullcup.data.api.SyncRemindersBody
+import com.cerdenia.android.fullcup.data.api.SyncRemindersResponse
 import com.cerdenia.android.fullcup.data.api.WebService
 import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.data.local.db.FullCupDatabase
@@ -15,8 +13,6 @@ import com.cerdenia.android.fullcup.data.model.Reminder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.Executors
 
 class FullCupRepository private constructor(
@@ -26,6 +22,16 @@ class FullCupRepository private constructor(
     private val reminderDao = database.reminderDao()
     private val logDao = database.logDao()
     private val executor = Executors.newSingleThreadExecutor()
+
+    init {
+        // In case any Reminder objects are left
+        // in the DB after a name change:
+        executor.execute {
+            val reminders = reminderDao.getRemindersSync()
+            val names = reminders.map { it. name }
+            reminderDao.deleteLeftoverRemindersByName(names)
+        }
+    }
 
     // [START] API methods
     fun syncRemindersWithCalendar(reminders: List<Reminder>) {

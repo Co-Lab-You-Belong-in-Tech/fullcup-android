@@ -3,16 +3,17 @@ package com.cerdenia.android.fullcup.ui.activity
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.databinding.ActivityOnboardingBinding
-import com.cerdenia.android.fullcup.ui.fragment.GetStartedFragment
-import com.cerdenia.android.fullcup.ui.fragment.SelectActivitiesFragment
-import com.cerdenia.android.fullcup.ui.fragment.SetRemindersFragment
+import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
+import com.cerdenia.android.fullcup.ui.fragment.*
 
 class OnboardingActivity : AppCompatActivity(),
     GetStartedFragment.Callbacks,
     SelectActivitiesFragment.Callbacks,
-    SetRemindersFragment.Callbacks
+    SetRemindersFragment.Callbacks,
+    OnDoneWithScreenListener
 {
     private lateinit var binding: ActivityOnboardingBinding
 
@@ -41,7 +42,7 @@ class OnboardingActivity : AppCompatActivity(),
     override fun onActivitiesSelected() {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_container, SetRemindersFragment.newInstance())
+            .replace(R.id.fragment_container, HelloUserFragment.newInstance())
             .addToBackStack(null)
             .commit()
     }
@@ -89,6 +90,14 @@ class OnboardingActivity : AppCompatActivity(),
          */
     }
 
+    private fun replaceFragmentWith(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
     override fun onGetStartedClicked() {
         supportFragmentManager
             .beginTransaction()
@@ -100,5 +109,14 @@ class OnboardingActivity : AppCompatActivity(),
     override fun onLoginClicked() {
         MainActivity.newIntent(this).run (::startActivity)
         finish()
+    }
+
+    override fun onDoneWithScreen(tag: String) {
+        when (tag) {
+            HelloUserFragment.TAG ->
+                replaceFragmentWith(SetRemindersIntroFragment.newInstance())
+            SetRemindersIntroFragment.TAG ->
+                replaceFragmentWith(SetRemindersFragment.newInstance())
+        }
     }
 }
