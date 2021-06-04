@@ -28,4 +28,8 @@
         <item name="android:background">@drawable/border_blue</item>
         <item name="android:padding">10dp</item>
     </style>
+
+    <style name="FullCupBottomSheet" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="android:background">@color/ivory</item>
+    </style>
 </resources>

@@ -34,17 +34,19 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             Log.d(TAG, "${menuItem.title} selected")
             when (menuItem.title) {
-                "Home" -> launchFragment(HomeFragment.newInstance())
-                "Activity Log" -> launchFragment(ActivityLogFragment.newInstance())
+                "Home" -> HomeFragment.newInstance().launch()
+                "Activity Log" -> ActivityLogFragment.newInstance().launch()
+                "Progress" -> { } // TODO
+                "Account" -> { } // TODO
             }
             true
         }
     }
 
-    private fun launchFragment(fragment: Fragment) {
+    private fun Fragment.launch() {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_container, fragment)
+            .replace(R.id.fragment_container, this)
             .commit()
     }
 

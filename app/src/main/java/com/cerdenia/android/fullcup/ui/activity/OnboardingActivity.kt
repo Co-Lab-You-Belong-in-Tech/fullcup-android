@@ -5,12 +5,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.databinding.ActivityOnboardingBinding
+import com.cerdenia.android.fullcup.ui.fragment.GetStartedFragment
 import com.cerdenia.android.fullcup.ui.fragment.SelectActivitiesFragment
 import com.cerdenia.android.fullcup.ui.fragment.SetRemindersFragment
 
 class OnboardingActivity : AppCompatActivity(),
+    GetStartedFragment.Callbacks,
     SelectActivitiesFragment.Callbacks,
-    SetRemindersFragment.Callbacks {
+    SetRemindersFragment.Callbacks
+{
     private lateinit var binding: ActivityOnboardingBinding
 
     private val launchCalendar = registerForActivityResult(
@@ -30,7 +33,7 @@ class OnboardingActivity : AppCompatActivity(),
             // Fragment container is empty.
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_container, SelectActivitiesFragment.newInstance())
+                .add(R.id.fragment_container, GetStartedFragment.newInstance())
                 .commit()
         }
     }
@@ -84,5 +87,18 @@ class OnboardingActivity : AppCompatActivity(),
             launchCalendar.launch(intent)
         }
          */
+    }
+
+    override fun onGetStartedClicked() {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, SelectActivitiesFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onLoginClicked() {
+        MainActivity.newIntent(this).run (::startActivity)
+        finish()
     }
 }

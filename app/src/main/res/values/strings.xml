@@ -50,4 +50,8 @@
     </string>
     <string name="share">Share</string>
     <string name="maybe_later"><u>MAYBE LATER</u></string>
+    <string name="are_you_ready_to_fill_your_cup">Are you ready to\nfill your cup?</string>
+    <string name="get_started">Get started</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="login_underlined"><u>LOGIN</u></string>
 </resources>

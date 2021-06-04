@@ -95,6 +95,7 @@ class HomeFragment : Fragment() {
                 val log = result.getSerializable(LogActivityFragment.DAILY_LOG) as DailyLog?
                 log?.let { dailyLog ->
                     viewModel.saveDailyLog(dailyLog)
+                    // Congratulations pop-up if all activities are done.
                     if (dailyLog.activities.all { it.isDone }) {
                         CongratulationsFragment
                             .newInstance()

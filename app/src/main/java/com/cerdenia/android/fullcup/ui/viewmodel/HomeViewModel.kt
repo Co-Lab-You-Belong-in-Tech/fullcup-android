@@ -2,7 +2,6 @@ package com.cerdenia.android.fullcup.ui.viewmodel
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
@@ -77,22 +76,19 @@ class HomeViewModel : ViewModel() {
     }
 
     fun onRemindersFetched() {
-        // Needed housekeeping to prevent MediatorLiveData
-        // sources from being added more than once.
+        // Need to prevent MediatorLiveData sources from being added
+        // more than once if this function is called unexpectedly.
         donutDataLive.removeSource(dailyLogLive)
         dailyLogLive.removeSource(dbDailyLogLive)
 
         // Validate data before exposing to view. We want user-selected
-        // activities to match existing logs stored in DB.
+        // activities of the day to match ActivityLogs stored in DB.
         dailyLogLive.addSource(dbDailyLogLive) { source ->
             var activitiesToDelete: List<ActivityLog> = listOf()
             val activitiesToAdd: MutableList<ActivityLog> = mutableListOf()
 
             val activities: Set<String> = getActivitiesOfDay().toSet()
             var loggedActivities: Set<String> = source?.activities.names().toSet()
-
-            Log.d(TAG, "Activities: $activities")
-            Log.d(TAG, "Logged activities: $loggedActivities")
 
             if (activities !== loggedActivities) {
                 // First, delete logs for categories that a user has deselected.
@@ -113,6 +109,7 @@ class HomeViewModel : ViewModel() {
 
             dailyLogLive.value = source
             if (activitiesToAdd.size + activitiesToDelete.size > 0) {
+                // If there is anything to add or delete, update DB.
                 repo.addAndDeleteActivityLogs(activitiesToAdd, activitiesToDelete)
             }
         }
