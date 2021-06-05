@@ -23,8 +23,8 @@
     <string name="tasks_below_are_displayed">Tasks below are displayed on the basis of your chosen preferences. You can change these anytime in task settings.</string>
     <string name="set_reminders">Set Reminders</string>
     <string name="on">on</string>
-    <string name="weekdays">weekdays</string>
-    <string name="weekends">weekends</string>
+    <string name="weekdays">on weekdays</string>
+    <string name="weekends">on weekends</string>
     <string name="everyday">everyday</string>
     <string name="at">at</string>
     <string name="confirm">Confirm</string>
@@ -59,4 +59,5 @@
     <string name="we_are_excited">We are excited to be a part of this journey with you.</string>
     <string name="the_best_reminder">The best reminder is one that\'s completely automated.</string>
     <string name="let_s_create_some_habits">Let\'s create some habits.</string>
+    <string name="remind_me">Remind me</string>
 </resources>

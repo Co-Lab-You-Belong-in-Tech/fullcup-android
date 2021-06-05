@@ -11,8 +11,6 @@ import com.cerdenia.android.fullcup.ui.fragment.*
 
 class OnboardingActivity : AppCompatActivity(),
     GetStartedFragment.Callbacks,
-    SelectActivitiesFragment.Callbacks,
-    SetRemindersFragment.Callbacks,
     OnDoneWithScreenListener
 {
     private lateinit var binding: ActivityOnboardingBinding
@@ -20,7 +18,7 @@ class OnboardingActivity : AppCompatActivity(),
     private val launchCalendar = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
-        // On calendar launch, launch MainActivity. TODO: finish this activity.
+        // On calendar launch, launch MainActivity.
         MainActivity.newIntent(this).run(::startActivity)
         finish()
     }
@@ -39,17 +37,35 @@ class OnboardingActivity : AppCompatActivity(),
         }
     }
 
-    override fun onActivitiesSelected() {
+    private fun replaceFragmentWith(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_container, HelloUserFragment.newInstance())
+            .replace(R.id.fragment_container, fragment)
             .addToBackStack(null)
             .commit()
     }
 
-    override fun onRemindersConfirmed() {
-        MainActivity.newIntent(this).run(::startActivity)
+    override fun onLoginClicked() {
+        MainActivity.newIntent(this).run (::startActivity)
+        finish()
+    }
 
+    override fun onDoneWithScreen(tag: String) {
+        when (tag) {
+            GetStartedFragment.TAG ->
+                replaceFragmentWith(SelectActivitiesFragment.newInstance())
+            SelectActivitiesFragment.TAG ->
+                replaceFragmentWith(HelloUserFragment.newInstance())
+            HelloUserFragment.TAG ->
+                replaceFragmentWith(SetRemindersIntroFragment.newInstance())
+            SetRemindersIntroFragment.TAG ->
+                replaceFragmentWith(SetRemindersFragment.newInstance())
+            SetRemindersFragment.TAG ->
+                MainActivity.newIntent(this).run (::startActivity)
+        }
+    }
+
+    private fun writeToCalendar() {
         /*
         val builder: Uri.Builder = CalendarContract.CONTENT_URI
             .buildUpon()
@@ -88,35 +104,5 @@ class OnboardingActivity : AppCompatActivity(),
             launchCalendar.launch(intent)
         }
          */
-    }
-
-    private fun replaceFragmentWith(fragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
-    override fun onGetStartedClicked() {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, SelectActivitiesFragment.newInstance())
-            .addToBackStack(null)
-            .commit()
-    }
-
-    override fun onLoginClicked() {
-        MainActivity.newIntent(this).run (::startActivity)
-        finish()
-    }
-
-    override fun onDoneWithScreen(tag: String) {
-        when (tag) {
-            HelloUserFragment.TAG ->
-                replaceFragmentWith(SetRemindersIntroFragment.newInstance())
-            SetRemindersIntroFragment.TAG ->
-                replaceFragmentWith(SetRemindersFragment.newInstance())
-        }
     }
 }

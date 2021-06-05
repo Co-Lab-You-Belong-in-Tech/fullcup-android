@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="28dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,12 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/H5Headline"
+        android:layout_marginBottom="18dp"
         android:text="@string/set_reminder"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/remind_me_on"/>
+        android:text="@string/remind_me"/>
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/toggle_group"
@@ -27,21 +28,30 @@
 
         <com.google.android.material.button.MaterialButton
             style="?attr/materialButtonOutlinedStyle"
+            android:textSize="12sp"
+            android:lineSpacingExtra="4sp"
             android:id="@+id/weekdays_button"
+            android:minWidth="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/weekdays" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/weekends_button"
             style="?attr/materialButtonOutlinedStyle"
+            android:textSize="12sp"
+            android:lineSpacingExtra="4sp"
+            android:id="@+id/weekends_button"
+            android:minWidth="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/weekends" />
 
         <com.google.android.material.button.MaterialButton
             style="?attr/materialButtonOutlinedStyle"
+            android:textSize="12sp"
+            android:lineSpacingExtra="4sp"
             android:id="@+id/everyday_button"
+            android:minWidth="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/everyday" />
@@ -55,6 +65,7 @@
 
     <Spinner
         android:id="@+id/time_spinner"
+        android:outlineProvider="bounds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="16dp"/>

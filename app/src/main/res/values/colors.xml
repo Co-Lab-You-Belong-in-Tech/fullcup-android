@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="ivory_light">#b3fffced</color>
     <color name="ivory">#FFFCED</color>
+    <color name="midnight_blue_lightest_1">#0c071d54</color>
     <color name="midnight_blue_700">#071D54</color>
     <color name="orange_700">#FD8E39</color>
     <color name="green_700">#2D4621</color>

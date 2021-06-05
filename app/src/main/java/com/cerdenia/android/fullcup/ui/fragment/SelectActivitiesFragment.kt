@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.cerdenia.android.fullcup.databinding.FragmentSelectActivitiesBinding
+import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
 import com.cerdenia.android.fullcup.ui.viewmodel.SelectActivitiesViewModel
 import com.cerdenia.android.fullcup.util.ext.toEditable
 
@@ -16,15 +17,11 @@ class SelectActivitiesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: SelectActivitiesViewModel
-    private var callbacks: Callbacks? = null
-
-    interface Callbacks {
-        fun onActivitiesSelected()
-    }
+    private var callbacks: OnDoneWithScreenListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        callbacks = context as Callbacks?
+        callbacks = context as OnDoneWithScreenListener?
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +77,7 @@ class SelectActivitiesFragment : Fragment() {
                 // Save user name.
                 val userName = binding.nameEditText.text.toString()
                 viewModel.submitUserName(userName)
-                callbacks?.onActivitiesSelected()
+                callbacks?.onDoneWithScreen(TAG)
             }
         }
     }
@@ -96,7 +93,7 @@ class SelectActivitiesFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "SelectActivitiesFragment"
+        const val TAG = "SelectActivitiesFragment"
 
         fun newInstance(): SelectActivitiesFragment = SelectActivitiesFragment()
     }

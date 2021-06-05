@@ -19,6 +19,7 @@ import com.cerdenia.android.fullcup.ui.dialog.CongratulationsFragment
 import com.cerdenia.android.fullcup.ui.dialog.LogActivityFragment
 import com.cerdenia.android.fullcup.ui.viewmodel.HomeViewModel
 import com.cerdenia.android.fullcup.util.DateTimeUtils
+import com.cerdenia.android.fullcup.util.ext.addRipple
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,6 +42,7 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
+        binding.logButton.addRipple()
         return binding.root
     }
 

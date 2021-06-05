@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cerdenia.android.fullcup.data.model.Reminder
 import com.cerdenia.android.fullcup.databinding.FragmentSetRemindersBinding
+import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
 import com.cerdenia.android.fullcup.ui.adapter.ReminderAdapter
 import com.cerdenia.android.fullcup.ui.dialog.SetReminderFragment
 import com.cerdenia.android.fullcup.ui.viewmodel.SetRemindersViewModel
@@ -23,15 +24,11 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
 
     private lateinit var viewModel: SetRemindersViewModel
     private lateinit var adapter: ReminderAdapter
-    private var callbacks: Callbacks? = null
-
-    interface Callbacks {
-        fun onRemindersConfirmed()
-    }
+    private var callbacks: OnDoneWithScreenListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        callbacks = context as Callbacks?
+        callbacks = context as OnDoneWithScreenListener?
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +54,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
         super.onViewCreated(view, savedInstanceState)
         binding.setRemindersButton.setOnClickListener {
             viewModel.confirmReminders()
-            callbacks?.onRemindersConfirmed()
+            callbacks?.onDoneWithScreen(TAG)
         }
     }
 
@@ -99,7 +96,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     }
 
     companion object {
-        private const val TAG = "SetRemindersFragment"
+        const val TAG = "SetRemindersFragment"
 
         fun newInstance(): SetRemindersFragment {
             return SetRemindersFragment()

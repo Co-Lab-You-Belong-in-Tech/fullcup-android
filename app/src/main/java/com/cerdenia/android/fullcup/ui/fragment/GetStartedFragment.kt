@@ -7,14 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.cerdenia.android.fullcup.databinding.FragmentGetStartedBinding
+import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
 
 class GetStartedFragment : Fragment() {
     private var _binding: FragmentGetStartedBinding? = null
     private val binding get() = _binding!!
     private var callbacks: Callbacks? = null
 
-    interface Callbacks {
-        fun onGetStartedClicked()
+    interface Callbacks : OnDoneWithScreenListener {
         fun onLoginClicked()
     }
 
@@ -36,7 +36,7 @@ class GetStartedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.getStartedButton.setOnClickListener {
-            callbacks?.onGetStartedClicked()
+            callbacks?.onDoneWithScreen(TAG)
         }
 
         binding.loginButton.setOnClickListener {
@@ -55,6 +55,8 @@ class GetStartedFragment : Fragment() {
     }
 
     companion object {
+        const val TAG = "GetStartedFragment"
+
         fun newInstance() = GetStartedFragment()
     }
 }
