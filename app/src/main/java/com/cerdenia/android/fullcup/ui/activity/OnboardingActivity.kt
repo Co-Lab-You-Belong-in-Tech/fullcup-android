@@ -1,6 +1,7 @@
 package com.cerdenia.android.fullcup.ui.activity
 
 import android.content.ContentUris
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -21,12 +22,11 @@ class OnboardingActivity : AppCompatActivity(),
 {
     private lateinit var binding: ActivityOnboardingBinding
 
-    private val launchCalendar = registerForActivityResult(
+    private val calendarActivityResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
-        // On calendar launch, launch MainActivity.
-        MainActivity.newIntent(this).run(::startActivity)
-        finish()
+        // On Activity result:
+        replaceFragmentWith(SetRemindersIntroFragment.newInstance())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,10 +63,11 @@ class OnboardingActivity : AppCompatActivity(),
         ContentUris.appendId(builder, Date().time)
         val intent = Intent(Intent.ACTION_VIEW)
             .setData(builder.build())
-        launchCalendar.launch(intent)
+
+        calendarActivityResult.launch(intent)
     }
 
-    override fun onDoneWithScreen(tag: String) {
+    override fun onDoneWithScreen(tag: String, flag: String?) {
         when (tag) {
             GetStartedFragment.TAG ->
                 replaceFragmentWith(SelectActivitiesFragment.newInstance())
@@ -114,5 +115,11 @@ class OnboardingActivity : AppCompatActivity(),
             launchCalendar.launch(intent)
         }
          */
+    }
+
+    companion object {
+        fun newIntent(packageContext: Context): Intent {
+            return Intent(packageContext, OnboardingActivity::class.java)
+        }
     }
 }

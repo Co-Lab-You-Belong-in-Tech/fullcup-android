@@ -71,4 +71,7 @@
     </string>
     <string name="full_cup_would_like_to_access_your_calendar">Full Cup would like to access your calendar.</string>
     <string name="providing_access_to_calendar">Providing access to calendar will help us identify free time and suggest self-care activities. You can manage preferences in account settings.</string>
+    <string name="skip_intro">SKIP INTRO</string>
+    <string name="self_care_intro_1">What you can’t do for yourself, you can’t effectively do for others. In order to bring your best self to work and play, you have to fill your cup.</string>
+    <string name="self_care_intro_2">Self-care is a crucial step in maintaining a healthy relationship with yourself and with others. It’s not possible to pour from an empty cup.</string>
 </resources>
