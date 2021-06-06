@@ -60,4 +60,15 @@
     <string name="the_best_reminder">The best reminder is one that\'s completely automated.</string>
     <string name="let_s_create_some_habits">Let\'s create some habits.</string>
     <string name="remind_me">Remind me</string>
+    <string name="just_one_more_thing">Just one more thing.</string>
+    <string name="to_make_sure">To make sure we fully optimise your "me time", please link your calendar to get relevant break time suggestions.</string>
+    <string name="sign_in_with_google_calendar">Sign in with Google Calendar</string>
+    <string name="sign_in_with_outlook_calendar">Sign in with Outlook Calendar</string>
+    <string name="allow">Allow</string>
+    <string name="not_now"><u>NOT NOW</u></string>
+    <string name="to_ensure_a_seamless">
+        To ensure a seamless and thorough planning experience, Full Cup requires access to your calendar. We respect your privacy and will never use any data that we don\'t require. You can change your permissions in your account.
+    </string>
+    <string name="full_cup_would_like_to_access_your_calendar">Full Cup would like to access your calendar.</string>
+    <string name="providing_access_to_calendar">Providing access to calendar will help us identify free time and suggest self-care activities. You can manage preferences in account settings.</string>
 </resources>

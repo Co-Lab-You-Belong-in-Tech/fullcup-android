@@ -1,6 +1,10 @@
 package com.cerdenia.android.fullcup.ui.activity
 
+import android.content.ContentUris
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.CalendarContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -8,9 +12,11 @@ import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.databinding.ActivityOnboardingBinding
 import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
 import com.cerdenia.android.fullcup.ui.fragment.*
+import java.util.*
 
 class OnboardingActivity : AppCompatActivity(),
     GetStartedFragment.Callbacks,
+    CalendarSignInFragment.Callbacks,
     OnDoneWithScreenListener
 {
     private lateinit var binding: ActivityOnboardingBinding
@@ -50,23 +56,7 @@ class OnboardingActivity : AppCompatActivity(),
         finish()
     }
 
-    override fun onDoneWithScreen(tag: String) {
-        when (tag) {
-            GetStartedFragment.TAG ->
-                replaceFragmentWith(SelectActivitiesFragment.newInstance())
-            SelectActivitiesFragment.TAG ->
-                replaceFragmentWith(HelloUserFragment.newInstance())
-            HelloUserFragment.TAG ->
-                replaceFragmentWith(SetRemindersIntroFragment.newInstance())
-            SetRemindersIntroFragment.TAG ->
-                replaceFragmentWith(SetRemindersFragment.newInstance())
-            SetRemindersFragment.TAG ->
-                MainActivity.newIntent(this).run (::startActivity)
-        }
-    }
-
-    private fun writeToCalendar() {
-        /*
+    override fun onAllowedCalendarAccess() {
         val builder: Uri.Builder = CalendarContract.CONTENT_URI
             .buildUpon()
             .appendPath("time")
@@ -74,8 +64,28 @@ class OnboardingActivity : AppCompatActivity(),
         val intent = Intent(Intent.ACTION_VIEW)
             .setData(builder.build())
         launchCalendar.launch(intent)
-         */
+    }
 
+    override fun onDoneWithScreen(tag: String) {
+        when (tag) {
+            GetStartedFragment.TAG ->
+                replaceFragmentWith(SelectActivitiesFragment.newInstance())
+            SelectActivitiesFragment.TAG ->
+                replaceFragmentWith(HelloUserFragment.newInstance())
+            HelloUserFragment.TAG ->
+                replaceFragmentWith(CalendarSignInFragment.newInstance())
+            CalendarSignInFragment.TAG ->
+                replaceFragmentWith(SetRemindersIntroFragment.newInstance())
+            SetRemindersIntroFragment.TAG ->
+                replaceFragmentWith(SetRemindersFragment.newInstance())
+            SetRemindersFragment.TAG -> {
+                MainActivity.newIntent(this).run (::startActivity)
+                finish()
+            }
+        }
+    }
+
+    private fun writeToCalendar() {
         /*
         reminders.forEach { reminder ->
             val calendar = Calendar.getInstance()

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="8dp"
+        style="@style/H5Headline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/just_one_more_thing"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/to_make_sure"
+        android:layout_marginBottom="48dp"/>
+
+    <Button
+        android:id="@+id/google_calendar_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/sign_in_with_google_calendar"
+        android:layout_marginBottom="16dp"
+        />
+
+    <Button
+        android:id="@+id/outlook_calendar_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/sign_in_with_outlook_calendar"
+        />
+
+</LinearLayout>

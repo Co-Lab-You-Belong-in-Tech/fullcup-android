@@ -54,15 +54,15 @@ class HomeViewModel : ViewModel() {
 
     // Reminder data from DB is not directly exposed to view.
     @SuppressLint("SimpleDateFormat")
-    private val date: String = SimpleDateFormat(DATE_PATTERN).format(Date())
-    private val dbDailyLogLive: LiveData<DailyLog?> = repo.getLogsByDate(date)
+    private val stringDate = SimpleDateFormat(DATE_PATTERN).format(Date())
+    private val dbDailyLogLive: LiveData<DailyLog?> = repo.getLogsByDate(stringDate)
     // Instead, these are exposed:
     val dailyLogLive = MediatorLiveData<DailyLog?>()
     val donutDataLive = MediatorLiveData<List<DonutSection>>()
 
     init {
         val dailyLog = createNewDailyLog()
-        repo.initDailyLog(dailyLog, date)
+        repo.initDailyLog(dailyLog, stringDate)
     }
 
     private fun createNewDailyLog(): DailyLog {
