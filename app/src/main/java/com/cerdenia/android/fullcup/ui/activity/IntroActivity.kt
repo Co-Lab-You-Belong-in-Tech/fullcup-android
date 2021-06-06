@@ -1,13 +1,10 @@
 package com.cerdenia.android.fullcup.ui.activity
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.databinding.ActivitySecondaryBinding
 import com.cerdenia.android.fullcup.ui.fragment.IntroFragment
 
-class IntroActivity : AppCompatActivity(), IntroFragment.Callbacks {
+class IntroActivity : FullCupActivity(), IntroFragment.Callbacks {
     private lateinit var binding: ActivitySecondaryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,11 +12,12 @@ class IntroActivity : AppCompatActivity(), IntroFragment.Callbacks {
         binding = ActivitySecondaryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        fragmentContainer = binding.fragmentContainer.id
+
         if (savedInstanceState == null) {
-            val container = binding.fragmentContainer.id
             supportFragmentManager
                 .beginTransaction()
-                .add(container, IntroFragment.newInstance(0))
+                .add(fragmentContainer, IntroFragment.newInstance(0))
                 .commit()
         }
     }
@@ -29,18 +27,10 @@ class IntroActivity : AppCompatActivity(), IntroFragment.Callbacks {
         finish()
     }
 
-    override fun onDoneWithScreen(tag: String, flag: String?) {
-        when (flag) {
-            IntroFragment.FLAG_FIRST -> replaceFragmentWith(IntroFragment.newInstance(1))
-            IntroFragment.FLAG_SECOND -> onIntroSkipped()
+    override fun onNextClicked(page: Int) {
+        when (page) {
+            0 -> replaceFragmentWith(IntroFragment.newInstance(1), true)
+            1 -> onIntroSkipped()
         }
-    }
-
-    private fun replaceFragmentWith(fragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
-            .commit()
     }
 }

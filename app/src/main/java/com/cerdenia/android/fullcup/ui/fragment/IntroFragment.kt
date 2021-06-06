@@ -7,20 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.databinding.FragmentIntroBinding
-import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
 
 class IntroFragment : Fragment() {
     private var _binding: FragmentIntroBinding? = null
     private val binding get() = _binding!!
 
-    private val flagMap = mapOf(0 to FLAG_FIRST, 1 to FLAG_SECOND)
-    private val textMap = mapOf(
-        0 to R.string.self_care_intro_1,
-        1 to R.string.self_care_intro_2
-    )
-
-    interface Callbacks: OnDoneWithScreenListener {
+    interface Callbacks {
         fun onIntroSkipped()
+        fun onNextClicked(page: Int)
     }
 
     override fun onCreateView(
@@ -36,14 +30,19 @@ class IntroFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val callbacks = context as Callbacks?
-        val page = arguments?.getInt(PAGE) ?: 0
+        val page = arguments?.getInt(PAGE)
+
+        val textMap = mapOf(
+            0 to R.string.self_care_intro_1,
+            1 to R.string.self_care_intro_2
+        )
 
         binding.skipIntroButton.setOnClickListener {
             callbacks?.onIntroSkipped()
         }
 
         binding.root.setOnClickListener {
-            callbacks?.onDoneWithScreen(TAG, flagMap[page])
+            page?.let { callbacks?.onNextClicked(it) }
         }
 
         binding.mainTextView.text = textMap[page]?.let { getString(it) }
@@ -57,8 +56,6 @@ class IntroFragment : Fragment() {
     companion object {
         const val TAG = "IntroFragment"
         private const val PAGE = "PAGE"
-        const val FLAG_FIRST = "FLAG_1"
-        const val FLAG_SECOND = "FLAG_2"
 
         fun newInstance(page: Int) = IntroFragment().apply {
             arguments = Bundle().apply {
