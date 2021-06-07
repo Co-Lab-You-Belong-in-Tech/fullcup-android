@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.databinding.ActivityMainBinding
-import com.cerdenia.android.fullcup.ui.fragment.ActivityLogFragment
+import com.cerdenia.android.fullcup.ui.fragment.CalendarFragment
 import com.cerdenia.android.fullcup.ui.fragment.HomeFragment
 
 class MainActivity : FullCupActivity() {
@@ -31,7 +31,7 @@ class MainActivity : FullCupActivity() {
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> replaceFragmentWith(HomeFragment.newInstance())
-                R.id.nav_activity_log -> replaceFragmentWith(ActivityLogFragment.newInstance())
+                R.id.nav_activity_log -> replaceFragmentWith(CalendarFragment.newInstance())
                 R.id.nav_progress -> { } // TODO
                 R.id.nav_account -> { } // TODO
             }

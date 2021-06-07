@@ -4,6 +4,7 @@ import android.content.res.Resources
 import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.WEEKDAY
 import com.cerdenia.android.fullcup.WEEKEND
+import java.util.*
 
 object DateTimeUtils {
     // Accepts time in HH:mm format.
@@ -44,5 +45,33 @@ object DateTimeUtils {
             weekends.contains(dayString) -> WEEKEND
             else -> "ERROR"
         }
+    }
+
+    // Accepts a year, month, and date as Int. Returns date in YYYY-MM-dd format.
+    // Month is counted from 0, e.g. January is 0, February is 1, etc.
+    fun toDateString(y: Int, m: Int, d: Int): String {
+        val month: String = if (m + 1 in 0..9) "0${m + 1}" else "${m + 1}"
+        val day: String = if (d in 0..9) "0$d" else "$d"
+        return "$y-$month-$day"
+    }
+
+    // Accepts a string date in YYYY-MM-dd format.
+    fun toDate(dateString: String): Date {
+        val year = dateString
+            .substringBefore("-")
+            .toInt()
+        val month = dateString
+            .substringAfter("-")
+            .substringBefore("-")
+            .toInt()
+        val day = dateString
+            .substringAfter("-")
+            .substringAfter("-")
+            .toInt()
+        val timeInMillis: Long = Calendar.getInstance().run {
+            set(year, month - 1, day)
+            timeInMillis
+        }
+        return Date(timeInMillis)
     }
 }

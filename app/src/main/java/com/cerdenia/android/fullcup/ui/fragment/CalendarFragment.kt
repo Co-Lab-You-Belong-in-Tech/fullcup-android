@@ -6,11 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.cerdenia.android.fullcup.data.model.ActivityLog
 import com.cerdenia.android.fullcup.databinding.FragmentActivityLogBinding
+import com.cerdenia.android.fullcup.ui.dialog.DateExpandFragment
+import com.cerdenia.android.fullcup.util.DateTimeUtils
 import java.util.*
 
-class ActivityLogFragment : Fragment() {
+class CalendarFragment : Fragment() {
     private var _binding: FragmentActivityLogBinding? = null
     private val binding get() = _binding!!
 
@@ -18,7 +19,7 @@ class ActivityLogFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentActivityLogBinding
             .inflate(inflater, container, false)
         return binding.root
@@ -26,9 +27,18 @@ class ActivityLogFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.calendarView.date = Date().time
-        binding.calendarView.setOnDateChangeListener() { _, p1, p2, p3 ->
-            Log.d(TAG, "Calendar date clicked! $p1, $p2, $p3")
+        binding.calendarView.apply {
+            date = Date().time
+            maxDate = Date().time
+
+            setOnDateChangeListener { _, y, m, d ->
+                val dateString = DateTimeUtils.toDateString(y, m, d)
+                Log.d(TAG, "Calendar date clicked! $dateString")
+
+                DateExpandFragment
+                    .newInstance(dateString)
+                    .show(parentFragmentManager, DateExpandFragment.TAG)
+            }
         }
     }
 
@@ -40,6 +50,6 @@ class ActivityLogFragment : Fragment() {
     companion object {
         private const val TAG = "ActivityLogFragment"
 
-        fun newInstance(): ActivityLogFragment = ActivityLogFragment()
+        fun newInstance(): CalendarFragment = CalendarFragment()
     }
 }

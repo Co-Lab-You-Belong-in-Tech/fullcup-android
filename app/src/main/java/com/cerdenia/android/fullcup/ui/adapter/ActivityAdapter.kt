@@ -7,6 +7,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cerdenia.android.fullcup.R
+import com.cerdenia.android.fullcup.data.model.ActivityLog
 import com.cerdenia.android.fullcup.data.model.ColoredActivity
 import com.cerdenia.android.fullcup.data.model.SelectableActivity
 import com.cerdenia.android.fullcup.util.ext.qualified
@@ -17,7 +18,6 @@ class ActivityAdapter(
     private val listener: Listener? = null
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
-
     interface Listener {
         fun onCheckboxItemClicked(activity: String, isChecked: Boolean)
     }
@@ -26,6 +26,7 @@ class ActivityAdapter(
         return when (activities[position]) {
             is ColoredActivity -> TYPE_COLORED
             is SelectableActivity -> TYPE_CHECKBOX
+            is ActivityLog -> TYPE_ACTIVITY_LOG
             else -> throw Exception("Unexpected item type")
         }
     }
@@ -44,6 +45,12 @@ class ActivityAdapter(
                     .inflate(R.layout.list_item_activity_checkbox, parent, false)
                 CheckboxHolder(view)
             }
+            TYPE_ACTIVITY_LOG -> {
+                val view = LayoutInflater
+                    .from(parent.context)
+                    .inflate(R.layout.list_item_activity_log, parent, false)
+                ActivityLogHolder(view)
+            }
             else -> throw Exception("Unexpected item type")
         }
     }
@@ -53,6 +60,7 @@ class ActivityAdapter(
         when (holder) {
             is ColoredHolder -> holder.bind(activity as ColoredActivity)
             is CheckboxHolder -> holder.bind(activity as SelectableActivity)
+            is ActivityLogHolder -> holder.bind(activity as ActivityLog)
             else -> throw Exception("Unexpected item type")
         }
     }
@@ -92,9 +100,31 @@ class ActivityAdapter(
         }
     }
 
+    private inner class ActivityLogHolder(view: View) :
+        RecyclerView.ViewHolder(view),
+        View.OnClickListener
+    {
+        private lateinit var activityLog: ActivityLog
+        private val activityTextView: TextView? = view.findViewById(R.id.activity_text_view)
+        private val timeTextView: TextView? = view.findViewById(R.id.time_text_view)
+
+        init { itemView.setOnClickListener(this) }
+
+        fun bind(activityLog: ActivityLog) {
+            this.activityLog = activityLog
+            activityTextView?.text = activityLog.name
+            timeTextView?.text = "TIME" // change later
+        }
+
+        override fun onClick(p0: View?) {
+            // TODO
+        }
+    }
+
     companion object {
         private const val TAG = "ActivityAdapter"
         private const val TYPE_COLORED = 0
         private const val TYPE_CHECKBOX = 1
+        private const val TYPE_ACTIVITY_LOG = 2
     }
 }
