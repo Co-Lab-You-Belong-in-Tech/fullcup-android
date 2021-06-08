@@ -10,6 +10,7 @@ import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.data.model.ActivityLog
 import com.cerdenia.android.fullcup.data.model.ColoredActivity
 import com.cerdenia.android.fullcup.data.model.SelectableActivity
+import com.cerdenia.android.fullcup.util.ext.hide
 import com.cerdenia.android.fullcup.util.ext.qualified
 import com.google.android.material.imageview.ShapeableImageView
 
@@ -113,7 +114,7 @@ class ActivityAdapter(
         fun bind(activityLog: ActivityLog) {
             this.activityLog = activityLog
             activityTextView?.text = activityLog.name
-            timeTextView?.text = "TIME" // change later
+            timeTextView?.hide() // TODO: change later
         }
 
         override fun onClick(p0: View?) {

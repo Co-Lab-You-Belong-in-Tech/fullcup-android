@@ -7,16 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.cerdenia.android.fullcup.DAY_NAME_PATTERN
 import com.cerdenia.android.fullcup.databinding.FragmentDateExpandBinding
 import com.cerdenia.android.fullcup.ui.adapter.ActivityAdapter
 import com.cerdenia.android.fullcup.ui.viewmodel.DateExpandViewModel
 import com.cerdenia.android.fullcup.util.DateTimeUtils
-import com.cerdenia.android.fullcup.util.ext.filterDone
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
 
 class DateExpandFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentDateExpandBinding

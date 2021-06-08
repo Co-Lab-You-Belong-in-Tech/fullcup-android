@@ -14,15 +14,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FullCup"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.activity.BaseActivity"></activity>
-        <activity
-            android:name=".ui.activity.IntroActivity"
+        <activity android:name=".ui.activity.SplashActivity"
+            android:theme="@style/Theme.FullCup.SplashScreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.activity.IntroActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".ui.activity.OnboardingActivity"
