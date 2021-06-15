@@ -1,6 +1,5 @@
 package com.cerdenia.android.fullcup.ui.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,12 +23,6 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
 
     private lateinit var viewModel: SetRemindersViewModel
     private lateinit var adapter: ReminderAdapter
-    private var callbacks: OnDoneWithScreenListener? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callbacks = context as OnDoneWithScreenListener?
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +47,8 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
         super.onViewCreated(view, savedInstanceState)
         binding.setRemindersButton.setOnClickListener {
             viewModel.confirmReminders()
-            callbacks?.onDoneWithScreen(TAG)
+            val callback = context as OnDoneWithScreenListener?
+            callback?.onDoneWithScreen(TAG)
         }
     }
 
@@ -62,6 +56,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
         super.onStart()
         viewModel.remindersLive.observe(viewLifecycleOwner, { reminders ->
             binding.progressBar.hide()
+            viewModel.updateAvailableTimes(reminders)
             adapter.updateList(reminders.sortedBy { it.isSet })
             // Enable Set Reminders button if all reminders are ready.
             val isReady = !reminders.any { !it.isSet }
@@ -88,11 +83,6 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        callbacks = null
     }
 
     companion object {

@@ -23,7 +23,9 @@ class OnboardingActivity : FullCupActivity(),
         ActivityResultContracts.StartActivityForResult()
     ) {
         // On Activity result:
-        replaceFragmentWith(SetRemindersIntroFragment.newInstance(), true)
+        //replaceFragmentWith(SetRemindersIntroFragment.newInstance(), true)
+        MainActivity.newIntent(this).run (::startActivity)
+        finish()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,8 +73,9 @@ class OnboardingActivity : FullCupActivity(),
             SetRemindersIntroFragment.TAG ->
                 replaceFragmentWith(SetRemindersFragment.newInstance(), true)
             SetRemindersFragment.TAG -> {
-                MainActivity.newIntent(this).run (::startActivity)
-                finish()
+                onAllowedCalendarAccess() // temporary
+                //MainActivity.newIntent(this).run (::startActivity)
+                //finish()
             }
         }
     }
