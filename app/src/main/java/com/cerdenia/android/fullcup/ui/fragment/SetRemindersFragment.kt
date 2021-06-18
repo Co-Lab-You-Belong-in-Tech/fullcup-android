@@ -1,10 +1,14 @@
 package com.cerdenia.android.fullcup.ui.fragment
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +27,11 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
 
     private lateinit var viewModel: SetRemindersViewModel
     private lateinit var adapter: ReminderAdapter
+
+    private val permissions = arrayOf(
+        Manifest.permission.READ_CALENDAR,
+        Manifest.permission.WRITE_CALENDAR
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,10 +55,38 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.setRemindersButton.setOnClickListener {
-            viewModel.confirmReminders()
-            val callback = context as OnDoneWithScreenListener?
-            callback?.onDoneWithScreen(TAG)
+            val isPermitted = checkCalendarPermissions()
+            if (isPermitted) {
+                viewModel.confirmReminders()
+                val callback = context as OnDoneWithScreenListener?
+                callback?.onDoneWithScreen(TAG)
+            } else {
+                ActivityCompat.requestPermissions(
+                    requireActivity(), permissions, CALENDAR_PERMISSIONS
+                )
+            }
         }
+    }
+
+    private fun checkCalendarPermissions(): Boolean {
+        var isPermitted = false
+        permissions.forEach { permission ->
+            isPermitted = ContextCompat.checkSelfPermission(
+                requireContext(), permission
+            ) == PackageManager.PERMISSION_GRANTED
+        }
+        return isPermitted
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        val isGranted: Boolean = grantResults.all { it == 0 }
+        if (isGranted) viewModel.confirmReminders()
+        val callback = context as OnDoneWithScreenListener?
+        callback?.onDoneWithScreen(TAG)
     }
 
     override fun onStart() {
@@ -80,12 +117,17 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
             .show(parentFragmentManager, SetReminderFragment.TAG)
     }
 
+    fun onAllowedCalendarAccess() {
+        viewModel.confirmReminders()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     companion object {
+        const val CALENDAR_PERMISSIONS = 69
         const val TAG = "SetRemindersFragment"
 
         fun newInstance(): SetRemindersFragment {

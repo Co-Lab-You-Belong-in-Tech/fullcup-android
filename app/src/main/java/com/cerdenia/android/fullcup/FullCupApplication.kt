@@ -5,6 +5,7 @@ import com.cerdenia.android.fullcup.data.FullCupRepository
 import com.cerdenia.android.fullcup.data.api.WebService
 import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.data.local.db.FullCupDatabase
+import com.cerdenia.android.fullcup.util.CalendarWriter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -19,6 +20,7 @@ class FullCupApplication : Application() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val webService = retrofit.create(WebService::class.java)
-        FullCupRepository.init(database, webService)
+        val calendarWriter = CalendarWriter(this)
+        FullCupRepository.init(database, webService, calendarWriter)
     }
 }

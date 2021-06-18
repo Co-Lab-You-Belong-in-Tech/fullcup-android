@@ -7,10 +7,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import com.cerdenia.android.fullcup.databinding.ActivityOnboardingBinding
 import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
 import com.cerdenia.android.fullcup.ui.fragment.*
 import java.util.*
+
 
 class OnboardingActivity : FullCupActivity(),
     GetStartedFragment.Callbacks,
@@ -73,45 +75,18 @@ class OnboardingActivity : FullCupActivity(),
             SetRemindersIntroFragment.TAG ->
                 replaceFragmentWith(SetRemindersFragment.newInstance(), true)
             SetRemindersFragment.TAG -> {
-                onAllowedCalendarAccess() // temporary
-                //MainActivity.newIntent(this).run (::startActivity)
-                //finish()
+                MainActivity.newIntent(this).run (::startActivity)
             }
         }
     }
 
-    private fun writeToCalendar() {
-        /*
-        reminders.forEach { reminder ->
-            val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val date = calendar.get(Calendar.DAY_OF_MONTH)
-            val hour = reminder.time?.substringBefore(":")?.toInt() ?: 0
-            val minute = reminder.time?.substringAfter(":")?.toInt() ?: 0
-
-            val startMillis: Long = Calendar.getInstance().run {
-                set(year, month, date, hour, minute)
-                timeInMillis
-            }
-
-            val endMillis: Long = Calendar.getInstance().run {
-                set(year, month, date, hour + 1, minute)
-                timeInMillis
-            }
-            val intent = Intent(Intent.ACTION_INSERT)
-                .setData(CalendarContract.Events.CONTENT_URI)
-                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis)
-                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endMillis)
-                .putExtra(CalendarContract.Events.TITLE, reminder.category)
-
-            countdown -= 1
-            launchCalendar.launch(intent)
-        }
-         */
+    private fun getCurrentFragment(): Fragment? {
+        return supportFragmentManager.findFragmentById(binding.fragmentContainer.id)
     }
 
     companion object {
+        private const val REQUEST_CODE_CALENDAR = 42
+
         fun newIntent(packageContext: Context): Intent {
             return Intent(packageContext, OnboardingActivity::class.java)
         }
