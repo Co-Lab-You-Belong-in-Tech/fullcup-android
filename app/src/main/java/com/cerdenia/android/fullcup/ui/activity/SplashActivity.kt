@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {
@@ -12,8 +13,14 @@ class SplashActivity : AppCompatActivity() {
         val binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val nextActivity = when {
+            FullCupPreferences.isNewUser -> IntroActivity.newIntent(this)
+            FullCupPreferences.isOnboarded -> MainActivity.newIntent(this)
+            else -> OnboardingActivity.newIntent(this)
+        }
+
         Handler(Looper.getMainLooper()).postDelayed({
-            IntroActivity.newIntent(this).run(::startActivity)
+            startActivity(OnboardingActivity.newIntent(this))
             finish()
         }, 1000)
     }

@@ -11,6 +11,9 @@ object FullCupPreferences {
     private const val ACTIVITIES = "activities"
     private const val USER_NAME = "user_name"
     private const val SERVER_IDS = "server_ids"
+    private const val EVENT_IDS = "event_ids"
+    private const val IS_NEW_USER = "is_new_user"
+    private const val IS_ONBOARDED = "is_onboarded"
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)
@@ -40,5 +43,24 @@ object FullCupPreferences {
             ?: emptyList()
         set(value) = preferences.edit { editor ->
             editor.putStringSet(SERVER_IDS, value.toSet())
+        }
+
+    var eventIDs: List<String>
+        get() = preferences.getStringSet(EVENT_IDS, emptySet())?.toList()
+            ?: emptyList()
+        set(value) = preferences.edit { editor ->
+            editor.putStringSet(EVENT_IDS, value.toSet())
+        }
+
+    var isNewUser: Boolean
+        get() = preferences.getBoolean(IS_NEW_USER, true)
+        set(value) = preferences.edit { editor ->
+            editor.putBoolean(IS_NEW_USER, value)
+        }
+
+    var isOnboarded: Boolean
+        get() = preferences.getBoolean(IS_ONBOARDED, false)
+        set(value) = preferences.edit { editor ->
+            editor.putBoolean(IS_ONBOARDED, value)
         }
 }

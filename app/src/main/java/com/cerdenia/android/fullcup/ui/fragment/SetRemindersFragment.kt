@@ -12,10 +12,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.data.model.Reminder
 import com.cerdenia.android.fullcup.databinding.FragmentSetRemindersBinding
 import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
 import com.cerdenia.android.fullcup.ui.adapter.ReminderAdapter
+import com.cerdenia.android.fullcup.ui.dialog.AlertFragment
 import com.cerdenia.android.fullcup.ui.dialog.SetReminderFragment
 import com.cerdenia.android.fullcup.ui.viewmodel.SetRemindersViewModel
 import com.cerdenia.android.fullcup.util.ext.hide
@@ -58,8 +60,10 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
             val isPermitted = checkCalendarPermissions()
             if (isPermitted) {
                 viewModel.confirmReminders()
-                val callback = context as OnDoneWithScreenListener?
-                callback?.onDoneWithScreen(TAG)
+                AlertFragment
+                    .newInstance(getString(R.string.you_re_all_set),
+                        getString(R.string.your_google_calendar))
+                    .show(parentFragmentManager, AlertFragment.TAG)
             } else {
                 ActivityCompat.requestPermissions(
                     requireActivity(), permissions, CALENDAR_PERMISSIONS
@@ -84,17 +88,20 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
         grantResults: IntArray
     ) {
         val isGranted: Boolean = grantResults.all { it == 0 }
-        if (isGranted) viewModel.confirmReminders()
-        val callback = context as OnDoneWithScreenListener?
-        callback?.onDoneWithScreen(TAG)
+        if (isGranted) {
+            viewModel.confirmReminders()
+            AlertFragment
+                .newInstance(getString(R.string.you_re_all_set),
+                    getString(R.string.your_google_calendar))
+                .show(parentFragmentManager, AlertFragment.TAG)
+        }
     }
 
     override fun onStart() {
         super.onStart()
         viewModel.remindersLive.observe(viewLifecycleOwner, { reminders ->
             binding.progressBar.hide()
-            viewModel.updateAvailableTimes(reminders)
-            adapter.updateList(reminders.sortedBy { it.isSet })
+            adapter.updateList(reminders.sortedBy { !it.isSet })
             // Enable Set Reminders button if all reminders are ready.
             val isReady = !reminders.any { !it.isSet }
             binding.setRemindersButton.isEnabled = isReady
@@ -109,16 +116,21 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
                 viewModel.updateReminder(reminder)
             }
         )
+
+        parentFragmentManager.setFragmentResultListener(
+            AlertFragment.CLOSE,
+            viewLifecycleOwner,
+            { _, _ ->
+                val callback = context as OnDoneWithScreenListener?
+                callback?.onDoneWithScreen(TAG)
+            }
+        )
     }
 
     override fun onItemSelected(reminder: Reminder) {
         SetReminderFragment
             .newInstance(reminder, viewModel.getAvailableTimes())
             .show(parentFragmentManager, SetReminderFragment.TAG)
-    }
-
-    fun onAllowedCalendarAccess() {
-        viewModel.confirmReminders()
     }
 
     override fun onDestroyView() {

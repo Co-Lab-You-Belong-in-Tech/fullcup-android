@@ -1,17 +1,41 @@
 package com.cerdenia.android.fullcup.util
 
+import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
+import android.os.Bundle
 import android.provider.CalendarContract
 import android.util.Log
 import com.cerdenia.android.fullcup.DAILY
 import com.cerdenia.android.fullcup.WEEKDAY
 import com.cerdenia.android.fullcup.WEEKEND
 import com.cerdenia.android.fullcup.data.model.Reminder
+import java.net.URI
 import java.util.*
 
 class CalendarWriter(private val context: Context) {
+    fun addFullCupCalendar(): Long? {
+        val values = ContentValues().apply {
+            put(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, "Full Cup")
+        }
+        val uri: Uri? = context.contentResolver
+            .insert(CalendarContract.Calendars.CONTENT_URI, values)
+
+        Log.d(TAG, "Created $uri")
+        return uri?.lastPathSegment?.toLong()
+    }
+
+    fun deleteEvents(eventIDs: List<String>) {
+        eventIDs.forEach { eventID ->
+            val deleteUri: Uri = ContentUris
+                .withAppendedId(CalendarContract.Events.CONTENT_URI, eventID.toLong())
+            val rows: Int = context.contentResolver
+                .delete(deleteUri, null, null)
+            Log.i(TAG, "Rows deleted: $rows")
+        }
+    }
+
     fun writeToCalendar(reminder: Reminder): String? {
         reminder.setStartDateTime()
         val dt = DateTimeUtils.breakdown(reminder.startDateTime!!)

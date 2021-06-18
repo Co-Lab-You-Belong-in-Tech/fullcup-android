@@ -34,10 +34,7 @@ class SetReminderFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val reminder = arguments?.getSerializable(REMINDER) as Reminder
-        val times = arguments?.getStringArray(AVAILABLE_TIMES)?.toMutableList()
-            ?: mutableListOf()
-
-        times.add(reminder.time)
+        val times = arguments?.getStringArray(AVAILABLE_TIMES) ?: emptyArray()
         val durationsInMins = listOf(10, 20, 30, 40, 50, 60)
 
         val buttonMap = mapOf(

@@ -7,7 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
+import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.databinding.ActivityOnboardingBinding
 import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
 import com.cerdenia.android.fullcup.ui.fragment.*
@@ -69,26 +69,22 @@ class OnboardingActivity : FullCupActivity(),
             SelectActivitiesFragment.TAG ->
                 replaceFragmentWith(HelloUserFragment.newInstance(), true)
             HelloUserFragment.TAG ->
-                replaceFragmentWith(CalendarSignInFragment.newInstance(), true)
+                replaceFragmentWith(SetRemindersIntroFragment.newInstance(), true)
             CalendarSignInFragment.TAG ->
                 replaceFragmentWith(SetRemindersIntroFragment.newInstance(), true)
             SetRemindersIntroFragment.TAG ->
                 replaceFragmentWith(SetRemindersFragment.newInstance(), true)
             SetRemindersFragment.TAG -> {
+                FullCupPreferences.isOnboarded = true
                 MainActivity.newIntent(this).run (::startActivity)
+                finish()
             }
         }
     }
 
-    private fun getCurrentFragment(): Fragment? {
-        return supportFragmentManager.findFragmentById(binding.fragmentContainer.id)
-    }
-
     companion object {
-        private const val REQUEST_CODE_CALENDAR = 42
-
-        fun newIntent(packageContext: Context): Intent {
-            return Intent(packageContext, OnboardingActivity::class.java)
+        fun newIntent(context: Context): Intent {
+            return Intent(context, OnboardingActivity::class.java)
         }
     }
 }
