@@ -48,7 +48,7 @@ class CalendarSignInFragment : Fragment() {
 
                 // [START] Temporary result.
                 if (isAllowed) {
-                    callbacks?.onAllowedCalendarAccess()
+                    callbacks?.onDoneWithScreen(TAG)
                 } else {
                     callbacks?.onDoneWithScreen(TAG)
                 }

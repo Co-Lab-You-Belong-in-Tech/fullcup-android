@@ -10,6 +10,7 @@ import com.cerdenia.android.fullcup.data.local.db.FullCupDatabase
 import com.cerdenia.android.fullcup.data.model.ActivityLog
 import com.cerdenia.android.fullcup.data.model.DailyLog
 import com.cerdenia.android.fullcup.data.model.Reminder
+import com.cerdenia.android.fullcup.util.CalendarWriter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,7 +18,8 @@ import java.util.concurrent.Executors
 
 class FullCupRepository private constructor(
     database: FullCupDatabase,
-    private val webService: WebService
+    private val webService: WebService,
+    private val calendarWriter: CalendarWriter
 ) {
     private val reminderDao = database.reminderDao()
     private val logDao = database.logDao()
@@ -101,12 +103,34 @@ class FullCupRepository private constructor(
     }
     // [END] Daily Log methods
 
+    // [START] Calendar methods
+    fun syncReminders(reminders: List<Reminder>) {
+        executor.execute {
+            calendarWriter.deleteEvents(FullCupPreferences.eventIDs)
+            val eventIDs = mutableListOf<String>()
+            reminders.forEach { reminder ->
+                val eventID = calendarWriter.writeToCalendar(reminder)
+                eventID?.let { eventIDs.add(it) }
+                Log.d(TAG, "Saved event: $eventID")
+            }
+
+            FullCupPreferences.eventIDs = eventIDs
+        }
+    }
+    // [END] Calendar methods
+
     companion object {
         private const val TAG = "FullCupRepository"
         private var INSTANCE: FullCupRepository? = null
 
-        fun init(database: FullCupDatabase, webService: WebService) {
-            if (INSTANCE == null) INSTANCE = FullCupRepository(database, webService)
+        fun init(
+            database: FullCupDatabase,
+            webService: WebService,
+            calendarWriter: CalendarWriter
+        ) {
+            if (INSTANCE == null) {
+                INSTANCE = FullCupRepository(database, webService, calendarWriter)
+            }
         }
 
         fun getInstance(): FullCupRepository {

@@ -74,4 +74,6 @@
     <string name="skip_intro">SKIP INTRO</string>
     <string name="self_care_intro_1">What you can’t do for yourself, you can’t effectively do for others. In order to bring your best self to work and play, you have to fill your cup.</string>
     <string name="self_care_intro_2">Self-care is a crucial step in maintaining a healthy relationship with yourself and with others. It’s not possible to pour from an empty cup.</string>
+    <string name="you_re_all_set">You\'re all set!</string>
+    <string name="your_google_calendar">Your google calendar has been successfully synced. You will receive notifications via google to remind you of your scheduled activities for the day.</string>
 </resources>

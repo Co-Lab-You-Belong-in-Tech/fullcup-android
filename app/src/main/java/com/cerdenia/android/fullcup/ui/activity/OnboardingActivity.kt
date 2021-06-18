@@ -7,10 +7,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
 import androidx.activity.result.contract.ActivityResultContracts
+import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.databinding.ActivityOnboardingBinding
 import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
 import com.cerdenia.android.fullcup.ui.fragment.*
 import java.util.*
+
 
 class OnboardingActivity : FullCupActivity(),
     GetStartedFragment.Callbacks,
@@ -23,7 +25,9 @@ class OnboardingActivity : FullCupActivity(),
         ActivityResultContracts.StartActivityForResult()
     ) {
         // On Activity result:
-        replaceFragmentWith(SetRemindersIntroFragment.newInstance(), true)
+        //replaceFragmentWith(SetRemindersIntroFragment.newInstance(), true)
+        MainActivity.newIntent(this).run (::startActivity)
+        finish()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,52 +69,22 @@ class OnboardingActivity : FullCupActivity(),
             SelectActivitiesFragment.TAG ->
                 replaceFragmentWith(HelloUserFragment.newInstance(), true)
             HelloUserFragment.TAG ->
-                replaceFragmentWith(CalendarSignInFragment.newInstance(), true)
+                replaceFragmentWith(SetRemindersIntroFragment.newInstance(), true)
             CalendarSignInFragment.TAG ->
                 replaceFragmentWith(SetRemindersIntroFragment.newInstance(), true)
             SetRemindersIntroFragment.TAG ->
                 replaceFragmentWith(SetRemindersFragment.newInstance(), true)
             SetRemindersFragment.TAG -> {
+                FullCupPreferences.isOnboarded = true
                 MainActivity.newIntent(this).run (::startActivity)
                 finish()
             }
         }
     }
 
-    private fun writeToCalendar() {
-        /*
-        reminders.forEach { reminder ->
-            val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val date = calendar.get(Calendar.DAY_OF_MONTH)
-            val hour = reminder.time?.substringBefore(":")?.toInt() ?: 0
-            val minute = reminder.time?.substringAfter(":")?.toInt() ?: 0
-
-            val startMillis: Long = Calendar.getInstance().run {
-                set(year, month, date, hour, minute)
-                timeInMillis
-            }
-
-            val endMillis: Long = Calendar.getInstance().run {
-                set(year, month, date, hour + 1, minute)
-                timeInMillis
-            }
-            val intent = Intent(Intent.ACTION_INSERT)
-                .setData(CalendarContract.Events.CONTENT_URI)
-                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis)
-                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endMillis)
-                .putExtra(CalendarContract.Events.TITLE, reminder.category)
-
-            countdown -= 1
-            launchCalendar.launch(intent)
-        }
-         */
-    }
-
     companion object {
-        fun newIntent(packageContext: Context): Intent {
-            return Intent(packageContext, OnboardingActivity::class.java)
+        fun newIntent(context: Context): Intent {
+            return Intent(context, OnboardingActivity::class.java)
         }
     }
 }
