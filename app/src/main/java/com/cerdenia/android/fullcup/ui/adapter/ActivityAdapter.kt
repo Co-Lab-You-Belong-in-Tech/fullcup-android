@@ -1,8 +1,6 @@
 package com.cerdenia.android.fullcup.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
@@ -12,7 +10,7 @@ import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.data.model.ActivityLog
 import com.cerdenia.android.fullcup.data.model.ColoredActivity
 import com.cerdenia.android.fullcup.data.model.SelectableActivity
-import com.cerdenia.android.fullcup.util.ext.hide
+import com.cerdenia.android.fullcup.util.DateTimeUtils
 import com.cerdenia.android.fullcup.util.ext.qualified
 import com.google.android.material.imageview.ShapeableImageView
 
@@ -116,7 +114,7 @@ class ActivityAdapter(
         fun bind(activityLog: ActivityLog) {
             this.activityLog = activityLog
             activityTextView?.text = activityLog.name
-            timeTextView?.hide() // TODO: change later
+            timeTextView?.text = DateTimeUtils.to12HourFormat(activityLog.time)
         }
 
         override fun onClick(p0: View?) {

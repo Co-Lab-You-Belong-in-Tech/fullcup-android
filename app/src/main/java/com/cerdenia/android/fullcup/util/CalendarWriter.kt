@@ -25,9 +25,9 @@ class CalendarWriter(private val context: Context) {
             val description = context.getString(R.string.a_reminder_from_full_cup)
             val rrule = when (reminder.recurrence) {
                 // Everything defaults to a week.
+                WEEKDAY -> "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;INTERVAL=1;COUNT=5"
+                WEEKEND -> "FREQ=WEEKLY;BYDAY=SA,SU;INTERVAL=1;COUNT=2"
                 DAILY -> "FREQ=DAILY;INTERVAL=1;COUNT=7"
-                WEEKDAY -> "FREQ=WEEKLY;BYDAY=SA,SU;INTERVAL=1;COUNT=2"
-                WEEKEND -> "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;INTERVAL=1;COUNT=5"
                 else -> ""
             }
 

@@ -13,14 +13,12 @@ class SplashActivity : AppCompatActivity() {
         val binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val nextActivity = when {
-            FullCupPreferences.isNewUser -> IntroActivity.newIntent(this)
-            FullCupPreferences.isOnboarded -> MainActivity.newIntent(this)
-            else -> OnboardingActivity.newIntent(this)
-        }
-
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(OnboardingActivity.newIntent(this))
+            startActivity(when {
+                FullCupPreferences.isNewUser -> IntroActivity.newIntent(this)
+                FullCupPreferences.isOnboarded -> MainActivity.newIntent(this)
+                else -> OnboardingActivity.newIntent(this)
+            })
             finish()
         }, 1000)
     }
