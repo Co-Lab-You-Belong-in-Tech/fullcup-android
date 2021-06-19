@@ -13,7 +13,6 @@ import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
 import com.cerdenia.android.fullcup.ui.fragment.*
 import java.util.*
 
-
 class OnboardingActivity : FullCupActivity(),
     GetStartedFragment.Callbacks,
     CalendarSignInFragment.Callbacks,
@@ -58,7 +57,6 @@ class OnboardingActivity : FullCupActivity(),
         ContentUris.appendId(builder, Date().time)
         val intent = Intent(Intent.ACTION_VIEW)
             .setData(builder.build())
-
         calendarActivityResult.launch(intent)
     }
 

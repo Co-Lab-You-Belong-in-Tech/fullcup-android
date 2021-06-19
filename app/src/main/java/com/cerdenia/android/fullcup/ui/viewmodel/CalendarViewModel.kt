@@ -1,17 +1,16 @@
 package com.cerdenia.android.fullcup.ui.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.cerdenia.android.fullcup.data.FullCupRepository
-import com.cerdenia.android.fullcup.data.model.DailyLog
 
-class DateExpandViewModel : ViewModel() {
+class CalendarViewModel : ViewModel() {
     private val repo = FullCupRepository.getInstance()
 
+    val earliestLogDateLive = repo.getEarliestLogDate()
     private val dateStringLive = MutableLiveData<String>()
-    val dailyLoglive = Transformations.switchMap(dateStringLive) { dateString ->
+    val dailyLogLive = Transformations.switchMap(dateStringLive) { dateString ->
         repo.getLogsByDate(dateString)
     }
 

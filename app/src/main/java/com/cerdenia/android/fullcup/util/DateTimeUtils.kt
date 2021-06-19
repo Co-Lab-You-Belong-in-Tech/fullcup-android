@@ -67,29 +67,29 @@ object DateTimeUtils {
         val year = getYear(dateString)
         val month = getMonth(dateString)
         val day = getDayOfMonth(dateString)
-        val timeInMillis: Long = Calendar.getInstance().run {
-            set(year, month - 1, day)
-            timeInMillis
-        }
+        val timeInMillis = getTimeInMillis(year, month - 1, day)
         return Date(timeInMillis)
     }
 
-    fun breakdown(dateString: String, timeString: String): DateTimeBreakdown {
-        return DateTimeBreakdown(
-            getYear(dateString),
-            getMonth(dateString),
-            getDayOfMonth(dateString),
-            getHourOfDay(timeString),
-            getMinutes(timeString)
-        )
+    fun getTimeInMillis(y: Int, mo: Int, d: Int, h: Int = 0, mi: Int = 0): Long {
+        return Calendar.getInstance().run {
+            set(y, mo, d, h, mi)
+            timeInMillis
+        }
     }
 
     fun breakdown(dateTimeString: String): DateTimeBreakdown {
-        val dateString = dateTimeString.substringBefore(" ")
+        val dateString = dateTimeString
+            .substringBefore(" ")
         val timeString = dateTimeString
             .substringAfter(" ")
             .substringBeforeLast(":")
-        return breakdown(dateString, timeString)
+        val y = getYear(dateString)
+        val mo = getMonth(dateString) - 1
+        val d = getDayOfMonth(dateString)
+        val h = getHourOfDay(timeString)
+        val mi = getMinute(timeString)
+        return DateTimeBreakdown(y, mo, d, h, mi)
     }
 
     private fun getYear(dateString: String): Int {
@@ -103,7 +103,6 @@ object DateTimeUtils {
             .substringAfter("-")
             .substringBefore("-")
             .toInt()
-            .minus(1)
     }
 
     private fun getDayOfMonth(dateString: String): Int {
@@ -119,7 +118,7 @@ object DateTimeUtils {
             .toInt()
     }
 
-    private fun getMinutes(timeString: String): Int {
+    private fun getMinute(timeString: String): Int {
         return timeString.substringAfter(":").toInt()
     }
 }

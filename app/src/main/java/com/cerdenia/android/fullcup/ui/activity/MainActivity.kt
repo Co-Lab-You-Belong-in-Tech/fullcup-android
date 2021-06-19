@@ -28,12 +28,18 @@ class MainActivity : FullCupActivity() {
 
     override fun onStart() {
         super.onStart()
+        binding.bottomNavigationView.selectedItemId = R.id.nav_home
+
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> replaceFragmentWith(HomeFragment.newInstance())
                 R.id.nav_activity_log -> replaceFragmentWith(CalendarFragment.newInstance())
                 R.id.nav_progress -> { } // TODO
-                R.id.nav_account -> { } // TODO
+                R.id.nav_account -> {
+                    // Just for now.
+                    binding.bottomNavigationView.selectedItemId = R.id.nav_home
+                    SettingsActivity.newIntent(this).run (::startActivity)
+                }
             }
             true
         }

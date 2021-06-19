@@ -107,6 +107,12 @@ class HomeViewModel : ViewModel() {
                 }
             }
 
+            // Update time on each activity log based on set reminders.
+            source?.activities?.forEach { activity ->
+                val reminder = remindersLive.value?.find { it.name == activity.name }
+                reminder?.time?.let { activity.time = it }
+            }
+
             dailyLogLive.value = source
             if (activitiesToAdd.size + activitiesToDelete.size > 0) {
                 // If there is anything to add or delete, update DB.

@@ -14,7 +14,7 @@ data class ActivityLog(
     val name: String,
     @SuppressLint("SimpleDateFormat")
     val date: String = SimpleDateFormat(DATE_PATTERN).format(Date()),
-    //var time: String = "00:00",
+    var time: String = "00:00",
     var note: String = "",
     var isDone: Boolean = false,
 ) : Serializable

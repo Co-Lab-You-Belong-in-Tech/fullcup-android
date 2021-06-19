@@ -90,7 +90,7 @@ class SetReminderFragment : BottomSheetDialogFragment() {
         }
 
         binding.confirmButton.setOnClickListener {
-            parentFragmentManager.setFragmentResult(KEY_CONFIRM, Bundle().apply {
+            parentFragmentManager.setFragmentResult(CONFIRM, Bundle().apply {
                 putSerializable(REMINDER, reminder)
             })
             dismiss()
@@ -99,7 +99,7 @@ class SetReminderFragment : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "SetReminderFragment"
-        const val KEY_CONFIRM = "KEY_CONFIRM"
+        const val CONFIRM = "CONFIRM"
         const val REMINDER = "REMINDER"
         const val AVAILABLE_TIMES = "AVAILABLE_TIMES"
 
