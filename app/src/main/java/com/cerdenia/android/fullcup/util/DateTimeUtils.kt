@@ -85,7 +85,7 @@ object DateTimeUtils {
             .substringAfter(" ")
             .substringBeforeLast(":")
         val y = getYear(dateString)
-        val mo = getMonth(dateString)
+        val mo = getMonth(dateString) - 1
         val d = getDayOfMonth(dateString)
         val h = getHourOfDay(timeString)
         val mi = getMinute(timeString)
@@ -103,7 +103,6 @@ object DateTimeUtils {
             .substringAfter("-")
             .substringBefore("-")
             .toInt()
-            .minus(1)
     }
 
     private fun getDayOfMonth(dateString: String): Int {

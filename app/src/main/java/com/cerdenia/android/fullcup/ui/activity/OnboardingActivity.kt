@@ -57,7 +57,6 @@ class OnboardingActivity : FullCupActivity(),
         ContentUris.appendId(builder, Date().time)
         val intent = Intent(Intent.ACTION_VIEW)
             .setData(builder.build())
-
         calendarActivityResult.launch(intent)
     }
 

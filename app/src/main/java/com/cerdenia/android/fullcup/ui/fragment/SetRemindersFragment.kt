@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -35,6 +35,14 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
         Manifest.permission.WRITE_CALENDAR
     )
 
+    private val calendarPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val isGranted = permissions.all { it.value == true }
+        Log.d(TAG, "Permission result: $isGranted")
+        if (isGranted) confirmReminders()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)
@@ -57,43 +65,11 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.setRemindersButton.setOnClickListener {
-            val isPermitted = checkCalendarPermissions()
-            if (isPermitted) {
-                viewModel.confirmReminders()
-                AlertFragment
-                    .newInstance(getString(R.string.you_re_all_set),
-                        getString(R.string.your_google_calendar))
-                    .show(parentFragmentManager, AlertFragment.TAG)
+            if (isCalendarPermissionGranted()) {
+                confirmReminders()
             } else {
-                ActivityCompat.requestPermissions(
-                    requireActivity(), permissions, CALENDAR_PERMISSIONS
-                )
+                calendarPermissionLauncher.launch(permissions)
             }
-        }
-    }
-
-    private fun checkCalendarPermissions(): Boolean {
-        var isPermitted = false
-        permissions.forEach { permission ->
-            isPermitted = ContextCompat.checkSelfPermission(
-                requireContext(), permission
-            ) == PackageManager.PERMISSION_GRANTED
-        }
-        return isPermitted
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        val isGranted: Boolean = grantResults.all { it == 0 }
-        if (isGranted) {
-            viewModel.confirmReminders()
-            AlertFragment
-                .newInstance(getString(R.string.you_re_all_set),
-                    getString(R.string.your_google_calendar))
-                .show(parentFragmentManager, AlertFragment.TAG)
         }
     }
 
@@ -107,24 +83,36 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
             binding.setRemindersButton.isEnabled = isReady
         })
 
-        parentFragmentManager.setFragmentResultListener(
-            SetReminderFragment.KEY_CONFIRM,
-            viewLifecycleOwner,
-            { _, result ->
-                val reminder = result.getSerializable(SetReminderFragment.REMINDER) as Reminder
-                Log.i(TAG, "Got reminder: $reminder")
-                viewModel.updateReminder(reminder)
-            }
-        )
+        parentFragmentManager.apply {
+            setFragmentResultListener(SetReminderFragment.CONFIRM, viewLifecycleOwner, { _, res ->
+                val reminder = res.getSerializable(SetReminderFragment.REMINDER) as Reminder?
+                reminder?.let { viewModel.updateReminder(it) }
+            })
 
-        parentFragmentManager.setFragmentResultListener(
-            AlertFragment.CLOSE,
-            viewLifecycleOwner,
-            { _, _ ->
+            setFragmentResultListener(AlertFragment.CLOSE, viewLifecycleOwner, { _, _ ->
                 val callback = context as OnDoneWithScreenListener?
                 callback?.onDoneWithScreen(TAG)
+            })
+        }
+    }
+
+    private fun isCalendarPermissionGranted(): Boolean {
+        var isPermitted = false
+        for (p in permissions) {
+            context?.let {
+                isPermitted = ContextCompat
+                    .checkSelfPermission(it, p) == PackageManager.PERMISSION_GRANTED
             }
-        )
+        }
+        return isPermitted
+    }
+
+    private fun confirmReminders() {
+        viewModel.confirmReminders()
+        val title = getString(R.string.you_re_all_set)
+        val message = getString(R.string.your_google_calendar)
+        AlertFragment.newInstance(title, message)
+            .show(parentFragmentManager, AlertFragment.TAG)
     }
 
     override fun onItemSelected(reminder: Reminder) {
@@ -139,7 +127,6 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     }
 
     companion object {
-        const val CALENDAR_PERMISSIONS = 69
         const val TAG = "SetRemindersFragment"
 
         fun newInstance(): SetRemindersFragment {
