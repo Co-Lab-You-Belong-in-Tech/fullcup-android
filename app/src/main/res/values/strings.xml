@@ -76,4 +76,5 @@
     <string name="self_care_intro_2">Self-care is a crucial step in maintaining a healthy relationship with yourself and with others. It’s not possible to pour from an empty cup.</string>
     <string name="you_re_all_set">You\'re all set!</string>
     <string name="your_google_calendar">Your google calendar has been successfully synced. You will receive notifications via google to remind you of your scheduled activities for the day.</string>
+    <string name="a_reminder_from_full_cup">A reminder from Full Cup.</string>
 </resources>

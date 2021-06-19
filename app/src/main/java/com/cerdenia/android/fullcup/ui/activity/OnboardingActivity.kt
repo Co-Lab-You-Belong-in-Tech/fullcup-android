@@ -13,7 +13,6 @@ import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
 import com.cerdenia.android.fullcup.ui.fragment.*
 import java.util.*
 
-
 class OnboardingActivity : FullCupActivity(),
     GetStartedFragment.Callbacks,
     CalendarSignInFragment.Callbacks,

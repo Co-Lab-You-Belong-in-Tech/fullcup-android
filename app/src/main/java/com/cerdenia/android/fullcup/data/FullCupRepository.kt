@@ -106,14 +106,9 @@ class FullCupRepository private constructor(
     // [START] Calendar methods
     fun syncReminders(reminders: List<Reminder>) {
         executor.execute {
-            calendarWriter.deleteEvents(FullCupPreferences.eventIDs)
-            val eventIDs = mutableListOf<String>()
-            reminders.forEach { reminder ->
-                val eventID = calendarWriter.writeToCalendar(reminder)
-                eventID?.let { eventIDs.add(it) }
-                Log.d(TAG, "Saved event: $eventID")
-            }
-
+            val oldEventIDs = FullCupPreferences.eventIDs
+            calendarWriter.deleteEvents(oldEventIDs)
+            val eventIDs = calendarWriter.addEvents(reminders)
             FullCupPreferences.eventIDs = eventIDs
         }
     }
