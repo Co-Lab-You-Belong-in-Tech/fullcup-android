@@ -3,6 +3,7 @@ package com.cerdenia.android.fullcup.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.databinding.ActivityMainBinding
 import com.cerdenia.android.fullcup.ui.fragment.CalendarFragment
@@ -10,6 +11,11 @@ import com.cerdenia.android.fullcup.ui.fragment.HomeFragment
 
 class MainActivity : FullCupActivity() {
     private lateinit var binding: ActivityMainBinding
+
+    private val settingsActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) {
+        binding.bottomNavigationView.selectedItemId = R.id.nav_home
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +43,9 @@ class MainActivity : FullCupActivity() {
                 R.id.nav_progress -> { } // TODO
                 R.id.nav_account -> {
                     // Just for now.
-                    binding.bottomNavigationView.selectedItemId = R.id.nav_home
-                    SettingsActivity.newIntent(this).run (::startActivity)
+                    SettingsActivity.newIntent(this).run {
+                        settingsActivityLauncher.launch(this)
+                    }
                 }
             }
             true
