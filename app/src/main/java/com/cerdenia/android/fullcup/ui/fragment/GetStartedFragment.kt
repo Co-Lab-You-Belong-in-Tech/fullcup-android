@@ -1,6 +1,5 @@
 package com.cerdenia.android.fullcup.ui.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,17 +9,13 @@ import com.cerdenia.android.fullcup.databinding.FragmentGetStartedBinding
 import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
 
 class GetStartedFragment : Fragment() {
+
     private var _binding: FragmentGetStartedBinding? = null
     private val binding get() = _binding!!
-    private var callbacks: Callbacks? = null
 
     interface Callbacks : OnDoneWithScreenListener {
-        fun onLoginClicked()
-    }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callbacks = context as Callbacks?
+        fun onLoginClicked()
     }
 
     override fun onCreateView(
@@ -28,13 +23,14 @@ class GetStartedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentGetStartedBinding
-            .inflate(inflater, container, false)
+        _binding = FragmentGetStartedBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val callbacks = context as Callbacks?
+
         binding.getStartedButton.setOnClickListener {
             callbacks?.onDoneWithScreen(TAG)
         }
@@ -49,12 +45,8 @@ class GetStartedFragment : Fragment() {
         _binding = null
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        callbacks = null
-    }
-
     companion object {
+
         const val TAG = "GetStartedFragment"
 
         fun newInstance() = GetStartedFragment()

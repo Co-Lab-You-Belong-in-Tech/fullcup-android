@@ -21,6 +21,7 @@ class FullCupRepository private constructor(
     private val webService: WebService,
     private val calendarWriter: CalendarWriter
 ) {
+
     private val reminderDao = database.reminderDao()
     private val logDao = database.logDao()
     private val executor = Executors.newSingleThreadExecutor()
@@ -117,6 +118,7 @@ class FullCupRepository private constructor(
     // [END] Calendar methods
 
     companion object {
+
         private const val TAG = "FullCupRepository"
         private var INSTANCE: FullCupRepository? = null
 

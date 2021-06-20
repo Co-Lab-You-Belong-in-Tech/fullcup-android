@@ -18,13 +18,11 @@ class OnboardingActivity : FullCupActivity(),
     CalendarSignInFragment.Callbacks,
     OnDoneWithScreenListener
 {
+
     private lateinit var binding: ActivityOnboardingBinding
 
     private val calendarActivityResult = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        // On Activity result:
-        //replaceFragmentWith(SetRemindersIntroFragment.newInstance(), true)
+        ActivityResultContracts.StartActivityForResult()) {
         MainActivity.newIntent(this).run (::startActivity)
         finish()
     }
@@ -33,11 +31,9 @@ class OnboardingActivity : FullCupActivity(),
         super.onCreate(savedInstanceState)
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         fragmentContainer = binding.fragmentContainer.id
 
         if (savedInstanceState == null) {
-            // Fragment container is empty.
             supportFragmentManager
                 .beginTransaction()
                 .add(fragmentContainer, GetStartedFragment.newInstance())
@@ -55,23 +51,28 @@ class OnboardingActivity : FullCupActivity(),
             .buildUpon()
             .appendPath("time")
         ContentUris.appendId(builder, Date().time)
-        val intent = Intent(Intent.ACTION_VIEW)
-            .setData(builder.build())
+
+        val intent = Intent(Intent.ACTION_VIEW).setData(builder.build())
         calendarActivityResult.launch(intent)
     }
 
     override fun onDoneWithScreen(tag: String, flag: String?) {
         when (tag) {
-            GetStartedFragment.TAG ->
-                replaceFragmentWith(SelectActivitiesFragment.newInstance(), true)
-            SelectActivitiesFragment.TAG ->
-                replaceFragmentWith(HelloUserFragment.newInstance(), true)
-            HelloUserFragment.TAG ->
-                replaceFragmentWith(SetRemindersIntroFragment.newInstance(), true)
-            CalendarSignInFragment.TAG ->
-                replaceFragmentWith(SetRemindersIntroFragment.newInstance(), true)
-            SetRemindersIntroFragment.TAG ->
-                replaceFragmentWith(SetRemindersFragment.newInstance(), true)
+            GetStartedFragment.TAG -> SelectActivitiesFragment.newInstance().run {
+                replaceFragmentWith(this, true)
+            }
+            SelectActivitiesFragment.TAG -> HelloUserFragment.newInstance().run {
+                replaceFragmentWith(this, true)
+            }
+            HelloUserFragment.TAG -> SetRemindersIntroFragment.newInstance().run {
+                replaceFragmentWith(this, true)
+            }
+            CalendarSignInFragment.TAG -> SetRemindersIntroFragment.newInstance().run {
+                replaceFragmentWith(this, true)
+            }
+            SetRemindersIntroFragment.TAG -> SetRemindersFragment.newInstance().run {
+                replaceFragmentWith(this, true)
+            }
             SetRemindersFragment.TAG -> {
                 FullCupPreferences.isOnboarded = true
                 MainActivity.newIntent(this).run (::startActivity)
@@ -81,6 +82,7 @@ class OnboardingActivity : FullCupActivity(),
     }
 
     companion object {
+
         fun newIntent(context: Context): Intent {
             return Intent(context, OnboardingActivity::class.java)
         }

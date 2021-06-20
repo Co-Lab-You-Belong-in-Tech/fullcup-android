@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.data.model.Reminder
@@ -24,10 +24,10 @@ import com.cerdenia.android.fullcup.util.ext.hide
 import com.cerdenia.android.fullcup.util.ext.updateList
 
 class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
+
     private var _binding: FragmentSetRemindersBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var viewModel: SetRemindersViewModel
+    private val viewModel: SetRemindersViewModel by viewModels()
     private lateinit var adapter: ReminderAdapter
 
     private val permissions = arrayOf(
@@ -43,27 +43,24 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
         if (isGranted) confirmReminders()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)
-            .get(SetRemindersViewModel::class.java)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSetRemindersBinding
-            .inflate(inflater, container, false)
+        _binding = FragmentSetRemindersBinding.inflate(inflater, container, false)
         adapter = ReminderAdapter(resources, this)
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            binding.recyclerView.adapter = adapter
+        }
+
         binding.setRemindersButton.setOnClickListener {
             if (isCalendarPermissionGranted()) {
                 confirmReminders()
@@ -75,6 +72,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
 
     override fun onStart() {
         super.onStart()
+
         viewModel.remindersLive.observe(viewLifecycleOwner, { reminders ->
             binding.progressBar.hide()
             adapter.updateList(reminders.sortedBy { !it.isSet })
@@ -116,8 +114,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     }
 
     override fun onItemSelected(reminder: Reminder) {
-        SetReminderFragment
-            .newInstance(reminder, viewModel.getAvailableTimes())
+        SetReminderFragment.newInstance(reminder, viewModel.getAvailableTimes())
             .show(parentFragmentManager, SetReminderFragment.TAG)
     }
 
@@ -127,6 +124,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
     }
 
     companion object {
+
         const val TAG = "SetRemindersFragment"
 
         fun newInstance(): SetRemindersFragment {

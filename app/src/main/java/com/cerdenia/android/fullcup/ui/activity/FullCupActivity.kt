@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import com.cerdenia.android.fullcup.R
 
 abstract class FullCupActivity : AppCompatActivity() {
+
     var fragmentContainer: Int = R.id.fragment_container
 
     fun replaceFragmentWith(fragment: Fragment) {
