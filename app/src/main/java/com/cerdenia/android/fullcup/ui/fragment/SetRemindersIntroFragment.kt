@@ -1,6 +1,5 @@
 package com.cerdenia.android.fullcup.ui.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +9,9 @@ import com.cerdenia.android.fullcup.databinding.FragmentSetRemindersIntroBinding
 import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
 
 class SetRemindersIntroFragment : Fragment() {
+
     private var _binding: FragmentSetRemindersIntroBinding? = null
     private val binding get() = _binding!!
-    private var callback: OnDoneWithScreenListener? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = context as OnDoneWithScreenListener?
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +25,9 @@ class SetRemindersIntroFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.nextButton.setOnClickListener {
+            val callback = context as OnDoneWithScreenListener?
             callback?.onDoneWithScreen(TAG)
         }
     }
@@ -41,12 +37,8 @@ class SetRemindersIntroFragment : Fragment() {
         _binding = null
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        callback = null
-    }
-
     companion object {
+
         const val TAG = "SetReminderIntroFragment"
 
         fun newInstance() = SetRemindersIntroFragment()

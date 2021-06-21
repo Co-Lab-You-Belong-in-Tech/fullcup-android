@@ -5,8 +5,10 @@ import com.cerdenia.android.fullcup.data.FullCupRepository
 import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.data.model.Reminder
 
-class SelectActivitiesViewModel : ViewModel() {
-    private val repo = FullCupRepository.getInstance()
+class SelectActivitiesViewModel(
+    private val repo: FullCupRepository = FullCupRepository.getInstance()
+) : ViewModel() {
+
     val activities get() = FullCupPreferences.activities
     val userName get() = FullCupPreferences.userName
 

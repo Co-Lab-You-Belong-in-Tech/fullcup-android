@@ -58,7 +58,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            binding.recyclerView.adapter = adapter
+            adapter = this@SetRemindersFragment.adapter
         }
 
         binding.setRemindersButton.setOnClickListener {
@@ -74,6 +74,7 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
         super.onStart()
 
         viewModel.remindersLive.observe(viewLifecycleOwner, { reminders ->
+            Log.d(TAG, "Reminders observer fired, got $reminders")
             binding.progressBar.hide()
             adapter.updateList(reminders.sortedBy { !it.isSet })
             // Enable Set Reminders button if all reminders are ready.
@@ -96,11 +97,9 @@ class SetRemindersFragment : Fragment(), ReminderAdapter.Listener {
 
     private fun isCalendarPermissionGranted(): Boolean {
         var isPermitted = false
-        for (p in permissions) {
-            context?.let {
-                isPermitted = ContextCompat
-                    .checkSelfPermission(it, p) == PackageManager.PERMISSION_GRANTED
-            }
+        for (permission in permissions) {
+            val result = context?.let { ContextCompat.checkSelfPermission(it, permission) }
+            isPermitted = result == PackageManager.PERMISSION_GRANTED
         }
         return isPermitted
     }

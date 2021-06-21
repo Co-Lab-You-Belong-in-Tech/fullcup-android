@@ -40,37 +40,8 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Set greeting to change depending on time of day.
-        val time = SimpleDateFormat(TIME_PATTERN).format((Date()))
-        binding.greetingTextView.text = getString(
-            R.string.greeting_with_name,
-            DateTimeUtils.getGreeting(resources, time),
-            FullCupPreferences.userName
-        )
-
-        binding.dateTextView.text = DateFormat
-            .getDateInstance(DateFormat.MEDIUM)
-            .format(Date())
-
-        binding.logButton.apply {
-            setOnClickListener {
-                viewModel.dailyLogLive.value?.let { log ->
-                    Log.d(TAG, "Current log data size: ${log.activities.size}")
-                    LogActivityFragment.newInstance(log)
-                        .show(parentFragmentManager, LogActivityFragment.TAG)
-                }
-            }
-
-            addRipple()
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
 
         viewModel.remindersLive.observe(viewLifecycleOwner, {
             Log.d(TAG, "Reminder observer fired")
@@ -102,6 +73,35 @@ class HomeFragment : Fragment() {
                 }
             }
         )
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    override fun onStart() {
+        super.onStart()
+
+        // Set greeting to change depending on time of day.
+        val time = SimpleDateFormat(TIME_PATTERN).format((Date()))
+        binding.greetingTextView.text = getString(
+            R.string.greeting_with_name,
+            DateTimeUtils.getGreeting(resources, time),
+            FullCupPreferences.userName
+        )
+
+        binding.dateTextView.text = DateFormat
+            .getDateInstance(DateFormat.MEDIUM)
+            .format(Date())
+
+        binding.logButton.apply {
+            setOnClickListener {
+                viewModel.dailyLogLive.value?.let { log ->
+                    Log.d(TAG, "Current log data size: ${log.activities.size}")
+                    LogActivityFragment.newInstance(log)
+                        .show(parentFragmentManager, LogActivityFragment.TAG)
+                }
+            }
+
+            addRipple()
+        }
     }
 
     override fun onDestroyView() {

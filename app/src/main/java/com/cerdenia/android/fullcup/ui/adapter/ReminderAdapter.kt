@@ -1,6 +1,7 @@
 package com.cerdenia.android.fullcup.ui.adapter
 
 import android.content.res.Resources
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,9 @@ class ReminderAdapter(
     private val resources: Resources,
     private val listener: Listener
 ): ListAdapter<Reminder, ReminderAdapter.ReminderHolder>(DiffCallback()) {
+
     interface Listener {
+
         fun onItemSelected(reminder: Reminder)
     }
 
@@ -88,6 +91,7 @@ class ReminderAdapter(
     }
 
     companion object {
+
         private const val TAG = "ReminderAdapter"
         private const val TYPE_UNSET = 0
         private const val TYPE_SET = 1

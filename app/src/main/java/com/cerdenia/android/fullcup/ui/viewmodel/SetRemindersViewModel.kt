@@ -1,13 +1,13 @@
 package com.cerdenia.android.fullcup.ui.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.cerdenia.android.fullcup.data.FullCupRepository
 import com.cerdenia.android.fullcup.data.model.Reminder
-import com.cerdenia.android.fullcup.util.DateTimeUtils
 
-class SetRemindersViewModel : ViewModel() {
-    private val repo = FullCupRepository.getInstance()
+class SetRemindersViewModel(
+    private val repo: FullCupRepository = FullCupRepository.getInstance()
+) : ViewModel() {
+
     val remindersLive = repo.getReminders()
 
     fun updateReminder(reminder: Reminder) {
@@ -16,7 +16,6 @@ class SetRemindersViewModel : ViewModel() {
 
     fun confirmReminders() {
         remindersLive.value?.let { reminders ->
-            //repo.syncRemindersWithCalendar(reminders)
             repo.syncReminders(reminders)
         }
     }
@@ -32,24 +31,4 @@ class SetRemindersViewModel : ViewModel() {
 
         return availableTimes.toTypedArray()
     }
-
-    /*
-    fun updateAvailableTimes(reminders: List<Reminder>) {
-        reminders.forEach { reminder ->
-            reminder.time?.let { startTime ->
-                var endTimeHour = startTime.substringBefore(":").toInt()
-                var endTimeMinutes = startTime.substringAfter(":").toInt()
-                    .plus(reminder.durationInMins)
-
-                while (endTimeMinutes >= 60) {
-                    endTimeMinutes -= 60
-                    endTimeHour += 1
-                }
-
-                val endTime = DateTimeUtils.to24HourFormat(endTimeHour, endTimeMinutes)
-                availableTimes.removeAll(listOf(startTime, endTime))
-            }
-        }
-    }
-     */
 }

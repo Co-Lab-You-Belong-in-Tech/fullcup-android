@@ -8,6 +8,7 @@ import com.cerdenia.android.fullcup.data.model.DateTimeBreakdown
 import java.util.*
 
 object DateTimeUtils {
+
     // Accepts time in HH:mm format.
     fun to12HourFormat(timeString: String): String {
         if (!timeString.contains(":") || timeString.length != 5) {

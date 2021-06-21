@@ -13,8 +13,10 @@ import com.cerdenia.android.fullcup.WEEKEND
 import com.cerdenia.android.fullcup.data.model.Reminder
 
 class CalendarWriter(private val context: Context) {
+
     fun addEvents(reminders: List<Reminder>): List<String> {
         val eventIDs = mutableListOf<String>()
+
         for (reminder in reminders) {
             reminder.setStartDateTime() // Ensures that startDateTime is not null.
             val (y, mo, d, h, mi) = DateTimeUtils.breakdown(reminder.startDateTime!!)
@@ -62,6 +64,7 @@ class CalendarWriter(private val context: Context) {
     }
 
     companion object {
+
         const val TAG = "CalendarWriter"
     }
 }
