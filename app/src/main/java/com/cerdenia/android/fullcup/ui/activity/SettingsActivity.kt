@@ -9,17 +9,16 @@ import com.cerdenia.android.fullcup.ui.fragment.SelectActivitiesFragment
 import com.cerdenia.android.fullcup.ui.fragment.SetRemindersFragment
 
 class SettingsActivity : FullCupActivity(), OnDoneWithScreenListener {
+
     private lateinit var binding: ActivitySecondaryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySecondaryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         fragmentContainer = binding.fragmentContainer.id
 
         if (savedInstanceState == null) {
-            // Fragment container is empty.
             supportFragmentManager
                 .beginTransaction()
                 .add(fragmentContainer, SelectActivitiesFragment.newInstance())
@@ -29,13 +28,15 @@ class SettingsActivity : FullCupActivity(), OnDoneWithScreenListener {
 
     override fun onDoneWithScreen(tag: String, flag: String?) {
         when (tag) {
-            SelectActivitiesFragment.TAG ->
-                replaceFragmentWith(SetRemindersFragment.newInstance(), true)
+            SelectActivitiesFragment.TAG -> SetRemindersFragment.newInstance().run {
+                replaceFragmentWith(this, true)
+            }
             SetRemindersFragment.TAG -> finish()
         }
     }
 
     companion object {
+
         fun newIntent(context: Context): Intent {
             return Intent(context, SettingsActivity::class.java)
         }

@@ -10,6 +10,7 @@ import com.cerdenia.android.fullcup.ui.fragment.CalendarFragment
 import com.cerdenia.android.fullcup.ui.fragment.HomeFragment
 
 class MainActivity : FullCupActivity() {
+
     private lateinit var binding: ActivityMainBinding
 
     private val settingsActivityLauncher = registerForActivityResult(
@@ -21,7 +22,6 @@ class MainActivity : FullCupActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         fragmentContainer = binding.fragmentContainer.id
 
         if (savedInstanceState == null) {
@@ -34,29 +34,34 @@ class MainActivity : FullCupActivity() {
 
     override fun onStart() {
         super.onStart()
-        binding.bottomNavigationView.selectedItemId = R.id.nav_home
 
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_home -> replaceFragmentWith(HomeFragment.newInstance())
-                R.id.nav_activity_log -> replaceFragmentWith(CalendarFragment.newInstance())
-                R.id.nav_progress -> { } // TODO
-                R.id.nav_account -> {
-                    // Just for now.
-                    SettingsActivity.newIntent(this).run {
-                        settingsActivityLauncher.launch(this)
+        binding.bottomNavigationView.apply {
+            selectedItemId = R.id.nav_home
+
+            setOnNavigationItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.nav_home -> replaceFragmentWith(HomeFragment.newInstance())
+                    R.id.nav_activity_log -> replaceFragmentWith(CalendarFragment.newInstance())
+                    R.id.nav_progress -> {
+                        // TODO
+                    }
+                    R.id.nav_account -> {
+                        // Just for now:
+                        SettingsActivity.newIntent(this@MainActivity).run {
+                            settingsActivityLauncher.launch(this)
+                        }
                     }
                 }
+
+                true
             }
-            true
         }
     }
 
     companion object {
-        private const val TAG = "MainActivityTag"
 
-        fun newIntent(packageContext: Context): Intent {
-            return Intent(packageContext, MainActivity::class.java)
+        fun newIntent(context: Context): Intent {
+            return Intent(context, MainActivity::class.java)
         }
     }
 }

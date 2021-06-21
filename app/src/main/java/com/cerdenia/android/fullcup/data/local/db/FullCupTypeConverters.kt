@@ -5,6 +5,7 @@ import java.util.*
 
 
 class FullCupTypeConverters {
+
     @TypeConverter
     fun fromDate(date: Date?): Long? = date?.time
 

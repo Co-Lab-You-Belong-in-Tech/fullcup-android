@@ -8,7 +8,7 @@ import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
 
-// Represents an event that can be synced with the backend server.
+// Represents an event that can be synced with a calendar.
 @Entity
 data class Reminder(
     @PrimaryKey val name: String,
@@ -19,9 +19,10 @@ data class Reminder(
     var timeZone: String = TimeZone.getDefault().id,
     var serverId: String? = null,
 ) : Serializable {
+
     val isSet: Boolean get() = time !== null && recurrence !== null
 
-    // Should be called before passing data to server.
+    // Should be called before passing data to calendar.
     @SuppressLint("SimpleDateFormat")
     fun setStartDateTime() {
         val date = SimpleDateFormat(DATE_PATTERN).format(Date())

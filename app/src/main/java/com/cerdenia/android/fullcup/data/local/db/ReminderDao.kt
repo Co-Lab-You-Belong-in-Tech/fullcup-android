@@ -7,6 +7,7 @@ import com.cerdenia.android.fullcup.data.model.Reminder
 
 @Dao
 interface ReminderDao {
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addReminder(vararg reminder: Reminder)
 

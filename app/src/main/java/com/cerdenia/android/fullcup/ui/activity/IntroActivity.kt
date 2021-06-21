@@ -8,13 +8,13 @@ import com.cerdenia.android.fullcup.databinding.ActivitySecondaryBinding
 import com.cerdenia.android.fullcup.ui.fragment.IntroFragment
 
 class IntroActivity : FullCupActivity(), IntroFragment.Callbacks {
+
     private lateinit var binding: ActivitySecondaryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySecondaryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         fragmentContainer = binding.fragmentContainer.id
 
         if (savedInstanceState == null) {

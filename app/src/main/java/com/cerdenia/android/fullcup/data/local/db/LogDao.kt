@@ -8,6 +8,7 @@ import com.cerdenia.android.fullcup.data.model.SummaryLog
 
 @Dao
 interface LogDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addActivityLog(vararg log: ActivityLog)
 

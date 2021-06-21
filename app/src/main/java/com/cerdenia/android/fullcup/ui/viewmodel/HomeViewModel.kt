@@ -25,13 +25,16 @@ private const val TAG = "HomeViewModel"
 
 // Data source for HomeFragment.
 @SuppressLint("SimpleDateFormat")
-class HomeViewModel : ViewModel() {
-    private val repo = FullCupRepository.getInstance()
-    val remindersLive = repo.getReminders()
+class HomeViewModel(
+    private val repo: FullCupRepository = FullCupRepository.getInstance()
+) : ViewModel() {
 
-    @SuppressLint("SimpleDateFormat")
-    private val dayName = SimpleDateFormat(DAY_NAME_PATTERN).format(Date())
-    private val typeOfDay = DateTimeUtils.toTypeOfDay(dayName)
+    val remindersLive = repo.getReminders()
+    val date = Date()
+
+    private val typeOfDay = SimpleDateFormat(DAY_NAME_PATTERN).format(date).run {
+        DateTimeUtils.toTypeOfDay(this)
+    }
 
     // Colors for identifying donut sections.
     private val colors = listOf(
@@ -53,9 +56,9 @@ class HomeViewModel : ViewModel() {
         .mapIndexed { i, activity -> ColoredActivity(activity, colors[i]) }
 
     // Reminder data from DB is not directly exposed to view.
-    @SuppressLint("SimpleDateFormat")
-    private val stringDate = SimpleDateFormat(DATE_PATTERN).format(Date())
+    private val stringDate = SimpleDateFormat(DATE_PATTERN).format(date)
     private val dbDailyLogLive: LiveData<DailyLog?> = repo.getLogsByDate(stringDate)
+
     // Instead, these are exposed:
     val dailyLogLive = MediatorLiveData<DailyLog?>()
     val donutDataLive = MediatorLiveData<List<DonutSection>>()

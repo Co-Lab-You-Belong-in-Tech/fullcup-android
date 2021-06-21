@@ -10,10 +10,12 @@ import com.cerdenia.android.fullcup.ui.OnDoneWithScreenListener
 import com.cerdenia.android.fullcup.ui.dialog.CalendarPermissionFragment
 
 class CalendarSignInFragment : Fragment() {
+
     private var _binding: FragmentCalendarSignInBinding? = null
     private val binding get() = _binding!!
 
     interface Callbacks : OnDoneWithScreenListener {
+
         fun onAllowedCalendarAccess()
     }
 
@@ -22,15 +24,15 @@ class CalendarSignInFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCalendarSignInBinding
-            .inflate(inflater, container, false)
+        _binding = FragmentCalendarSignInBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.googleCalendarButton.setOnClickListener {
-            CalendarPermissionFragment
-                .newInstance()
+            CalendarPermissionFragment.newInstance()
                 .show(parentFragmentManager, CalendarPermissionFragment.TAG)
         }
 
@@ -39,6 +41,7 @@ class CalendarSignInFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+
         parentFragmentManager.setFragmentResultListener(
             CalendarPermissionFragment.PERMISSION,
             viewLifecycleOwner,
@@ -63,6 +66,7 @@ class CalendarSignInFragment : Fragment() {
     }
 
     companion object {
+
         const val TAG = "CalendarSignInFragment"
 
         fun newInstance() = CalendarSignInFragment()

@@ -8,6 +8,7 @@ import com.cerdenia.android.fullcup.data.local.FullCupPreferences
 import com.cerdenia.android.fullcup.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivitySplashBinding.inflate(layoutInflater)
@@ -19,6 +20,7 @@ class SplashActivity : AppCompatActivity() {
                 FullCupPreferences.isOnboarded -> MainActivity.newIntent(this)
                 else -> OnboardingActivity.newIntent(this)
             })
+
             finish()
         }, 1000)
     }

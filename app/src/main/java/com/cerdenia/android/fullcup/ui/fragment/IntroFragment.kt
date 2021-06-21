@@ -1,6 +1,5 @@
 package com.cerdenia.android.fullcup.ui.fragment
 
-import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +9,14 @@ import com.cerdenia.android.fullcup.R
 import com.cerdenia.android.fullcup.databinding.FragmentIntroBinding
 
 class IntroFragment : Fragment() {
+
     private var _binding: FragmentIntroBinding? = null
     private val binding get() = _binding!!
 
     interface Callbacks {
+
         fun onIntroSkipped()
+
         fun onNextClicked(page: Int)
     }
 
@@ -23,8 +25,7 @@ class IntroFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentIntroBinding
-            .inflate(inflater, container, false)
+        _binding = FragmentIntroBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -32,11 +33,7 @@ class IntroFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val callbacks = context as Callbacks?
         val page = arguments?.getInt(PAGE)
-
-        val textMap = mapOf(
-            0 to R.string.self_care_intro_1,
-            1 to R.string.self_care_intro_2
-        )
+        val textMap = mapOf(0 to R.string.self_care_intro_1, 1 to R.string.self_care_intro_2)
 
         binding.skipIntroButton.setOnClickListener {
             callbacks?.onIntroSkipped()
@@ -55,6 +52,7 @@ class IntroFragment : Fragment() {
     }
 
     companion object {
+
         const val TAG = "IntroFragment"
         private const val PAGE = "PAGE"
 

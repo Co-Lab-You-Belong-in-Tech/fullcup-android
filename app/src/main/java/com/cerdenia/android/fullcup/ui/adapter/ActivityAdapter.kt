@@ -19,7 +19,9 @@ class ActivityAdapter(
     private val listener: Listener? = null
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
+
     interface Listener {
+
         fun onCheckboxItemClicked(activity: String, isChecked: Boolean)
     }
 
@@ -123,6 +125,7 @@ class ActivityAdapter(
     }
 
     companion object {
+
         private const val TAG = "ActivityAdapter"
         private const val TYPE_COLORED = 0
         private const val TYPE_CHECKBOX = 1

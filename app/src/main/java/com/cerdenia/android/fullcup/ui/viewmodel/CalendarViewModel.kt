@@ -5,11 +5,13 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.cerdenia.android.fullcup.data.FullCupRepository
 
-class CalendarViewModel : ViewModel() {
-    private val repo = FullCupRepository.getInstance()
+class CalendarViewModel(
+    private val repo: FullCupRepository = FullCupRepository.getInstance()
+) : ViewModel() {
 
     val earliestLogDateLive = repo.getEarliestLogDate()
     private val dateStringLive = MutableLiveData<String>()
+
     val dailyLogLive = Transformations.switchMap(dateStringLive) { dateString ->
         repo.getLogsByDate(dateString)
     }
